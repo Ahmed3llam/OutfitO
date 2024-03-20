@@ -1,0 +1,51 @@
+﻿@model List<Category>
+
+@{
+    // Layout = null;
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <div id="modal-placeholder"></div>
+    <p>
+        <a asp-action="add" asp-controller="Category">Create New</a>
+    </p>
+    <br />
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>
+                            <a asp-action="Edit" asp-controller="Category" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
+                            <a href="#" onclick="deleteCategory('@item.Id')"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No categories found.</p>
+    }
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function deleteCategory(id) {
+        event.preventDefault();
+        $.ajax({
+            url: `/Category/Delete/${id}`,
+            success: function (result) {
+                $("#modal-placeholder").html(result);
+                $('#DeleteModal').modal('show');
+            }
+        });
+    }
+</script>
