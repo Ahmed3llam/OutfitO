@@ -1,0 +1,67 @@
+﻿@model List<PromoCode>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<div id="modal-placeholder"></div>
+<p>
+    <a href="#" onclick="add()" >Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Code
+            </th>
+            <th>
+                Percentage
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.Code
+            </td>
+            <td>
+                @item.Percentage
+            </td>
+            <td>
+                <a href="#" onclick="deletePromoCode('@item.Id')"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
+        {
+            <li class="page-item @(i == (int)ViewData["Page"] ? "active" : "")">
+                <a class="page-link btn btn-secondary mx-1" asp-action="Index" asp-controller="PromoCode" asp-route-page="@i">@i</a>
+            </li>
+        }
+    </ul>
+</nav>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function add() {
+        event.preventDefault();
+        $.ajax({
+            url: `/PromoCode/Add`,
+            success: function (result) {
+                $("#modal-placeholder").html(result);
+                $('#AddModal').modal('show');
+            }
+        });
+    }
+    function deletePromoCode(id) {
+        event.preventDefault();
+        $.ajax({
+            url: `/PromoCode/Delete/${id}`,
+            success: function (result) {
+                $("#modal-placeholder").html(result);
+                $('#DeleteModal').modal('show');
+            }
+        });
+    }
+</script>

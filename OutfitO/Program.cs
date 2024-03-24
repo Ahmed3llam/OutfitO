@@ -37,6 +37,7 @@ builder.Services.AddScoped<IOrderItemsRepository, OrderItemsRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPromoCodeRepository, PromoCodeRepository>();
 
 var app = builder.Build();
 

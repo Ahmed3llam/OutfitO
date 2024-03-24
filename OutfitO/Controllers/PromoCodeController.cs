@@ -17,28 +17,51 @@ namespace OutfitO.Controllers
             cartRepository = cartRepo;
             promoCodeRepository = promoCodeRepo;
         }
-        [Authorize("Admin")]
-        public IActionResult Index()
+        //[Authorize("Admin")]
+        public IActionResult Index(int page = 1)
         {
-            return View();
+            int content = 3;
+            int skip = (page - 1) * content;
+            List<PromoCode> promoCodes = promoCodeRepository.GetSome(skip, content);
+            int totalInstructors = promoCodeRepository.Count();
+            ViewData["Page"] = page;
+            ViewData["content"] = content;
+            ViewData["TotalItems"] = totalInstructors;
+            return View("Index",promoCodes);
         }
-        [Authorize("Admin")]
+        //[Authorize("Admin")]
+        [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            return PartialView("_AddPartial");
         }
-        [Authorize("Admin")]
-        [HttpGet]
-        public IActionResult Delete()
+        //[Authorize("Admin")]
+        [HttpPost]
+        public IActionResult Add(PromoCode promoCode)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                promoCodeRepository.Insert(promoCode);
+                promoCodeRepository.Save();
+                return RedirectToAction("Index", "PromoCode");
+            }
+            return PartialView("_AddPartial", promoCode);
         }
-        [Authorize("Admin")]
+        //[Authorize("Admin")]
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+			PromoCode code = promoCodeRepository.Get(id);
+			return PartialView("_DeletePartial", code);
+		}
+        //[Authorize("Admin")]
         [HttpPost]
         public IActionResult Delete(PromoCode promo)
         {
-            return View();
-        }
+			promoCodeRepository.Delete(promo.Id);
+			promoCodeRepository.Save();
+			return RedirectToAction("Index", "PromoCode");
+		}
         //[Authorize("User")]
         //[HttpGet]
         //public IActionResult CheckOut()
