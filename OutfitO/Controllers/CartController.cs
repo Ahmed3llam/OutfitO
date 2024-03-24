@@ -1,0 +1,132 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
+using OutfitO.Models;
+using OutfitO.Repository;
+using OutfitO.ViewModels;
+using System.Security.Claims;
+
+namespace OutfitO.Controllers
+{
+    public class CartController : Controller
+    {
+        ICartRepository cartRepository;
+        IProductRepository productRepository;
+        IOrderRepository orderRepository;
+        IOrderItemsRepository orderItemsRepository;
+        UserManager<User> userManager;
+
+        public CartController(ICartRepository cartRepo,IProductRepository productRepo,UserManager<User> user, IOrderRepository orderRepo,IOrderItemsRepository orderItemsRepo)
+        {
+            cartRepository= cartRepo;
+            productRepository = productRepo;
+            orderRepository= orderRepo;
+            orderItemsRepository= orderItemsRepo;
+            userManager= user;
+        }
+        public IActionResult Index()
+        {
+            var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            List<CartItem> cartItems= cartRepository.GetForUser(Userid);
+            return View("Index",cartItems);
+        }
+        [HttpPost]
+        public IActionResult AddToCart(int ProductId) {
+            var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (cartRepository.GetById(ProductId, Userid) != null)
+            {
+                cartRepository.GetById(ProductId, Userid).Quantity++;
+            }
+            else
+            {
+                CartItem cartItem = new()
+                {
+                    ProductID = ProductId,
+                    UserID = Userid,
+                    Quantity = 1
+                };
+                cartRepository.Insert(cartItem);
+            }
+            cartRepository.Save();
+            return RedirectToAction("Index", "Product");
+        }
+        public IActionResult IncrementQuantity(int ProductId)
+        {
+            var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            CartItem cartItem = cartRepository.GetById(ProductId, Userid);
+            if (cartItem == null || cartItem.Quantity >= 10)
+            {
+                return NoContent();
+            }
+            cartItem.Quantity += 1;
+            cartRepository.Update(ProductId,Userid, cartItem);
+            cartRepository.Save();
+            return NoContent();
+        }
+        public IActionResult DecreaseQuantity(int ProductId)
+        {
+            var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            CartItem cartItem = cartRepository.GetById(ProductId, Userid);
+            if (cartItem == null || cartItem.Quantity <= 1)
+            {
+                return NoContent();
+            }
+            cartItem.Quantity -= 1;
+            cartRepository.Update(ProductId, Userid, cartItem);
+            cartRepository.Save();
+            return NoContent();
+        }
+        public IActionResult Delete(int ProductId)
+        {
+            var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            cartRepository.Delete(ProductId, Userid);
+            cartRepository.Save();
+            return RedirectToAction("Index");
+        }
+        public ActionResult DeleteAll() {
+            var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            cartRepository.DeleteAll(Userid);
+            cartRepository.Save();
+            return RedirectToAction("Details","Order");
+        }
+        //public IActionResult CheckOut()
+        //{
+        //    //promocode - action on promocontroller check for value of promocode then redirct to payment--
+        //    //payment -> partialview tod isplay all payment methods for this user to select one of them the redirct to order
+        //    //order -> (get userid from claims + gettotalprice using cartrepository then apply precentage of promocode) then redirct to orderitems
+        //    //orderitem -> (get list of cartitem using cart repo  + update product for each item in cart list using product repo to decrease stock attr with quantity ) then redirct to delete cart items
+        //    //delete cartitem -> delete cart then redirct to details for this order or history for all orders
+        //    //details for this order -> display details for order
+        //    var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    List<CartItem> cartItems = cartRepository.GetForUser(Userid);
+        //    decimal TPrice = cartRepository.GetTotalPrice(Userid);
+        //    Order NewOrder = new Order()
+        //    {
+        //        Date = DateTime.Now,
+        //        UserId = Userid,
+        //        Price = TPrice,
+        //        PaymentId = 1////
+        //    };
+        //    orderRepository.Insert(NewOrder);
+        //    orderRepository.Save();
+        //    foreach (CartItem item in cartItems)
+        //    {
+        //        Product product = productRepository.Get(item.ProductID);
+        //        product.Stock -= item.Quantity;
+        //        productRepository.Update(product);
+        //        productRepository.Save();
+        //        OrderItem newItem = new OrderItem()
+        //        {
+        //            ProductId = item.ProductID,
+        //            OrderId = NewOrder.Id,
+        //            Quantity = item.Quantity,
+        //            Price = cartRepository.GetTotalPriceOfOneItem(item)
+        //        };
+        //        orderItemsRepository.Insert(newItem);
+        //        cartRepository.Delete(item.Id);
+        //        cartRepository.Save();
+        //    }
+        //    return RedirectToAction("Index", "Order");
+        //}
+    }
+}

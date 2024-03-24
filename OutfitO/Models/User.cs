@@ -14,23 +14,11 @@ namespace OutfitO.Models
         [MinLength(3, ErrorMessage = "Last Name Should be more than 3 letters")]
         public string Lastname { get; set; }
         public string ProfileImage { get; set; }
-
-        //[RegularExpression("^01[0125][0-9]{8}")]
-        //public string PhoneNumber { get; set; }
         [RegularExpression("Male | Female",ErrorMessage ="Gender Should be Male Or Female")]
         public string Gender { get; set; }
-        //[UniqueUser]
-        //[DataType(DataType.EmailAddress)]
-        //public string Email { get; set; }
-
-        //[DataType(DataType.Password)]
-        //public string Password { get; set; }
-        //[NotMapped]
-        //[Compare("Password", ErrorMessage = "password does not match")]
-        //public string ConfirmPassword { get; set; }
         public string Address { get; set; }
-        //public string Role { get; set; }
         public string? Visa { get; set; }
+
         // Navigation Property
         public virtual List<Product> Products { get; set; }
         public virtual List<Comment> Comments { get; set; }
