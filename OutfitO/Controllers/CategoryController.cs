@@ -2,6 +2,7 @@
 using NuGet.Protocol.Core.Types;
 using OutfitO.Models;
 using OutfitO.Repository;
+using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OutfitO.Controllers
@@ -9,19 +10,29 @@ namespace OutfitO.Controllers
     public class CategoryController : Controller
     {
         ICategoryRepository categoryRepository;
-        public CategoryController(ICategoryRepository categoryRepo)
+        IUserRepository userRepository;
+        public CategoryController(ICategoryRepository categoryRepo, IUserRepository userRepo)
         {
             categoryRepository = categoryRepo;
+            userRepository = userRepo;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            List<Category> categories = categoryRepository.GetAll();
+            User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            int content = 8;
+            int skip = (page - 1) * content;
+            List<Category> categories = categoryRepository.GetSome(skip, content);
+            int total = categoryRepository.Count();
+            ViewData["Page"] = page;
+            ViewData["content"] = content;
+            ViewData["TotalItems"] = total;
+            ViewData["User"] = user;
             return View("Index",categories);
         }
         [HttpGet]
         public IActionResult Add()
         {
-            return View("AddCategory");
+            return PartialView("_AddPartial");
         }
         [HttpPost]
         public IActionResult Add(Category category)
@@ -33,13 +44,13 @@ namespace OutfitO.Controllers
                 return RedirectToAction("Index","Category");
 
             }
-            return View("AddCategory");
+            return PartialView("_AddPartial");
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
             Category data = categoryRepository.Get(id);
-            return View("EditCategory",data);
+            return PartialView("_EditPartial",data);
         }
         [HttpPost]
         public IActionResult Edit(Category category)
@@ -50,7 +61,7 @@ namespace OutfitO.Controllers
                 categoryRepository.Save();;
                 return RedirectToAction("Index", "Category");
             }
-            return View("EditCategory", category);
+            return PartialView("_EditPartial", category);
         }
         [HttpGet]
         public IActionResult Delete(int id)

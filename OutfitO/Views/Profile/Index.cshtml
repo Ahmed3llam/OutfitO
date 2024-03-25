@@ -1,277 +1,95 @@
 ﻿@model OutfitO.Models.User
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css" integrity="sha512-LX0YV/MWBEn2dwXCYgQHrpa9HJkwB+S+bnBpifSOTO1No27TqNMKYoAn6ff2FBh03THAzAiiCwQ+aPX+/Qt/Ow==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<style>
-    body {
-        margin-top: 20px;
-        background: #f7f8fa
-    }
-    .avatar-xxl {
-        height: 7rem;
-        width: 7rem;
-    }
-    .card {
-        margin-bottom: 20px;
-        -webkit-box-shadow: 0 2px 3px #eaedf2;
-        box-shadow: 0 2px 3px #eaedf2;
-    }
-    .pb-0 {
-        padding-bottom: 0 !important;
-    }
-    .font-size-16 {
-        font-size: 16px !important;
-    }
-    .avatar-title {
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        background-color: #038edc;
-        color: #fff;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        font-weight: 500;
-        height: 100%;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-        width: 100%;
-    }
-    .bg-soft-primary {
-        background-color: rgba(3,142,220,.15) !important;
-    }
-
-    .rounded-circle {
-        border-radius: 50% !important;
-    }
-
-    .nav-tabs-custom .nav-item .nav-link.active {
-        color: #038edc;
-    }
-    .nav-tabs-custom .nav-item .nav-link {
-        border: none;
-    }
-    .nav-tabs-custom .nav-item .nav-link.active { 
-        color: #038edc;
-    }
-    .border-end {
-        border-right: 1px solid #eff0f2 !important;
-    }
-    .nav-tabs-custom .nav-item {
-        position: relative;
-        color: #343a40;
-    }
-
-        .nav-tabs-custom .nav-item .nav-link.active:after {
-            -webkit-transform: scale(1);
-            transform: scale(1);
-        }
-
-        .nav-tabs-custom .nav-item .nav-link::after {
-            content: "";
-            background: #038edc;
-            height: 2px;
-            position: absolute;
-            width: 100%;
-            left: 0;
-            bottom: -2px;
-            -webkit-transition: all 250ms ease 0s;
-            transition: all 250ms ease 0s;
-            -webkit-transform: scale(0);
-            transform: scale(0);
-        }
-
-    .table-billing-history th, .table-billing-history td {
-        padding-top: 0.75rem;
-        padding-bottom: 0.75rem;
-        padding-left: 1.375rem;
-        padding-right: 1.375rem;
-    }
-
-    .table > :not(caption) > * > *, .dataTable-table > :not(caption) > * > * {
-        padding: 0.75rem 0.75rem;
-        background-color: var(--bs-table-bg);
-        border-bottom-width: 1px;
-        box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
-    }
-
-</style>
-<div class="container">
-    <div class="row">
-        <div id="modal-placeholder"></div>
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "_AdminLayout";
+}
+<div id="modal-placeholder"></div>
+<div class="head bg-white p-15 between-flex">
+    <div class="search p-relative">
+        <input class="p-10" type="search" placeholder="Search" />
     </div>
-    <div class="row">
-        <div class="col-xl-8">
-            <div class="card">
-                <div class="card-body pb-0">
-                    <div class="row align-items-center">
-                        <div class="col-md-3">
-                            <div class="text-center border-end">
-                                @{
-                                    string imagePath = $"~/Images/{Model.ProfileImage}";
-                                }
-                                <img class="img-fluid avatar-xxl rounded-circle" style=" height: 10rem ;width:auto" src="@Url.Content(imagePath)" alt="">
-                                <h4 class="text-primary font-size-4 mt-3 mb-2" style="padding-bottom:12px">@Model.FirstName @Model.Lastname</h4>
-                            </div>
-                        </div><!-- end col -->
-                        <div class="col-md-9">
-                            <div class="ms-3">
-                                <div>
-                                    <h4 class="card-title mb-2">Profile Data</h4>
-                                </div>
-                                <div class="row my-4">
-                                    <div class="col-md-12">
-                                        <div>
-                                            <p class="text-muted mb-2 fw-medium">
-                                                <i class="mdi mdi-email-outline me-2"></i>@Model.Email
-                                            </p>
-                                            <p class="text-muted fw-medium mb-0">
-                                                <i class="mdi mdi-phone-in-talk-outline me-2"></i>@Model.PhoneNumber
-                                            </p>
-                                        </div>
-                                    </div><!-- end col -->
-                                </div><!-- end row -->
-
-                                <ul class="nav nav-tabs nav-tabs-custom border-bottom-0 mt-3 nav-justfied" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link px-4 active" data-bs-toggle="tab" href="#projects-tab" role="tab" aria-selected="false" tabindex="-1">
-                                            <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
-                                            <span class="d-none d-sm-block">Products</span>
-                                        </a>
-                                    </li><!-- end li -->
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link px-4" href="https://bootdey.com/snippets/view/profile-task-with-team-cards" target="__blank">
-                                            <span class="d-block d-sm-none"><i class="mdi mdi-menu-open"></i></span>
-                                            <span class="d-none d-sm-block">Orders</span>
-                                        </a>
-                                    </li><!-- end li -->
-                                </ul><!-- end ul -->
-                            </div>
-                        </div><!-- end col -->
-                    </div><!-- end row -->
-                </div><!-- end card body -->
-            </div><!-- end card -->
-
-            <div class="row" id="all-Orders">
-                <div class="card mb-4">
-                    <div class="card-header" style="width:100%">Your Products</div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive table-billing-history">
-                            <table class="table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="border-gray-200" scope="col">Title</th>
-                                        <th class="border-gray-200" scope="col">Price</th>
-                                        <th class="border-gray-200" scope="col">Stock</th>
-                                        <th class="border-gray-200" scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in ViewBag.Products)
-                                    {
-                                        <tr>
-                                            <td>@item.Title</td>
-                                            <td>@item.Price</td>
-                                            <td>@item.Stock</td>
-                                            <td>
-                                                <a><i class="fa fa-edit"></i></a>
-                                                <a><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="icons d-flex align-center">
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
+                @Model.FirstName
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" asp-controller="Profile" asp-action="EditData" asp-route-id="@Model.Id" style="color: black;">
+                        <i class="fa-solid fa-gear fa-fw"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-action="Logout" asp-controller="User" asp-route-id="@Model.Id" style="color: black;">
+                        <i class="fa-solid fa-sign-out-alt fa-fw"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#" onclick="DeleteAccount('@Model.Id')" style="color: black;">
+                        <i class="fa-solid fa-trash-alt fa-fw"></i>
+                        <span>Delete Account</span>
+                    </a>
+                </li>
+            </ul>
         </div>
 
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="card-body">
-                    <div>
-                        <h4 class="card-title mb-4">Personal Details</h4>
-                        <div class="table-responsive">
-                            <table class="table table-bordered mb-0">
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">UserName</th>
-                                        <td>@Model.UserName</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Address</th>
-                                        <td>@Model.Address</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Gender</th>
-                                        <td>@Model.Gender</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div><!-- end card body -->
-            </div><!-- end card -->
-            <div class="card">
-                <div class="card-body">
-                    <div>
-                        <h4 class="card-title mb-4">Categories Data</h4>
-                        <div class="table-responsive">
-                            <table class="table table-bordered mb-0">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Category</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in ViewBag.Category)
-                                    {
-                                        <tr>
-                                            <td>@item.Title</td>
-                                            <td>
-                                                <a asp-action="Edit" asp-controller="Category" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
-                                                <a href="#" onclick="deleteCategory('@item.Id')"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+        @{
+            string imagePath = $"~/Images/{Model.ProfileImage}";
+        }
+        <img src="@Url.Content(imagePath)" alt="" style="border-radius:50%"/>
+    </div>
+</div>
+<h1 class="p-relative">Profile</h1>
+<div class="profile-page m-20">
+    <div class="overview bg-white rad-10 d-flex align-center" style="height:60%">
+        <div class="avatar-box txt-c p-20">
+            <img class="rad-half mb-10" src="@Url.Content(imagePath)" alt="" />
+            <h3 class="m-0">@Model.FirstName @Model.Lastname</h3>
+        </div>
+        <div class="info-box w-full txt-c-mobile">
+            <div class="box p-20 d-flex align-center">
+                <h4 class="c-grey fs-15 m-0 w-full">General Information</h4>
+                <div class="fs-14">
+                    <span class="c-grey">Full Name</span>
+                    <span>@Model.FirstName @Model.Lastname</span>
+                </div>
+                <div class="fs-14">
+                    <span class="c-grey">Gender:</span>
+                    <span>@Model.Gender</span>
+                </div>
+                <div class="fs-14">
+                    <span class="c-grey">Address:</span>
+                    <span>@Model.Address</span>
+                </div>
+            </div>
+            <div class="box p-20 d-flex align-center">
+                <h4 class="c-grey w-full fs-15 m-0">Personal Information</h4>
+                <div class="fs-14">
+                    <span class="c-grey">Email:</span>
+                    <span>@Model.Email</span>
+                </div>
+                <div class="fs-14" style="padding-left: 40px;">
+                    <span class="c-grey">Phone:</span>
+                    <span>@Model.PhoneNumber</span>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div>
-    <a asp-action="EditData" asp-controller="Profile" asp-route-id="@Model.Id" class="btn btn-primary">Edit Data</a>
-    <a asp-action="Logout" asp-controller="User" asp-route-id="@Model.Id" class="btn btn-primary">LogOut</a>
-    <a href="#" onclick="DeleteAccount('@Model.Id')" class="btn btn-primary">Delete Account</a>
-</div>
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function DeleteAccount(id) {
-        event.preventDefault();
-        $.ajax({
-            url: `/Profile/DeleteUser/${id}`,
-            success: function (result) {
-                $("#modal-placeholder").html(result);
-                $('#DeleteModal').modal('show');
-            }
-        });
-    }
-    function deleteCategory(id) {
-        event.preventDefault();
-        $.ajax({
-            url: `/Category/Delete/${id}`,
-            success: function (result) {
-                $("#modal-placeholder").html(result);
-                $('#DeleteModal').modal('show');
-            }
-        });
-    }
+        function DeleteAccount(id) {
+            event.preventDefault();
+            $.ajax({
+                url: `/Profile/DeleteUser/${id}`,
+                success: function (result) {
+                    $("#modal-placeholder").html(result);
+                    $('#DeleteModal').modal('show');
+                }
+            });
+        }
 </script>
-

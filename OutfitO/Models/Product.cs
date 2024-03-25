@@ -11,7 +11,6 @@ namespace OutfitO.Models
         public string Title { get; set; }
         [MinLength(20, ErrorMessage = "First Name Should be more than 20 letters")]
         public string Description { get; set; }
-        //[DataType(DataType.Upload)]
         public string Img { get; set; }
         [Column(TypeName = "money")]
         public decimal Price { get; set; }

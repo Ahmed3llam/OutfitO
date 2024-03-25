@@ -7,7 +7,6 @@ namespace OutfitO.Models
     {
         public int Id { get; set; }
         public string Body { get; set; }
-        //public string? Sticker { get; set; }
         [ForeignKey("product")]
         public int ProductID { get; set; }
         [ForeignKey("user")]

@@ -1,7 +1,6 @@
-﻿@model List<Category>
-
+﻿@model List<PromoCode>
 @{
-    ViewData["Title"] = "Category";
+    ViewData["Title"] = "PromoCode";
     Layout = "_AdminLayout";
 }
 <div id="modal-placeholder"></div>
@@ -43,7 +42,7 @@
     </div>
 </div>
 <div class="Section p-20 bg-white rad-10 m-20">
-    <h2 class="mt-0 mb-20">Categories</h2>
+    <h2 class="mt-0 mb-20">PromoCodes</h2>
     <div class="responsive-table">
         <p>
             <a href="#" onclick="add()">Create New</a>
@@ -51,7 +50,12 @@
         <table>
             <thead>
                 <tr>
-                    <th>Title</th>
+                    <th>
+                        Code
+                    </th>
+                    <th>
+                        Percentage
+                    </th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -59,10 +63,14 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.Title</td>
                         <td>
-                            <a href="#" onclick="editCategory('@item.Id')"><i class="fa fa-edit"></i></a> |
-                            <a href="#" onclick="deleteCategory('@item.Id')"><i class="fas fa-trash"></i></a>
+                            @item.Code
+                        </td>
+                        <td>
+                            @item.Percentage %
+                        </td>
+                        <td>
+                            <a href="#" onclick="deletePromoCode('@item.Id')"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
                 }
@@ -86,27 +94,17 @@
     function add() {
         event.preventDefault();
         $.ajax({
-            url: `/Category/Add`,
+            url: `/PromoCode/Add`,
             success: function (result) {
                 $("#modal-placeholder").html(result);
                 $('#AddModal').modal('show');
             }
         });
     }
-    function editCategory(id) {
+    function deletePromoCode(id) {
         event.preventDefault();
         $.ajax({
-            url: `/Category/Edit/${id}`,
-            success: function (result) {
-                $("#modal-placeholder").html(result);
-                $('#EditModal').modal('show');
-            }
-        });
-    }
-    function deleteCategory(id) {
-        event.preventDefault();
-        $.ajax({
-            url: `/Category/Delete/${id}`,
+            url: `/PromoCode/Delete/${id}`,
             success: function (result) {
                 $("#modal-placeholder").html(result);
                 $('#DeleteModal').modal('show');

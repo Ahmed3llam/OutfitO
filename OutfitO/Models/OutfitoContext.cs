@@ -16,7 +16,7 @@ namespace OutfitO.Models
         public DbSet<Comment> Comment { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<CartItem> Cart { get; set; }
-
+        public DbSet<PromoCode> Promo { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);

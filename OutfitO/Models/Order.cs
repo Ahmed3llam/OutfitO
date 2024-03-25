@@ -11,12 +11,14 @@ namespace OutfitO.Models
         [ForeignKey("User")]
         public string UserId { set; get; }
         [ForeignKey("payment")]
-        public int? PaymentId { set; get; }
+        public int PaymentId { set; get; }
+        [ForeignKey("PromoCode")]
+        public int? PromoCodeId { set; get; }
 
         // Navigation Properties
         public virtual Payment payment { set; get; }
         public virtual User User { set; get; }
-
+        public virtual PromoCode PromoCode { set; get; }
         public virtual List<OrderItem> orderItems { set; get; } = new List<OrderItem>();
     }
 }
