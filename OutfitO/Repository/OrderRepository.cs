@@ -29,5 +29,16 @@ namespace OutfitO.Repository
             string userId = _context.Order.Where(p => p.Id == Orderid).Select(p => p.UserId).FirstOrDefault();
             return _context.User.Where(u => u.Id == userId).FirstOrDefault();
         }
+
+        //Added 25-3
+        public int CountOrdersForUser(string userid)
+        {
+            return _context.Order.Where(o => o.UserId == userid).Count();
+        }
+
+        public int GetOrderItemCount(int Orderid)
+        {
+            return _context.OrderItem.Where(o => o.OrderId == Orderid).Count();
+        }
     }
 }

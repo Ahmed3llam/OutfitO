@@ -1,0 +1,71 @@
+﻿@model List<Order>
+
+
+
+<table class="table table-border table-hover">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Price</th>
+            <th>Details</th>
+            <th>Edit</th>
+            <th>Delete</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Order order in Model)
+        {
+            <tr>
+                <td>@order.Date</td>
+                <td>@order.Price</td>
+                <td> <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-secondary" href="#" onclick="ShowOrderDetails(@order.Id)">Details</button> </td>
+                <td> <a class="btn btn-primary" asp-action="" asp-controller="" asp-route-id="" >Edit</a> </td>
+                <td> <a class="btn btn-danger" asp-action="" asp-controller="" asp-route-id="" >Delete</a> </td>
+            </tr>
+        }
+    </tbody>
+    </table>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Order Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="div1" class="modal-body">
+
+                <!-- your body here-->
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    <script>
+        function ShowOrderDetails(OrderId) {
+            console.log("islam mosad")
+            event.preventDefault(); //to prevent <a> tag from reloading the page
+            //use jQuery
+            $.ajax({
+                url: `/Order/OrderDetails/${OrderId}`,
+                success: function (result) {
+                    console.log(result);
+                    document.getElementById("div1").innerHTML = result;
+
+                }
+            })
+        }
+    </script>
+}

@@ -8,6 +8,7 @@ namespace OutfitO.Repository
         public User GetUserInformation(int orderid);
         public List<OrderItem> GetOrderItem(int orderid);
         public List<Order> GetOrderForUSer(string userid);
-
+        public int CountOrdersForUser(string userid);
+        public int GetOrderItemCount(int Orderid);
     }
 }
