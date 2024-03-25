@@ -159,6 +159,9 @@
                     <div class="card-header" style="width:100%">Your Products</div>
                     <div class="card-body p-0">
                         <div class="table-responsive table-billing-history">
+
+
+
                             <table class="table mb-0">
                                 <thead>
                                     <tr>
@@ -183,6 +186,9 @@
                                     }
                                 </tbody>
                             </table>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -264,6 +270,17 @@
             }
         });
     }
+    function deleteCategory(id) {
+        event.preventDefault();
+        $.ajax({
+            url: `/Category/Delete/${id}`,
+            success: function (result) {
+                $("#modal-placeholder").html(result);
+                $('#DeleteModal').modal('show');
+            }
+        });
+    }
+
     function deleteCategory(id) {
         event.preventDefault();
         $.ajax({
