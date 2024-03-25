@@ -1,98 +1,128 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model OutfitO.ViewModels.UserDataVM
 @{
+    ViewData["Title"] = "Settings";
+    Layout = "_AdminLayout";
 }
-@model OutfitO.ViewModels.UserDataVM
-<div class="row">
-    <div id="modal-placeholder"></div>
-    <div class="col-xl-4">
-        <!-- Profile picture card-->
-        <div class="card mb-4 mb-xl-0">
-            <div class="card-header">Profile Picture</div>
-            <div class="card-body text-center">
-                <!-- Profile picture image-->
-                @{
-                    string imagePath = $"~/Images/{Model.ProfileImage}";
-                }
-                <img class="img-fluid img-account-profile rounded-circle mb-2" style=" height: 10rem ;width:auto" src="@Url.Content(imagePath)" alt="">
-                <!-- Profile picture help block-->
-                <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-                <!-- Profile picture upload button-->
-                <a onclick="ChangeImg('@Model.Id')" class="btn btn-primary">Upload new image</a>
-            </div>
-        </div>
-        <br />
-        <div class="card mb-4 mb-xl-0">
-            <div class="card-header">Profile Password</div>
-            <div class="card-body text-center">
-                <a onclick="ChangePassword('@Model.Id')" class="btn btn-primary">Change Password</a>
-            </div>
-        </div>
+<div id="modal-placeholder"></div>
+<div class="head bg-white p-15 between-flex">
+    <div class="search p-relative">
+        <input class="p-10" type="search" placeholder="Search" />
     </div>
-    <div class="col-xl-8">
-        <!-- Account details card-->
-        <div class="card mb-4">
-            <div class="card-header">Account Details</div>
-            <div class="card-body">
-                <form asp-action="EditData" asp-controller="Profile" method="post">
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="small mb-1" asp-for="FirstName"></label>
-                            <input class="form-control" asp-for="FirstName" />
-                            <span class="text-danger" asp-validation-for="FirstName"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="small mb-1" asp-for="Lastname"></label>
-                            <input class="form-control" asp-for="Lastname" />
-                            <span class="text-danger" asp-validation-for="Lastname"></span>
-                        </div>
-                    </div>
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="small mb-1" asp-for="Address"></label>
-                            <input class="form-control" asp-for="Address" />
-                            <span class="text-danger" asp-validation-for="Address"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="small mb-1" asp-for="Gender"></label>
-                            <select class="form-control" asp-for="Gender">
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                            <span class="text-danger" asp-validation-for="Gender"></span>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="small mb-1" asp-for="Email"></label>
-                        <input class="form-control" asp-for="Email" />
-                        <span class="text-danger" asp-validation-for="Email"></span>
-                    </div>
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="small mb-1" asp-for="PhoneNumber"></label>
-                            <input class="form-control" asp-for="PhoneNumber" />
-                            <span class="text-danger" asp-validation-for="PhoneNumber"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="small mb-1" asp-for="Visa"></label>
-                            <input class="form-control" asp-for="Visa" />
-                            <span class="text-danger" asp-validation-for="Visa"></span>
-                        </div>
-                    </div>
-                    <div class="mb-3" style="display:none">
-                        <label class="small mb-1" asp-for="ProfileImage"></label>
-                        <input class="form-control" asp-for="ProfileImage" />
-                        <span class="text-danger" asp-validation-for="ProfileImage"></span>
-                    </div>
-                    <button class="btn btn-primary" type="submit">Save changes</button>
-                </form>
-            </div>
+    <div class="icons d-flex align-center">
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
+                @Model.FirstName
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" asp-controller="Profile" asp-action="EditData" asp-route-id="@Model.Id" style="color: black;">
+                        <i class="fa-solid fa-gear fa-fw"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-action="Logout" asp-controller="User" asp-route-id="@Model.Id" style="color: black;">
+                        <i class="fa-solid fa-sign-out-alt fa-fw"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#" onclick="DeleteAccount('@Model.Id')" style="color: black;">
+                        <i class="fa-solid fa-trash-alt fa-fw"></i>
+                        <span>Delete Account</span>
+                    </a>
+                </li>
+            </ul>
         </div>
+
+        @{
+            string imagePath = $"~/Images/{Model.ProfileImage}";
+        }
+        <img src="@Url.Content(imagePath)" alt="" style="border-radius:50%" />
     </div>
 </div>
+<div class="settings-page m-20 d-grid gap-20">
+    <div class="p-20 bg-white rad-10">
+        <div class="text-left">
+            <h2 class="mt-0 mb-10">Image Info</h2>
+            <p class="mt-0 mb-20 c-grey fs-15">Profile Image For Your Account</p>
+        </div>
+        <div class="text-center">
+            <div class="d-flex justify-content-center mb-3">
+                <img class="rad-half" src="@Url.Content(imagePath)" alt="" style="width:150px;height:150px;" />
+            </div>
+        </div>
+        <div class="sec-box mb-15 between-flex my-3">
+            <div>
+                <span>Image</span>
+            </div>
+            <a class="btn btn-primary" href="#" onclick="ChangeImg('@Model.Id')">Change</a>
+        </div>
+        <div class="text-left">
+            <h2 class="mt-0 mb-10">Security Info</h2>
+            <p class="mt-0 mb-20 c-grey fs-15">Security Information About Your Account</p>
+        </div>
+        <div class="sec-box mb-15 between-flex">
+            <div>
+                <span>Password</span>
+            </div>
+            <a class="btn btn-primary" href="#" onclick="ChangePassword('@Model.Id')">Change</a>
+        </div>
+    </div>
 
+
+    <div class="p-20 bg-white rad-10">
+        <h2 class="mt-0 mb-10">General Info</h2>
+        <p class="mt-0 mb-20 c-grey fs-15">General Information About Your Account</p>
+        <form asp-action="EditData" asp-controller="Profile" method="post">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-6">
+                    <label class="small mb-1" asp-for="FirstName"></label>
+                    <input class="form-control" asp-for="FirstName" />
+                    <span class="text-danger" asp-validation-for="FirstName"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="small mb-1" asp-for="Lastname"></label>
+                    <input class="form-control" asp-for="Lastname" />
+                    <span class="text-danger" asp-validation-for="Lastname"></span>
+                </div>
+            </div>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-6">
+                    <label class="small mb-1" asp-for="Address"></label>
+                    <input class="form-control" asp-for="Address" />
+                    <span class="text-danger" asp-validation-for="Address"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="small mb-1" asp-for="Gender"></label>
+                    <select class="form-control" asp-for="Gender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="Gender"></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="small mb-1" asp-for="Email"></label>
+                <input class="form-control" asp-for="Email" />
+                <span class="text-danger" asp-validation-for="Email"></span>
+            </div>
+            <div class="mb-3">
+                <label class="small mb-1" asp-for="PhoneNumber"></label>
+                <input class="form-control" asp-for="PhoneNumber" />
+                <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+            </div>
+            <div class="mb-3" style="display:none">
+                <label class="small mb-1" asp-for="ProfileImage"></label>
+                <input class="form-control" asp-for="ProfileImage" />
+                <span class="text-danger" asp-validation-for="ProfileImage"></span>
+            </div>
+            <button class="btn btn-primary" type="submit">Save changes</button>
+        </form>
+    </div>
+</div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function ChangeImg(id) {
         console.log("id=", id);
@@ -118,8 +148,3 @@
     }
 </script>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

@@ -235,45 +235,64 @@ ul {
 /* End Quick Draft Widget */
 
 /* Start Projects Table */
-.responsive-table {
-  overflow-x: auto;
+.Section {
+    width: 100%; /* Adjusted to 100% for responsiveness */
+    overflow-x: auto; /* Allow horizontal scrolling on small screens */
 }
-table {
-  min-width: 1000px;
-  border-spacing: 0;
+.Section .responsive-table {
+    width: 100%; 
+    overflow-x: auto;
 }
-thead td {
-  background-color: #eee;
-  font-weight: bold;
+.Section table {
+    width: 98%; 
+    border-spacing: 0;
 }
-table td {
-  padding: 15px;
+.Section thead {
+    background-color: #eee;
+    font-weight: bold;
+    height: 40px;
 }
-tbody td {
-  border-bottom: 1px solid #eee;
-  border-left: 1px solid #eee;
-  transition: 0.3s;
+.Section thead th {
+    padding-left: 10px;
 }
- table tbody tr td:last-child {
-  border-right: 1px solid #eee;
+.Section table td {
+    padding: 15px;
 }
-tbody tr:hover td {
-  background-color: #faf7f7;
+.Section tbody td {
+    border-bottom: 1px solid #eee;
+    border-left: 1px solid #eee;
+    transition: 0.3s;
 }
-table img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  padding: 2px;
-  background-color: white;
+.Section table tbody tr td:last-child {
+    border-right: 1px solid #eee;
 }
-table img:not(:first-child) {
-  margin-left: -20px;
+.Section tbody tr:hover td {
+    background-color: #faf7f7;
 }
-table .label {
-  font-size: 13px;
+.Section table img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    padding: 2px;
+    background-color: white;
 }
-/* End Projects Table */
+.Section table img:not(:first-child) {
+    margin-left: -20px;
+}
+.Section table .label {
+    font-size: 13px;
+}
+@media only screen and (max-width: 768px) {
+    .Section {
+        overflow-x: auto;
+    }
+    .Section .responsive-table {
+        overflow-x: auto;
+    }
+    .Section table {
+        width: 98%; 
+    }
+}
 /* Start Settings */
 .settings-page {
   grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));

@@ -12,21 +12,25 @@ namespace OutfitO.Controllers
     {
         ICartRepository cartRepository;
         IPromoCodeRepository promoCodeRepository;
-        public PromoCodeController(ICartRepository cartRepo,IPromoCodeRepository promoCodeRepo)
+        IUserRepository userRepository;
+        public PromoCodeController(ICartRepository cartRepo,IPromoCodeRepository promoCodeRepo, IUserRepository userRepo)
         {
             cartRepository = cartRepo;
             promoCodeRepository = promoCodeRepo;
+            userRepository = userRepo;
         }
         //[Authorize("Admin")]
         public IActionResult Index(int page = 1)
         {
-            int content = 3;
+            User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            int content = 8;
             int skip = (page - 1) * content;
             List<PromoCode> promoCodes = promoCodeRepository.GetSome(skip, content);
             int total = promoCodeRepository.Count();
             ViewData["Page"] = page;
             ViewData["content"] = content;
             ViewData["TotalItems"] = total;
+            ViewData["User"] = user;
             return View("Index",promoCodes);
         }
         //[Authorize("Admin")]

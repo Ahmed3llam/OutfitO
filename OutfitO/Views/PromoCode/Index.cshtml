@@ -1,48 +1,95 @@
 ﻿@model List<PromoCode>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<div id="modal-placeholder"></div>
-<p>
-    <a href="#" onclick="add()" >Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Code
-            </th>
-            <th>
-                Percentage
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @item.Code
-            </td>
-            <td>
-                @item.Percentage
-            </td>
-            <td>
-                <a href="#" onclick="deletePromoCode('@item.Id')"><i class="fas fa-trash"></i></a>
-            </td>
-        </tr>
+@{
+    ViewData["Title"] = "PromoCode";
+    Layout = "_AdminLayout";
 }
-    </tbody>
-</table>
-<nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
-        @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
-        {
-            <li class="page-item @(i == (int)ViewData["Page"] ? "active" : "")">
-                <a class="page-link btn btn-secondary mx-1" asp-action="Index" asp-controller="PromoCode" asp-route-page="@i">@i</a>
-            </li>
+<div id="modal-placeholder"></div>
+<div class="head bg-white p-15 between-flex">
+    <div class="search p-relative">
+        <input class="p-10" type="search" placeholder="Search" />
+    </div>
+    <div class="icons d-flex align-center">
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
+                @ViewBag.User.FirstName
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" asp-controller="Profile" asp-action="EditData" asp-route-id="@ViewBag.User.Id" style="color: black;">
+                        <i class="fa-solid fa-gear fa-fw"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-action="Logout" asp-controller="User" asp-route-id="@ViewBag.User.Id" style="color: black;">
+                        <i class="fa-solid fa-sign-out-alt fa-fw"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#" onclick="DeleteAccount('@ViewBag.User.Id')" style="color: black;">
+                        <i class="fa-solid fa-trash-alt fa-fw"></i>
+                        <span>Delete Account</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        @{
+            string imagePath = $"~/Images/{ViewBag.User.ProfileImage}";
         }
-    </ul>
-</nav>
+        <img src="@Url.Content(imagePath)" alt="" style="border-radius:50%" />
+    </div>
+</div>
+<div class="Section p-20 bg-white rad-10 m-20">
+    <h2 class="mt-0 mb-20">PromoCodes</h2>
+    <div class="responsive-table">
+        <p>
+            <a href="#" onclick="add()">Create New</a>
+        </p><br />
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Code
+                    </th>
+                    <th>
+                        Percentage
+                    </th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Code
+                        </td>
+                        <td>
+                            @item.Percentage %
+                        </td>
+                        <td>
+                            <a href="#" onclick="deletePromoCode('@item.Id')"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation" class="my-5">
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
+                {
+                    <li class="page-item @(i == (int)ViewData["Page"] ? "active" : "")">
+                        <a class="page-link btn btn-secondary mx-1" asp-action="Index" asp-controller="Category" asp-route-page="@i">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function add() {
         event.preventDefault();

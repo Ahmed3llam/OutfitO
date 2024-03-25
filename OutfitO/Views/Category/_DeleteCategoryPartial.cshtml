@@ -1,15 +1,11 @@
 ﻿@model OutfitO.Models.Category
 
-<h4>Delete Category</h4>
-<hr />
 <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">Delete Category</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <a class="btn-close" asp-action="Index"></a>
             </div>
             <div class="modal-body">
                 <form asp-action="Delete" asp-controller="Category" method="post">
@@ -22,7 +18,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a class="btn btn-secondary" asp-action="Index">Close</a>
             </div>
         </div>
     </div>
