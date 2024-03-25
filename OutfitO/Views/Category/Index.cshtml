@@ -5,39 +5,70 @@
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <div id="modal-placeholder"></div>
-    <p>
-        <a asp-action="add" asp-controller="Category">Create New</a>
-    </p>
-    <br />
-    @if (Model != null && Model.Any())
-    {
-        <table class="table">
-            <thead>
+<div id="modal-placeholder"></div>
+<p>
+    <a href="#" onclick="add()">Create New</a>
+</p>
+<br />
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>Title</th>
+                    <td>@item.Title</td>
+                    <td>
+                        <a href="#" onclick="editCategory('@item.Id')"><i class="fa fa-edit"></i></a>
+                        @* <a asp-action="Edit" asp-controller="Category" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a> *@
+                        <a href="#" onclick="deleteCategory('@item.Id')"><i class="fas fa-trash"></i></a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.Title</td>
-                        <td>
-                            <a asp-action="Edit" asp-controller="Category" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
-                            <a href="#" onclick="deleteCategory('@item.Id')"><i class="fas fa-trash"></i></a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>No categories found.</p>
-    }
+            }
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
+            {
+                <li class="page-item @(i == (int)ViewData["Page"] ? "active" : "")">
+                    <a class="page-link btn btn-secondary mx-1" asp-action="Index" asp-controller="Category" asp-route-page="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+else
+{
+    <p>No categories found.</p>
+}
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
+    function add() {
+        event.preventDefault();
+        $.ajax({
+            url: `/Category/Add`,
+            success: function (result) {
+                $("#modal-placeholder").html(result);
+                $('#AddModal').modal('show');
+            }
+        });
+    }
+    function editCategory(id) {
+        event.preventDefault();
+        $.ajax({
+            url: `/Category/Edit/${id}`,
+            success: function (result) {
+                $("#modal-placeholder").html(result);
+                $('#EditModal').modal('show');
+            }
+        });
+    }
     function deleteCategory(id) {
         event.preventDefault();
         $.ajax({

@@ -23,10 +23,10 @@ namespace OutfitO.Controllers
             int content = 3;
             int skip = (page - 1) * content;
             List<PromoCode> promoCodes = promoCodeRepository.GetSome(skip, content);
-            int totalInstructors = promoCodeRepository.Count();
+            int total = promoCodeRepository.Count();
             ViewData["Page"] = page;
             ViewData["content"] = content;
-            ViewData["TotalItems"] = totalInstructors;
+            ViewData["TotalItems"] = total;
             return View("Index",promoCodes);
         }
         //[Authorize("Admin")]

@@ -13,15 +13,21 @@ namespace OutfitO.Controllers
         {
             categoryRepository = categoryRepo;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            List<Category> categories = categoryRepository.GetAll();
+            int content = 3;
+            int skip = (page - 1) * content;
+            List<Category> categories = categoryRepository.GetSome(skip, content);
+            int total = categoryRepository.Count();
+            ViewData["Page"] = page;
+            ViewData["content"] = content;
+            ViewData["TotalItems"] = total;
             return View("Index",categories);
         }
         [HttpGet]
         public IActionResult Add()
         {
-            return View("AddCategory");
+            return PartialView("_AddPartial");
         }
         [HttpPost]
         public IActionResult Add(Category category)
@@ -33,13 +39,13 @@ namespace OutfitO.Controllers
                 return RedirectToAction("Index","Category");
 
             }
-            return View("AddCategory");
+            return PartialView("_AddPartial");
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
             Category data = categoryRepository.Get(id);
-            return View("EditCategory",data);
+            return PartialView("_EditPartial",data);
         }
         [HttpPost]
         public IActionResult Edit(Category category)
@@ -50,7 +56,7 @@ namespace OutfitO.Controllers
                 categoryRepository.Save();;
                 return RedirectToAction("Index", "Category");
             }
-            return View("EditCategory", category);
+            return PartialView("_EditPartial", category);
         }
         [HttpGet]
         public IActionResult Delete(int id)
