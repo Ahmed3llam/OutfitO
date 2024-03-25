@@ -1,4 +1,4 @@
-﻿@model OutfitO.Models.User
+﻿@model User
 @{
     ViewData["Title"] = "Profile";
     Layout = "_AdminLayout";
@@ -8,7 +8,6 @@
     <div class="search p-relative">
         <input class="p-10" type="search" placeholder="Search" />
     </div>
-<<<<<<< HEAD
     <div class="icons d-flex align-center">
         <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
@@ -34,100 +33,6 @@
                     </a>
                 </li>
             </ul>
-=======
-    <div class="row">
-        <div class="col-xl-8">
-            <div class="card">
-                <div class="card-body pb-0">
-                    <div class="row align-items-center">
-                        <div class="col-md-3">
-                            <div class="text-center border-end">
-                                @{
-                                    string imagePath = $"~/Images/{Model.ProfileImage}";
-                                }
-                                <img class="img-fluid avatar-xxl rounded-circle" style=" height: 10rem ;width:auto" src="@Url.Content(imagePath)" alt="">
-                                <h4 class="text-primary font-size-4 mt-3 mb-2" style="padding-bottom:12px">@Model.FirstName @Model.Lastname</h4>
-                            </div>
-                        </div><!-- end col -->
-                        <div class="col-md-9">
-                            <div class="ms-3">
-                                <div>
-                                    <h4 class="card-title mb-2">Profile Data</h4>
-                                </div>
-                                <div class="row my-4">
-                                    <div class="col-md-12">
-                                        <div>
-                                            <p class="text-muted mb-2 fw-medium">
-                                                <i class="mdi mdi-email-outline me-2"></i>@Model.Email
-                                            </p>
-                                            <p class="text-muted fw-medium mb-0">
-                                                <i class="mdi mdi-phone-in-talk-outline me-2"></i>@Model.PhoneNumber
-                                            </p>
-                                        </div>
-                                    </div><!-- end col -->
-                                </div><!-- end row -->
-
-                                <ul class="nav nav-tabs nav-tabs-custom border-bottom-0 mt-3 nav-justfied" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link px-4 active" data-bs-toggle="tab" href="#projects-tab" role="tab" aria-selected="false" tabindex="-1">
-                                            <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
-                                            <span class="d-none d-sm-block">Products</span>
-                                        </a>
-                                    </li><!-- end li -->
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link px-4"asp-action="UserOrders" asp-controller="Order" >
-                                            <span class="d-block d-sm-none"><i class="mdi mdi-menu-open"></i></span>
-                                            <span class="d-none d-sm-block">Orders</span>
-                                            
-                                        </a>
-                                    </li><!-- end li -->
-                                </ul><!-- end ul -->
-                            </div>
-                        </div><!-- end col -->
-                    </div><!-- end row -->
-                </div><!-- end card body -->
-            </div><!-- end card -->
-
-            <div class="row" id="all-Orders">
-                <div class="card mb-4">
-                    <div class="card-header" style="width:100%">Your Products</div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive table-billing-history">
-
-
-
-                            <table class="table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="border-gray-200" scope="col">Title</th>
-                                        <th class="border-gray-200" scope="col">Price</th>
-                                        <th class="border-gray-200" scope="col">Stock</th>
-                                        <th class="border-gray-200" scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in ViewBag.Products)
-                                    {
-                                        <tr>
-                                            <td>@item.Title</td>
-                                            <td>@item.Price</td>
-                                            <td>@item.Stock</td>
-                                            <td>
-                                                <a><i class="fa fa-edit"></i></a>
-                                                <a><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
->>>>>>> B_Islam
         </div>
 
         @{
@@ -177,7 +82,6 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-<<<<<<< HEAD
         function DeleteAccount(id) {
             event.preventDefault();
             $.ajax({
@@ -188,37 +92,4 @@
                 }
             });
         }
-=======
-    function DeleteAccount(id) {
-        event.preventDefault();
-        $.ajax({
-            url: `/Profile/DeleteUser/${id}`,
-            success: function (result) {
-                $("#modal-placeholder").html(result);
-                $('#DeleteModal').modal('show');
-            }
-        });
-    }
-    function deleteCategory(id) {
-        event.preventDefault();
-        $.ajax({
-            url: `/Category/Delete/${id}`,
-            success: function (result) {
-                $("#modal-placeholder").html(result);
-                $('#DeleteModal').modal('show');
-            }
-        });
-    }
-
-    function deleteCategory(id) {
-        event.preventDefault();
-        $.ajax({
-            url: `/Category/Delete/${id}`,
-            success: function (result) {
-                $("#modal-placeholder").html(result);
-                $('#DeleteModal').modal('show');
-            }
-        });
-    }
->>>>>>> B_Islam
 </script>

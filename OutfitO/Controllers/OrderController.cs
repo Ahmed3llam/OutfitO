@@ -1,27 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OutfitO.Models;
 using OutfitO.Repository;
-<<<<<<< HEAD
+
 using System.Diagnostics;
 using System.Security.Claims;
 
-=======
-using System.Security.Claims;
->>>>>>> B_Islam
+
 namespace OutfitO.Controllers
 {
     public class OrderController : Controller
     {
         IOrderRepository orderRepository;
-<<<<<<< HEAD
+
         public OrderController(IOrderRepository orderRepo)
         {
             orderRepository = orderRepo;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+
         public IActionResult Details() {
             return View();
         }
@@ -40,11 +35,8 @@ namespace OutfitO.Controllers
             TempData["Order"]=NewOrder.Id;
             return RedirectToAction("AddItems", "OrderItem");
         }
-=======
-        public  OrderController(IOrderRepository orderRepo)
-        {
-            orderRepository = orderRepo;
-        }
+
+
 
         //Order/Index
         public IActionResult Index()
@@ -68,6 +60,6 @@ namespace OutfitO.Controllers
             return Json(orderItems);
         }
 
->>>>>>> B_Islam
+
     }
 }
