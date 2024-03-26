@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OutfitO.Models;
 using OutfitO.Repository;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +51,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 app.UseSession();
 
 app.UseAuthentication();
