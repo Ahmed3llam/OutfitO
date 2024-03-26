@@ -1,4 +1,5 @@
-﻿using OutfitO.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using OutfitO.Models;
 
 namespace OutfitO.Repository
 {
@@ -13,11 +14,17 @@ namespace OutfitO.Repository
         {
             return _context.Order.Where(o=>o.UserId == userid).ToList();    
         }
+        public List<Order> GetSomeOrdersForUser(string userid,int skip, int content)
+        {
+            return _context.Order.Where(o => o.UserId == userid).Skip(skip).Take(content).ToList();
+        }
         public List<OrderItem> GetOrderItem(int Orderid)
         {
-            return _context.OrderItem.Where(o=>o.OrderId == Orderid).ToList();
+            return _context.OrderItem
+                           .Include(o => o.Product).Include(o => o.Order)
+                           .Where(o=>o.OrderId==Orderid).OrderBy(o=>o.Order.Date)
+                           .ToList();
         }
-        ///
         public Payment GetPaymentForOrder(int Orderid)
         {
             var id= _context.Order.Where(p=>p.Id== Orderid).Select(p=>p.PaymentId).FirstOrDefault();

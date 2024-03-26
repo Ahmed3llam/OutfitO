@@ -8,9 +8,9 @@ namespace OutfitO.Models
         public int Quantity { get; set; }
         [Column(TypeName = "money")]
         public decimal Price { get; set; }
-        [ForeignKey("product")]
+        [ForeignKey("Product")]
         public int ProductId { get; set; }
-        [ForeignKey("order")]
+        [ForeignKey("Order")]
         public int OrderId { get; set; }
         //[ForeignKey("CartItem")]
         //public int? CartItemId { get; set; }
