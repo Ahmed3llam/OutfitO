@@ -31,6 +31,7 @@ builder.Services.AddIdentity<User, IdentityRole>(
 
 builder.Services.AddScoped<ICartRepository,CartRepository>();
 builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+builder.Services.AddScoped<IOrderRepository,OrderRepository>();
 builder.Services.AddScoped<ICommentRepository,CommentRepository>();
 builder.Services.AddScoped<IOrderRepository,OrderRepository>();
 builder.Services.AddScoped<IOrderItemsRepository, OrderItemsRepository>();
