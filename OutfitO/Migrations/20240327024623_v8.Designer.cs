@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OutfitO.Models;
 
@@ -11,9 +12,11 @@ using OutfitO.Models;
 namespace OutfitO.Migrations
 {
     [DbContext(typeof(OutfitoContext))]
-    partial class OutfitoContextModelSnapshot : ModelSnapshot
+    [Migration("20240327024623_v8")]
+    partial class v8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -2,7 +2,7 @@
 
 namespace OutfitO.Repository
 {
-    public class UserRepository:Repository<User> ,IUserRepository
+    public class UserRepository : Repository<User>, IUserRepository
     {
         OutfitoContext _context;
         public UserRepository(OutfitoContext context) : base(context)
@@ -28,17 +28,17 @@ namespace OutfitO.Repository
 
         public List<Payment> GetPayment(string id)
         {
-            return _context.Payment.Where(p => p.UserId == id).ToList();
+            return _context.Payment.Where(p => p.PaymentId == id).ToList();
         }
 
         public List<Product> GetProducts(string id)
         {
-            return _context.Product.Where(p=>p.UserID==id).ToList();
+            return _context.Product.Where(p => p.UserID == id).ToList();
         }
 
         public User GetUser(string id)
         {
-            return _context.User.Where(u=>u.Id == id).FirstOrDefault();
+            return _context.User.Where(u => u.Id == id).FirstOrDefault();
         }
         public void DeleteUser(string id)
         {

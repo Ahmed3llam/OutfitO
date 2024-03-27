@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewData["Title"] = "Failed";
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Transaction Cancelled!</title>
@@ -36,10 +40,11 @@
 <body>
     <div class="container">
         <div class="col-md-12 text-center">
-               <h2>Transaction Cancelled!</h2>
+            <h2>Transaction Cancelled!</h2>
+            <p>@ViewBag.ErrorMessage</p>
             <p>Thank you for shopping with us!</p>
             <div class="text-center">
-                <img src="\images\cancelled.png" alt="Success Image" style="height:300px"width="500px">
+                <img src="\images\cancelled.png" alt="Success Image" style="height:300px" width="500px">
             </div>
         </div>
     </div>

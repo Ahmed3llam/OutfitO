@@ -1,7 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@model OutfitO.Models.Payment
+
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Order Confirmation</title>
+    <title>Payment Successful</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,6 +33,11 @@
         .text-center {
             text-align: center;
         }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -43,6 +50,9 @@
             <div class="text-center">
                 <img src="\images\success.png" alt="Success Image">
             </div>
+            <p>Name: @Model.Name</p>
+            <p>Email: @Model.Email</p>
+            <p>Payment ID: @Model.PaymentId</p>
         </div>
     </div>
 </body>
