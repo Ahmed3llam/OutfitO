@@ -326,14 +326,6 @@ namespace OutfitO.Controllers
 			}
 			return PartialView("_EditCommentPartial", comment);
 		}
-				commentRepository.Update(existingComment);
-				commentRepository.Save();
-				return RedirectToAction("Details", "Product", new { id = existingComment.ProductID });
-			}
-			return PartialView("_EditCommentPartial", comment);
-		}
-
-
 		[HttpPost]
 		public IActionResult DeleteComment(int commentId)
 		{
@@ -346,23 +338,5 @@ namespace OutfitO.Controllers
 			// Redirect back to the product details page or wherever appropriate
 			return RedirectToAction("Details", "Product", new { id = comment?.ProductID });
 		}
-		[HttpPost]
-		public IActionResult DeleteComment(int commentId)
-		{
-			var comment = commentRepository.GetById(commentId);
-			if (comment != null)
-			{
-				commentRepository.Delete(commentId);
-				commentRepository.Save();
-			}
-			// Redirect back to the product details page or wherever appropriate
-			return RedirectToAction("Details", "Product", new { id = comment?.ProductID });
-		}
-
-
-
-
-
-	}
 	}
 }

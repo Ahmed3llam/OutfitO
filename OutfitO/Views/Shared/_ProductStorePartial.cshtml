@@ -57,8 +57,9 @@
 
 </div>
 
-<nav aria-label="Page navigation" class="my-5 d-block mx-auto">
-    <ul class=" justify-content-center store-pagination ">
+<nav aria-label="Page navigation" class="my-5 d-flex justify-content-center">
+    <!-- Updated class here -->
+    <ul class="store-pagination">
         @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
         {
             <li class="page-item @(i == (int)ViewData["Page"] ? "active" : "")">

@@ -12,8 +12,8 @@ using OutfitO.Models;
 namespace OutfitO.Migrations
 {
     [DbContext(typeof(OutfitoContext))]
-    [Migration("20240318200653_v4")]
-    partial class v4
+    [Migration("20240331212847_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -235,11 +235,14 @@ namespace OutfitO.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PaymentId")
+                    b.Property<int>("PaymentId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("money");
+
+                    b.Property<int?>("PromoCodeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -248,6 +251,8 @@ namespace OutfitO.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PaymentId");
+
+                    b.HasIndex("PromoCodeId");
 
                     b.HasIndex("UserId");
 
@@ -286,18 +291,22 @@ namespace OutfitO.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("money");
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Method")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -347,6 +356,25 @@ namespace OutfitO.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("OutfitO.Models.PromoCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Percentage")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Promo");
                 });
 
             modelBuilder.Entity("OutfitO.Models.User", b =>
@@ -402,7 +430,7 @@ namespace OutfitO.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
@@ -437,10 +465,6 @@ namespace OutfitO.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("PhoneNumber")
-                        .IsUnique()
-                        .HasFilter("[PhoneNumber] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -537,14 +561,22 @@ namespace OutfitO.Migrations
             modelBuilder.Entity("OutfitO.Models.Order", b =>
                 {
                     b.HasOne("OutfitO.Models.Payment", "payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OutfitO.Models.PromoCode", "PromoCode")
                         .WithMany("Orders")
-                        .HasForeignKey("PaymentId");
+                        .HasForeignKey("PromoCodeId");
 
                     b.HasOne("OutfitO.Models.User", "User")
                         .WithMany("orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("PromoCode");
 
                     b.Navigation("User");
 
@@ -572,13 +604,9 @@ namespace OutfitO.Migrations
 
             modelBuilder.Entity("OutfitO.Models.Payment", b =>
                 {
-                    b.HasOne("OutfitO.Models.User", "User")
+                    b.HasOne("OutfitO.Models.User", null)
                         .WithMany("payments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("OutfitO.Models.Product", b =>
@@ -610,16 +638,16 @@ namespace OutfitO.Migrations
                     b.Navigation("orderItems");
                 });
 
-            modelBuilder.Entity("OutfitO.Models.Payment", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
             modelBuilder.Entity("OutfitO.Models.Product", b =>
                 {
                     b.Navigation("Cart");
 
                     b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("OutfitO.Models.PromoCode", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("OutfitO.Models.User", b =>
