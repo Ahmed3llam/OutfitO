@@ -12,30 +12,6 @@
 
     @foreach (var item in Model)
     {
-        @*  <div class="card ">
-
-    <div class="image-container"><img src="~/Images/@item.Img" /></div>
-    <div class="details text-center">
-    <h5 class="id ">ID: @item.Id </h5>
-    <h6 class="name">Name: @item.Title</h6>
-    <div>Price: @item.Price</div>
-
-    <a href="/Product/Details/@item.Id">
-    <button type="button" class="btn btn-outline-primary">Show More Details</button>
-    </a>
-
-    <form method="post" asp-action="deleteProduct" asp-controller="Product" class="delete-form">
-    <input type="hidden" name="Id" value="@item.Id" />
-    <button type="submit" class="btn btn-outline-danger my-3"> Delete</button>
-    </form>
-
-    <a href="/Product/Edit/@item.Id">
-    <button type="button" class="btn btn-outline-primary">Edit Product</button>
-    </a>
-
-    </div>
-    </div> *@
-
         <!-- product -->
         <div class="col-md-4 col-xs-6 productCard">
             <div class="product">
@@ -84,16 +60,16 @@
 
 <style>
 
+    .product .product-img > img {
+        max-width: 150px;
+        max-height: 200px;
+    }
 
     .product .product-img {
         position: relative;
         height: 70% !important;
     }
 
-        .product .product-img > img {
-            width: 80%;
-            height: 100%;
-        }
 
     .tooltip-container {
         position: relative;
