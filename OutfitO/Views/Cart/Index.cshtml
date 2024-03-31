@@ -1,0 +1,432 @@
+﻿@model List<CartItem>
+@{
+    decimal Tmony;
+    Layout  = "_ProductLayout";
+}
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<style>
+    /******cart******/
+    .content {
+        min-height: 100vh;
+        height: fit-content;
+    }
+
+    .cart-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .vf-grid-wrap-max {
+        max-width: 1440px;
+        margin: 0 auto;
+    }
+
+    .vf-grid-wrap {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        padding: 25px 0;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .vf-grid-10 {
+        width: 83.33333333%;
+    }
+
+    .cart-page {
+        gap: 15px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+        min-height: 90vh;
+    }
+
+    .cart-container .cart-page .cart {
+        display: flex;
+        gap: 20px;
+        flex-direction: column;
+    }
+
+        .cart-container .cart-page .cart .cart-card {
+            color: #333;
+            background-color: #fff;
+            display: flex;
+            border-radius: 6px;
+            padding: 20px;
+            gap: 20px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+            .cart-container .cart-page .cart .cart-card .cartCard-image {
+                background-color: #f9f9f9;
+                border-radius: 10.21px;
+                padding: 10px;
+                display: flex;
+                width: 180px;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+            }
+
+                .cart-container .cart-page .cart .cart-card .cartCard-image img {
+                    width: 80%;
+                }
+
+            .cart-container .cart-page .cart .cart-card .cartCard-details {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+                .cart-container .cart-page .cart .cart-card .cartCard-details .cartProduct-name {
+                    font-weight: 700;
+                    font-size: 18px;
+                }
+
+                .cart-container .cart-page .cart .cart-card .cartCard-details .cartProduct-price {
+                    color: #E3654B;
+                    font-weight: 700;
+                }
+
+                .cart-container .cart-page .cart .cart-card .cartCard-details .counter-container {
+                    margin: 10px;
+                }
+
+                .cart-container .cart-page .cart .cart-card .cartCard-details .counter {
+                    background-color: #fff;
+                    border: 1px solid #cccccc;
+                    border-radius: 19.5px;
+                    width: max-content;
+                }
+
+                    .cart-container .cart-page .cart .cart-card .cartCard-details .counter input[type=button] {
+                        color: #4a4d4e;
+                        padding: 0 10px;
+                        font-size: 20px;
+                    }
+
+                    .cart-container .cart-page .cart .cart-card .cartCard-details .counter .minus {
+                        border: none;
+                        border-right: 1px solid #cccccc;
+                        border-top-left-radius: 19.5px;
+                        border-bottom-left-radius: 19.5px;
+                    }
+
+                    .cart-container .cart-page .cart .cart-card .cartCard-details .counter input[type=number] {
+                        color: #4a4d4e;
+                        border: none;
+                        text-align: center;
+                        width: 34px;
+                        /* -webkit-appearance: textfield;
+        appearance: textfield;
+        -moz-appearance: textfield; */
+                    }
+
+                    .cart-container .cart-page .cart .cart-card .cartCard-details .counter .plus {
+                        border: none;
+                        border-left: 1px solid #cccccc;
+                        border-top-right-radius: 19.5px;
+                        border-bottom-right-radius: 19.5px;
+                    }
+
+    button:not(:disabled), [type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled) {
+        cursor: pointer;
+    }
+
+    .cart-container .cart-page .cart .cart-card .cartCard-details .cart-actions {
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+    }
+
+    /*********************/
+    .summary-section {
+        color: #333;
+    }
+
+        .summary-section .order-summary {
+            background-color: #fff;
+            border-radius: 6px;
+            padding: 20px;
+            gap: 10px;
+        }
+
+    .code-input {
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+        .code-input h5, .code-input .h5 {
+            display: block;
+            color: #393939;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+            .code-input h5 img, .code-input .h5 img {
+                width: 25px;
+                height: 25px;
+                vertical-align: text-top;
+            }
+
+        .code-input .input {
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .code-input input[type=text], .code-input input[type=number] {
+            padding: 5px 10px;
+            width: 100%;
+        }
+
+        .code-input input {
+            border: none;
+            background-color: transparent;
+        }
+
+        .code-input .input .promoCode-loading {
+            display: flex;
+            gap: 5px;
+        }
+
+        .code-input input[type=button][dir=ltr] {
+            border-left: 1px solid #cccccc;
+        }
+
+        .code-input input[type=button] {
+            font-size: 14px;
+            font-weight: 700;
+            margin: 10px;
+            width: 50px;
+            color: #000;
+            background-color: #fff;
+            border-radius: 0 6px 6px 0;
+            text-transform: capitalize;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    .summary-section .order-summary .order-cost {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+        .summary-section .order-summary .order-cost .subtotal,
+        .summary-section .order-summary .order-cost .discount,
+        .summary-section .order-summary .order-cost .vat {
+            display: flex;
+            justify-content: space-between;
+            text-wrap: balance;
+        }
+
+            .summary-section .order-summary .order-cost .subtotal .cost,
+            .summary-section .order-summary .order-cost .discount .cost,
+            .summary-section .order-summary .order-cost .vat .cost {
+                font-weight: 700;
+            }
+
+    p, h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+        padding: 0;
+        margin: 0;
+    }
+
+    .summary-section .order-summary .order-cost hr {
+        border: 1px solid #cccccc;
+        margin: 0.5rem 0;
+    }
+
+    .summary-section .order-summary .order-cost .vat {
+        color: #E3654B;
+    }
+
+    .summary-section .order-summary .order-actions .checkout-btn {
+        color: #fff;
+        padding: 7px;
+        background-color: #E3654B;
+        border: 1px solid #E3654B;
+    }
+
+    .summary-section .order-summary .order-actions button {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background-color: transparent;
+        margin-top: 10px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .summary-section .order-summary .order-actions .shopping-btn {
+        border: 1px solid #4a4d4e;
+        padding: 5px;
+    }
+
+    /* media screen and (max-width: 576px) {
+        .cart-page{
+            display: flex;
+            flex-direction: column;
+        }
+    } */
+
+</style>
+
+<section class="container-fluid">
+    <div class="vf-grid-wrap vf-grid-wrap-max">
+        <div class="vf-grid-10 cart-container">
+            <div class="cart-page">
+                <div class="cart">
+                    <h3>Cart Items</h3>
+                    @foreach (var item in Model)
+                    {
+                        <div class="cart-card">
+                            <div class="cart-card-container" id="card">
+                                <div class="cartCard-image">
+                                    <img src="@item.Product.Img" alt="" onclick="detail(${myCard[i].id})">
+                                </div>
+                                <div class="cartCard-details">
+                                    <p class="cartProduct-name">@item.Product.Title</p>
+                                    @{
+                                        Tmony = @item.Product.Price * item.Quantity;
+                                    }
+                                    <h5 class="cartProduct-price" id="total-${i}"> @Tmony $</h5>
+                                    <div class="counter-container">
+                                        <div class="counter">
+                                            <input type="button" id="sub-${i}" onclick="sub(${i})" value="-" class="minus">
+                                            <input type="number" id="quantity-${i}" name="quantity" class="counter-disabled ng-untouched ng-pristine" disabled="" value="@item.Quantity">
+                                            <input type="button" id="sum-${i}" onclick="sum(${i})" value="+" class="plus">
+                                        </div>
+                                    </div>
+                                    <div class="cart-actions" onclick="remove(${i})">
+                                        <p>
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                            Remove
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="cart cart-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-section">
+                        <div class="order-summary">
+                            <div class="code-input">
+                                <h5>
+                                    <span class="glyphicon glyphicon-chevron-right"></span> Promocodes
+                                </h5>
+                                <div class="input">
+                                    <input type="text" placeholder="Enter promo code" dir="ltr" class="ng-untouched ng-pristine ng-valid" id="Promo">
+                                    @* <div class="promoCode-loading">
+                                    <input type="button" value="Apply" dir="ltr">
+                                    </div> *@
+                                </div>
+                            </div>
+                            <div class="order-cost">
+                                <div class="subtotal">
+                                    <p> Subtotal ( <span id="length">@ViewBag.Count</span> Items ) </p>
+                                    <p class="total">@ViewBag.Price</p>
+                                </div>
+                                <hr>
+                                <div class="vat">
+                                    <p> Total </p>
+                                    <p class="total">@ViewBag.Price </p>
+                                </div>
+                            </div>
+                            <div class="order-actions">
+                                <a class="checkout-btn" id="check" onclick="Checkout()">
+                                    <i class="fa fa-credit-card" style="font-size:20px"></i> Go to checkout
+                                </a>
+                                <button class="shopping-btn" asp-action="Index" asp-controller="Product"> Continue shopping </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<script>
+    function detail(itemId) {
+        $.ajax({
+            url: '/Product/--------',
+            type: 'GET',
+            data: { -- -: itemId
+        },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+            });
+        }
+
+    function sub(itemId) {
+        $.ajax({
+            url: '/Cart/DecreaseQuantity',
+            type: 'POST',
+            data: { ProductId: itemId },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    function sum(itemId) {
+        $.ajax({
+            url: '/Cart/IncrementQuantity',
+            type: 'POST',
+            data: { ProductId: itemId },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    function remove(itemId) {
+        $.ajax({
+            url: '/Cart/Delete',
+            type: 'POST',
+            data: { ProductId: itemId },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    function Checkout() {
+        let item = document.getElementById("Promo").value;
+        $.ajax({
+            url: '/Cart/CheckOut',
+            type: 'POST',
+            data: { promo: item },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+</script>
+

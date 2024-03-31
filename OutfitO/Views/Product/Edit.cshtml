@@ -1,0 +1,88 @@
+﻿@model OutfitO.ViewModels.ProductWithCategoryList
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Product</h1>   
+<div id="modal-placeholder"></div>
+
+
+<form asp-action="Edit" asp-controller="Product" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="Img" class="form-control" hidden />
+    <input asp-for="Id" class="form-control" hidden />
+
+    <div class="card mb-4 mb-xl-0">
+        <div class="card-header">Profile Picture</div>
+        <div class="card-body text-center">
+            <!-- Profile picture image-->
+            @{
+                string imagePath = $"~/Images/{Model.Img}";
+            }
+            <img class="img-fluid img-account-profile rounded-circle mb-2" style=" height: 10rem ;width:auto" src="@Url.Content(imagePath)" alt="">
+            <!-- Profile picture help block-->
+            <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+            <!-- Profile picture upload button-->
+            <a onclick="ChangeImg(@Model.Id)" class="btn btn-primary">Upload new image</a>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+   @*  <input type="checkbox"  id="ChangeImg" onchange="changeImgefun()" name="name"/>
+    <label class="control-label">Change Image</label> *@
+   
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Stock" class="control-label"></label>
+        <input asp-for="Stock" class="form-control" />
+        <span asp-validation-for="Stock" class="text-danger"></span>
+    </div>
+    @* <div class="form-group">
+        <label asp-for="CategoryId" class="control-label"></label>
+        <input asp-for="CategoryId" class="form-control" />
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div> *@
+
+
+    <div class="form-group">
+        <label asp-for="CategoryId" class="control-label"></label>
+        <select asp-for="CategoryId" asp-items="@(ViewData["Categories"] as SelectList)" class="form-control">
+            <option value="">-- Select Category --</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    console.log("nhmbmbv")
+    function ChangeImg(id) {
+        console.log("id=", id);
+        $.ajax({
+            url: "/Product/EditImage/" + id,
+            success: function (result) {
+                $("#modal-placeholder").html(result);
+                $('#editImageModal').modal('show');
+                console.log(result);
+            }
+        });
+    }
+</script>

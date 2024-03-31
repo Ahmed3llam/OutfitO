@@ -27,21 +27,25 @@ namespace OutfitO.Controllers
         public IActionResult Index()
         {
             var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            List<CartItem> cartItems= cartRepository.GetForUser(Userid);
-            return View("Index",cartItems);
+            List<CartItem> cartItems = cartRepository.GetForUser(Userid);
+            ViewData["Price"] = cartRepository.GetTotalPrice(Userid);
+            ViewData["Count"] = cartItems.Count;
+
+            return View("Index", cartItems);
         }
-        [HttpPost]
-        public IActionResult AddToCart(int ProductId) {
+        
+        public IActionResult AddToCart(int id) 
+        {
             var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (cartRepository.GetById(ProductId, Userid) != null)
+            if (cartRepository.GetById(id, Userid) != null)
             {
-                cartRepository.GetById(ProductId, Userid).Quantity++;
+                cartRepository.GetById(id, Userid).Quantity++;
             }
             else
             {
                 CartItem cartItem = new()
                 {
-                    ProductID = ProductId,
+                    ProductID = id,
                     UserID = Userid,
                     Quantity = 1
                 };
@@ -50,36 +54,36 @@ namespace OutfitO.Controllers
             cartRepository.Save();
             return RedirectToAction("Index", "Product");
         }
-        public IActionResult IncrementQuantity(int ProductId)
+        public IActionResult IncrementQuantity(int id)
         {
             var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            CartItem cartItem = cartRepository.GetById(ProductId, Userid);
+            CartItem cartItem = cartRepository.GetById(id, Userid);
             if (cartItem == null || cartItem.Quantity >= 10)
             {
                 return NoContent();
             }
             cartItem.Quantity += 1;
-            cartRepository.Update(ProductId,Userid, cartItem);
+            cartRepository.Update(id, Userid, cartItem);
             cartRepository.Save();
             return NoContent();
         }
-        public IActionResult DecreaseQuantity(int ProductId)
+        public IActionResult DecreaseQuantity(int id)
         {
             var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            CartItem cartItem = cartRepository.GetById(ProductId, Userid);
+            CartItem cartItem = cartRepository.GetById(id, Userid);
             if (cartItem == null || cartItem.Quantity <= 1)
             {
                 return NoContent();
             }
             cartItem.Quantity -= 1;
-            cartRepository.Update(ProductId, Userid, cartItem);
+            cartRepository.Update(id, Userid, cartItem);
             cartRepository.Save();
             return NoContent();
         }
-        public IActionResult Delete(int ProductId)
+        public IActionResult Delete(int id)
         {
             var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            cartRepository.Delete(ProductId, Userid);
+            cartRepository.Delete(id, Userid);
             cartRepository.Save();
             return RedirectToAction("Index");
         }
