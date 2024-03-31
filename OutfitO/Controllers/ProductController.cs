@@ -20,13 +20,13 @@ namespace OutfitO.Controllers
 			categoryRepository = categoryRepo;
 			commentRepository = commentRepo;
 
-		}
-		public IActionResult Index(int page = 1)
-		{
-			int content = 3;
-			int skip = (page - 1) * content;
-			List<Category> ParamCategory = categoryRepository.GetAll();
-			List<Product> products = productRepository.GetSpeceficProduct(skip, content, ParamCategory);
+        }
+        public IActionResult Index(int page = 1)
+        {
+            int content = 9;
+            int skip = (page - 1) * content;
+            List<Category> ParamCategory = categoryRepository.GetAll();
+            List<Product> products = productRepository.GetSpeceficProduct(skip, content, ParamCategory);
 
 
 			int total = productRepository.GetProductcount(ParamCategory);
@@ -270,14 +270,17 @@ namespace OutfitO.Controllers
 		[HttpPost]
 		public IActionResult AddComment(CommentWithItsUser comment)
 		{
-			if (ModelState.IsValid)
+			string user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			if (comment.Body!=null&&comment.ProductID!=null)
 			{
 				var newComment = new Comment
 				{
 					Body = comment.Body,
 					ProductID = comment.ProductID,
-				};
+					UserId=user
 
+				};
+				
 				commentRepository.Insert(newComment);
 				commentRepository.Save();
 				return RedirectToAction("Details", "Product", new { id = comment.ProductID });
@@ -315,7 +318,14 @@ namespace OutfitO.Controllers
 				}
 
 				existingComment.Body = comment.Body;
+				existingComment.Body = comment.Body;
 
+				commentRepository.Update(existingComment);
+				commentRepository.Save();
+				return RedirectToAction("Details", "Product", new { id = existingComment.ProductID });
+			}
+			return PartialView("_EditCommentPartial", comment);
+		}
 				commentRepository.Update(existingComment);
 				commentRepository.Save();
 				return RedirectToAction("Details", "Product", new { id = existingComment.ProductID });
@@ -336,10 +346,23 @@ namespace OutfitO.Controllers
 			// Redirect back to the product details page or wherever appropriate
 			return RedirectToAction("Details", "Product", new { id = comment?.ProductID });
 		}
+		[HttpPost]
+		public IActionResult DeleteComment(int commentId)
+		{
+			var comment = commentRepository.GetById(commentId);
+			if (comment != null)
+			{
+				commentRepository.Delete(commentId);
+				commentRepository.Save();
+			}
+			// Redirect back to the product details page or wherever appropriate
+			return RedirectToAction("Details", "Product", new { id = comment?.ProductID });
+		}
 
 
 
 
 
+	}
 	}
 }

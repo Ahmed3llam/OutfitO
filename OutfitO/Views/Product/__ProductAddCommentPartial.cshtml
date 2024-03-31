@@ -10,19 +10,31 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-action="Addcomment" asp-controller="Product" method="post">
+                <form asp-action="Addcomment" class="review-form" asp-controller="Product" method="post">
                     <input type="hidden" asp-for="ProductID" />
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Body" class="control-label"></label>
-                        <input type="text" asp-for="Body" class="form-control" />
+                        @* <input type="text" asp-for="Body" class="form-control" /> *@
+                        <textarea class="input" asp-for="Body" class="form-control" placeholder="Your Review"></textarea>
                         <span asp-validation-for="Body" class="text-danger"></span>
+                    </div>
+                    <div class="input-rating">
+                        <span>Your Rating: </span>
+                        <div class="stars">
+                            <input id="star5" name="rating" value="5" type="radio"><label for="star5"></label>
+                            <input id="star4" name="rating" value="4" type="radio"><label for="star4"></label>
+                            <input id="star3" name="rating" value="3" type="radio"><label for="star3"></label>
+                            <input id="star2" name="rating" value="2" type="radio"><label for="star2"></label>
+                            <input id="star1" name="rating" value="1" type="radio"><label for="star1"></label>
+                        </div>
                     </div>
                     <br />
                     <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <input type="submit" value="Submit" class="btn primary-btn" />
                     </div>
                 </form>
+              
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
