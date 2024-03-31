@@ -24,6 +24,8 @@ namespace OutfitO.Repository
             return _context.Product.Where(p => p.UserID == Userid).ToList();
         }
 
+       
+
         public Product GetProduct(int id)
         {
             return _context.Product.Include(c => c.Category).Include(c=>c.Comments).Where(p =>p.Id==id).FirstOrDefault();
@@ -38,6 +40,42 @@ namespace OutfitO.Repository
                                               .ToList(); // Filter products in-memory based on categories
 
             return filteredProducts;
+        }
+
+
+        public List<Product> GetSpeceficProduct(int skip, int content, List<string> ParamCategory)
+        {
+            var allProducts = _context.Product.Include(p => p.Category).ToList(); // Retrieve all products from the database
+
+            var filteredProducts = allProducts.Where(p => ParamCategory.Any(c => p.Category.Title.Contains(c)))
+                                              .Skip(skip)
+                                              .Take(content)
+                                              .ToList(); // Filter products in-memory based on categories
+
+            return filteredProducts;
+        }
+
+
+
+        public int GetProductcount(List<Category> ParamCategory)
+        {
+            var allProducts = _context.Product.Include(p => p.Category).ToList(); // Retrieve all products from the database
+
+            var filteredProducts = allProducts.Where(p => ParamCategory.Any(c => p.Category.Title.Contains(c.Title)))
+                                              .ToList(); // Filter products in-memory based on categories
+
+            return filteredProducts.Count;
+        }
+
+
+        public int GetProductcount(List<string> ParamCategory)
+        {
+            var allProducts = _context.Product.Include(p => p.Category).ToList(); // Retrieve all products from the database
+
+            var filteredProducts = allProducts.Where(p => ParamCategory.Any(c => p.Category.Title.Contains(c)))
+                                              .ToList(); // Filter products in-memory based on categories
+
+            return filteredProducts.Count;
         }
 
 

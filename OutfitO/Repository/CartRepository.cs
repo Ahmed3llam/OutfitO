@@ -1,4 +1,5 @@
-﻿using OutfitO.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using OutfitO.Models;
 using OutfitO.ViewModels;
 
 namespace OutfitO.Repository
@@ -12,7 +13,7 @@ namespace OutfitO.Repository
         }
         public List<CartItem> GetForUser(string Userid)
         {
-            return _context.Cart.Where(p => p.UserID == Userid).ToList();
+            return _context.Cart.Include(p => p.Product).Where(p => p.UserID == Userid).ToList();
         }
         public void Delete(int productId, string Userid)
         {
@@ -21,7 +22,7 @@ namespace OutfitO.Repository
 
         public CartItem GetById(int productId, string Userid)
         {
-            return _context.Cart.SingleOrDefault(i => i.ProductID == productId && i.UserID == Userid);
+            return _context.Cart.Include(p => p.Product).SingleOrDefault(i => i.ProductID == productId && i.UserID == Userid);
         }
         public void Update(int productId, string Userid, CartItem item)
         {

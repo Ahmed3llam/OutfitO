@@ -4,144 +4,113 @@
     Layout = "_ProductLayout";
 }
 
-<h3>Products</h3>
-<a href="/Product/New" class="btn btn-outline-primary my-3 ">
-    Add New Product
-</a>
-<section>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .product .product-img {
+            display: flex;
+            justify-content: center; /* Horizontally center the content */
+            align-items: center; /* Vertically center the content */
+            height: 200px; /* Set the height of the product image container */
+            overflow: hidden; /* Hide overflowing content */
+        }
 
-    @foreach (var item in Model)
-    {
-        @*  <div class="card ">
 
-    <div class="image-container"><img src="~/Images/@item.Img" /></div>
-    <div class="details text-center">
-    <h5 class="id ">ID: @item.Id </h5>
-    <h6 class="name">Name: @item.Title</h6>
-    <div>Price: @item.Price</div>
+            .product .product-img > img {
+                max-width: 150px;
+                max-height: 200px;
+            }
 
-    <a href="/Product/Details/@item.Id">
-    <button type="button" class="btn btn-outline-primary">Show More Details</button>
-    </a>
 
-    <form method="post" asp-action="deleteProduct" asp-controller="Product" class="delete-form">
-    <input type="hidden" name="Id" value="@item.Id" />
-    <button type="submit" class="btn btn-outline-danger my-3"> Delete</button>
-    </form>
 
-    <a href="/Product/Edit/@item.Id">
-    <button type="button" class="btn btn-outline-primary">Edit Product</button>
-    </a>
+
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .product-rating {
+            z-index: 1;
+        }
+
+        .tooltip-container .tooltipp {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 7;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip-container:hover .tooltipp {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .quick-view {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+            .quick-view .fa-eye {
+                color: black;
+            }
+
+            .quick-view:hover .fa-eye {
+                color: blue; /* Change color on hover if needed */
+            }
+
+        }
+    </style>
+
+
+</head>
+<div id="aside" class="col-md-3">
+    <div class="aside">
+        <h3 class="aside-title">Categories</h3>
+        <div class="checkbox-filter">
+            @foreach (var item in ViewBag.Category)
+            {
+                <div class="input-checkbox">
+                    <input type="checkbox" id="category-@ViewBag.Category.IndexOf(item)" name="category-@ViewBag.Category.IndexOf(item)">
+                    <label for="category-@ViewBag.Category.IndexOf(item)">
+                        <span></span>
+                        @item.Title
+                    </label>
+                </div>
+            }
+            <a class="btn btn-outline-danger" onclick="Filter()">
+                Apply
+            </a>
+        </div>
 
     </div>
-    </div> *@
+</div>
 
-        <!-- product -->
-        <div class="col-md-4 col-xs-6 productCard">
-            <div class="product">
-                <div class="product-img">
-                    <img src="~/Images/@item.Img" height="500px" />
-                    @*                     <div class="product-label">
-                <span class="sale">-30%</span>
-                <span class="new">NEW</span>
-                </div> *@
-                </div>
-                <div class="product-body">
+<div id="FilteredProducts">
+    @Html.Partial("_ProductStorePartial", Model)
+</div>
 
-                    <h3 class="product-name"><a href="#"> @item.Title</a></h3>
-                    <h4 class="product-price">$@item.Price <del class="product-old-price">$@(2 * @item.Price)</del></h4>
-
-                    <div class="product-rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                    </div>
-                    <div class="product-btns">
-                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-                        @* <a href="/Product/Details/@item.Id">
-                    <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-                    </a> *@
-                        <a href="/Product/Details/@item.Id" class="tooltip-container">
-                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-                        </a>
-
-                    </div>
-                </div>
-                <div class="add-to-cart">
-                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                </div>
-            </div>
-        </div>
-        <!-- /product -->
-    }
-</section>
-
-
-
-
-<style>
-
-
-    .product .product-img {
-        position: relative;
-        height: 70% !important;
-    }
-
-        .product .product-img > img {
-            width: 80%;
-            height: 100%;
+@* <nav aria-label="Page navigation" class="my-5 ">
+    <ul class=" justify-content-center store-pagination ">
+        @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
+        {
+            <li class="page-item @(i == (int)ViewData["Page"] ? "active" : "")">
+                <a class="page-link btn btn-secondary mx-1" onclick="pagination(@i)" >@i</a>
+            </li>
         }
+    </ul>
+</nav> *@
 
-    .tooltip-container {
-        position: relative;
-        display: inline-block;
-    }
-
-    .product-rating {
-        z-index: 1;
-    }
-
-    .tooltip-container .tooltipp {
-        visibility: hidden;
-        width: 120px;
-        background-color: black;
-        color: white;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px 0;
-        position: absolute;
-        z-index: 7;
-        bottom: 125%;
-        left: 50%;
-        margin-left: -60px;
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
-
-    .tooltip-container:hover .tooltipp {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    .quick-view {
-        background: none;
-        border: none;
-        cursor: pointer;
-    }
-
-        .quick-view .fa-eye {
-            color: black;
-        }
-
-        .quick-view:hover .fa-eye {
-            color: blue; /* Change color on hover if needed */
-        }
-
-    }
-</style>
 
 
 
@@ -177,4 +146,66 @@
             });
         });
     });
+</script>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+    var selectedCategories = [];
+    function getCat(){
+
+        selectedCategories = [];
+        event.preventDefault();
+
+        // var selectedCategories = [];
+
+        $('input[type="checkbox"]').each(function () {
+            if ($(this).is(':checked')) {
+                var categoryName = $(this).siblings('label').text().trim();
+                selectedCategories.push(categoryName);
+            }
+        });
+
+        console.log(selectedCategories);
+    }
+
+    function Filter() {
+        getCat();
+
+        $.ajax({
+            url: '/Product/Filter',
+            method: 'POST',
+            data: { Params: selectedCategories},
+            success: function (result) {
+                $("#FilteredProducts").html("");
+                $("#FilteredProducts").html(result);
+
+                console.log(result);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+    function pagination(pageNum) {
+        getCat();
+
+        $.ajax({
+            url: '/Product/Filter',
+            method: 'POST',
+            data: { Params: selectedCategories, page: pageNum },
+            success: function (result) {
+               $("#FilteredProducts").html("");
+                $("#FilteredProducts").html(result);
+
+                console.log(result);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
 </script>
