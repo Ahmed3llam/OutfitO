@@ -3,13 +3,16 @@
 @inject UserManager<User> UserManager // Inject UserManager service
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+@inject UserManager<User> UserManager // Inject UserManager service
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 @{
     Random random = new Random();
 }
 
-
+<div id="modal-placeholder"></div>
 @foreach (var comment in Model)
 {
     <!-- Reviews -->
@@ -35,81 +38,81 @@
                             <i class="fa fa-star-o empty"></i>
                         </div>
                     </div>
-                    <div class="review-body">
-                        @comment.Body
-                        <div class="comment-wrapper">
-                            <div class="comment-actions">
-                                <a href="/product/Editcomment?commentId=@comment.Id" class="edit-comment" data-comment-id="@comment.Id">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
-                                <form action="/product/DeleteComment" method="post" class="delete-form">
-                                    <input type="hidden" name="commentId" value="@comment.Id" />
-                                    <button type="submit" class="btn btn-danger"> <i class="bi bi-x-circle-fill"></i> Delete</button>
-                                </form>
-                            </div>
-                        </div>
+                    <div class="review-body">                                          
+                        <p>@comment.Body</p>
+                         <p>
+                            <a href="#" onclick="editeComment('@comment.Id')" class="edit-comment">
+                            <i class="bi bi-pencil-square">Edite</i>
+                        </a>
+
+                        <form action="/product/DeleteComment" method="post" class="delete-form">
+                            <input type="hidden" name="commentId" value="@comment.Id" />
+                            <button type="submit"> <i class="bi bi-x-circle-fill"></i> </button>
+                        </form>  
+                         </p>                       
                     </div>
                 </li>
             </ul>
         </div>
-
-
+     
+        
     </div>
-
+    
     <!-- /Reviews -->
 }
-<style>
-    .comment-actions {
-        float: left;
-        display: block;
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function editeComment(commentId)
+    {
+        event.preventDefault();
+        $.ajax({
+            url: '/product/EditComment?commentId=' + commentId,
+            success: function (result) {
+                console.log(result)
+                $("#modal-placeholder").html(result);
+                $('#EditModal').modal('show');
+            }
+        });
     }
-
-        .comment-actions form, .comment-actions a {
-            display: inline-block;
-        }
-</style>
+</script>
 
 
-@section Scripts {
-    <script>
-        $(function () {
-            $('.edit-comment').click(function () {
-                var commentId = $(this).data('comment-id');
-                $.get('/product/EditComment?commentId=' + commentId, function (response) {
-                    $('#editCommentModalBody').html(response);
-                    $('#editCommentModal').modal('show');
-                });
-            });
 
-            $('.delete-form').submit(function (event) {
-                event.preventDefault();
+<script>
+    document.querySelectorAll('.delete-form').forEach(form => {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
 
                 var form = this;
 
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Are you sure you want to delete this comment?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'No, cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    } else if (result.dismiss === Swal.DismissReason.cancel) {
-                        Swal.fire(
-                            'Cancelled!',
-                            'The comment is safe :)',
-                            'error'
-                        );
-                    }
-                });
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Are you sure you want to delete this Course?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    form.submit();
+
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire(
+                        'Cancelled!',
+                        'Course is safe :)',
+                        'error'
+                    );
+                }
             });
         });
-    </script>
-}
+    });
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
