@@ -74,16 +74,17 @@ namespace OutfitO.Controllers
         //}
         [Authorize("User")]
         [HttpPost]
-        public IActionResult CheckOut(PromoCode promo)
+        public IActionResult CheckOut(string promo)
         {
             var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
             decimal TPrice = cartRepository.GetTotalPrice(Userid);
             decimal TPromoPrice = 0;
             /////
-            if (promo.Code!=null)
+            if (promo!=null)
             {
-                var code = promoCodeRepository.GetPromoCode(promo.Code);
-                if (code != null) {
+                var code = promoCodeRepository.GetPromoCode(promo);
+                if (code != null)
+                {
                     decimal PromoPrice = TPrice * code.Percentage / 100;
                     TPromoPrice = TPrice - PromoPrice;
                 }

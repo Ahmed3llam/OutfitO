@@ -20,25 +20,56 @@ namespace OutfitO.Controllers
 			categoryRepository = categoryRepo;
 			commentRepository = commentRepo;
 
-		}
-		public IActionResult Index(int page = 1)
-		{
-			int content = 9;
-			int skip = (page - 1) * content;
-			List<Category> ParamCategory = categoryRepository.GetAll();
-			List<Product> products = productRepository.GetSpeceficProduct(skip, content, ParamCategory);
+        }
+        public IActionResult Index(int page = 1)
+        {
+            int content = 9;
+            int skip = (page - 1) * content;
+            List<Category> ParamCategory = categoryRepository.GetAll();
+            List<Product> products = productRepository.GetSpeceficProduct(skip, content, ParamCategory);
 
 
-			int total = productRepository.Count();
+			int total = productRepository.GetProductcount(ParamCategory);
 			ViewData["Page"] = page;
 			ViewData["content"] = content;
 			ViewData["TotalItems"] = total;
 
-			return View("Index", products);
+			ViewData["Category"] = categoryRepository.GetAll();
+
+            return View("Index", products);
 		}
 
-		// details
-		public IActionResult Details(int id)
+		[HttpPost]
+        public IActionResult Filter(List<string> Params ,int page = 1)
+        {
+            int content = 3;
+			int total = 0;
+            int skip = (page - 1) * content;
+			List<Product> products;
+
+            if (Params.Count == 0)
+			{
+                List<Category> ParamCategory = categoryRepository.GetAll();
+                total = productRepository.GetProductcount(ParamCategory);
+				products = productRepository.GetSpeceficProduct(skip, content, ParamCategory);
+			}
+			else
+			{
+                total = productRepository.GetProductcount(Params);
+                products = productRepository.GetSpeceficProduct(skip, content, Params);
+			}
+
+
+            ViewData["Page"] = page;
+            ViewData["content"] = content;
+            ViewData["TotalItems"] = total;
+
+            return PartialView("_ProductStorePartial", products);
+        }
+
+
+        // details
+        public IActionResult Details(int id)
 		{
 			var ProductDetails = productRepository.GetProduct(id);
 			return View("Details", ProductDetails);
@@ -287,7 +318,14 @@ namespace OutfitO.Controllers
 				}
 
 				existingComment.Body = comment.Body;
+				existingComment.Body = comment.Body;
 
+				commentRepository.Update(existingComment);
+				commentRepository.Save();
+				return RedirectToAction("Details", "Product", new { id = existingComment.ProductID });
+			}
+			return PartialView("_EditCommentPartial", comment);
+		}
 				commentRepository.Update(existingComment);
 				commentRepository.Save();
 				return RedirectToAction("Details", "Product", new { id = existingComment.ProductID });
@@ -308,10 +346,23 @@ namespace OutfitO.Controllers
 			// Redirect back to the product details page or wherever appropriate
 			return RedirectToAction("Details", "Product", new { id = comment?.ProductID });
 		}
+		[HttpPost]
+		public IActionResult DeleteComment(int commentId)
+		{
+			var comment = commentRepository.GetById(commentId);
+			if (comment != null)
+			{
+				commentRepository.Delete(commentId);
+				commentRepository.Save();
+			}
+			// Redirect back to the product details page or wherever appropriate
+			return RedirectToAction("Details", "Product", new { id = comment?.ProductID });
+		}
 
 
 
 
 
+	}
 	}
 }

@@ -8,72 +8,90 @@
 <div id="modal-placeholder"></div>
 
 <!-- Product main img -->
-<div > 
-    <div class="col-md-5  flexMain" >
-        <img src="~/Images/@Model.Img" height="500px" />
+<div class="col-md-5">
+    <img src="~/Images/@Model.Img" height="500px" />
+</div>
+<!-- /Product main img -->
+<!-- Product details -->
+<div class="col-md-5">
+    <div class="product-details">
+        <h2 class="product-name">@Model.Title</h2>
+        <div>
+            <div class="product-rating">
+                <i class="fa fa-star-fill"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-o"></i>
+            </div>
+            <a class="review-link" href="#tab3">10 Review(s) | Add your review</a>
+        </div>
+        <div>
+            <h3 class="product-price">@Model.Price <del class="product-old-price">@(2 * @Model.Price)</del></h3>
+            <span class="product-available">@Model.Stock In Stock</span>
+        </div>
+        <p>@Model.Description.</p>
+
+        <div class="product-options">
+            <label>
+                Size
+                <select class="input-select">
+                    <option value="0">X</option>
+                </select>
+            </label>
+            <label>
+                Color
+                <select class="input-select">
+                    <option value="0">Red</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="add-to-cart">
+            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+            <a href="/Product/Index">
+                👈 Back To List
+            </a>
+        </div>
+
     </div>
 
-    <!-- /Product main img -->
-    <!-- Product details -->
-    <!-- Product details -->
-    <div class="col-md-5 detail flexMain ">
-        <div class="product-details">
-            <h2 class="product-name">@Model.Title</h2>
-            <div>
-                <div class="product-rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
+</div>
+<div class="clearboth"></div>
+<div class="col-md-12">
+    <div id="product-tab">
+        <!-- product tab nav -->
+        <ul class="tab-nav">
+            <li><a data-toggle="tab" href="#tab3">All Reviews (@Model.Comments.Count) </a></li>
+        </ul>
+        <!-- Review Form -->
+        <div id="review" style="display: none;">
+            <div id="Display_Review">
+                <div id="all-comments">
+                    @Html.Partial("_AllCommentsPartial", Model.Comments)
                 </div>
-                <a class="review-link" href="#">10 Review(s) | Add your review</a>
-            </div>
-            <div>
-                <h3 class="product-price">@Model.Price <del class="product-old-price">@(2 * @Model.Price)</del></h3>
-                <span class="product-available">@Model.Stock In Stock</span>
-            </div>
-            <p>@Model.Description.</p>
+                <div class="col-md-3">
+                    <div id="review-form">
+                        <form class="review-form">
+                            <textarea class="input" placeholder="Your Review"></textarea>
+                            <div class="input-rating">
+                                <span>Your Rating: </span>
+                                <div class="stars">
+                                    <input id="star5" name="rating" value="5" type="radio"><label for="star5"></label>
+                                    <input id="star4" name="rating" value="4" type="radio"><label for="star4"></label>
+                                    <input id="star3" name="rating" value="3" type="radio"><label for="star3"></label>
+                                    <input id="star2" name="rating" value="2" type="radio"><label for="star2"></label>
+                                    <input id="star1" name="rating" value="1" type="radio"><label for="star1"></label>
+                                </div>
+                            </div>
+                            <button class="primary-btn">Submit</button>
+                        </form>
+                    </div>
+                </div>
 
-            <div class="product-options">
-                <label>
-                    Size
-                    <select class="input-select">
-                        <option value="0">X</option>
-                    </select>
-                </label>
-                <label>
-                    Color
-                    <select class="input-select">
-                        <option value="0">Red</option>
-                    </select>
-                </label>
-            </div>
-
-
-
-
-            <ul class="product-links">
-                <li>Category:</li>
-                <li><a href="#">Model.Category.Title</a></li>
-
-            </ul>
-
-            <ul class="product-links">
-                <li>Share:</li>
-                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                <li><a href="#"><i class="fa fa-envelope"></i></a></li>
-            </ul>
-            <div class="add-to-cart">
-
-                <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                <a href="/Product/Index">
-                    👈 Back To List
-                </a>
             </div>
         </div>
+
     </div>
 </div>
 <!-- /Product details -->
