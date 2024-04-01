@@ -1,148 +1,113 @@
 ﻿@model OutfitO.ViewModels.PaymentViewModel
 @{
     ViewData["Title"] = "Index";
+    Layout = "_UserLayout";
 }
 
-<style>
-    body, html {
-        height: 10hv;
-        margin: 0;
-        font-family: Arial, sans-serif;
-        overflow-x: hidden; /* Disable horizontal scroll */
-        overflow-y: auto; /* Enable vertical scroll if needed */
-    }
-
-    .container {
-        display: flex;
-        justify-content: flex-end; /* Align content to the right */
-        align-items: center;
-        height: 100%;
-        padding-right: 20px; /* Add right padding to create space from the right edge */
-    }
-
-    .payment-form {
-        width: 400px;
-        padding: 30px;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        background-color: #f9f9f9; /* Light background color */
-        margin-right: auto; /* Align form to the right */
-    }
-
-        .payment-form h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-    .form-group {
-        margin-bottom: 20px; /* Space between form groups */
-    }
-
-        .form-group label {
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-    .form-row {
-        display: flex;
-        justify-content: space-between;
-    }
-
-        .form-row .form-group {
-            width: calc(33% - 10px); /* Adjust width of inputs in the form row */
-        }
-
-    .form-group button {
-        width: 200px; /* Fixed width to center the button */
-        margin: 0 auto; /* Center the button horizontally */
-        display: block; /* Ensure the button takes full width */
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: #fff;
-        cursor: pointer;
-    }
-
-        .form-group button:hover {
-            background-color: #0056b3;
-        }
-
-    #card-errors {
-        color: red;
-        margin-top: 10px;
-    }
-</style>
-
-
-<div class="container">
-    <div class="payment-form">
-        <h2>Checkout</h2>
-
-        <form id="payment-form" action="/CheckOut/ProcessPayment" method="post">
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="Name" class="form-control" required />
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="Email" class="form-control" required />
-            </div>
-            <div class="form-group">
-                <label for="amount">Amount:</label>
-                <input type="number" id="amount" name="Amount" step="1" min="1" class="form-control" required />
-            </div>
-            <div class="form-group">
-                <label for="address">Address:</label>
-                <input type="text" id="address" name="Address" class="form-control" />
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="city">City:</label>
-                    <input type="text" id="city" name="City" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label for="state">State:</label>
-                    <input type="text" id="state" name="State" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label for="zip">Zip:</label>
-                    <input type="text" id="zip" name="Zip" class="form-control" />
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-7">
+                <!-- Billing Details -->
+                <div class="billing-details">
+                    <div class="section-title">
+                        <h3 class="title">Billing Info</h3>
+                    </div>
+                    <form id="payment-form" asp-action="ProcessPayment" asp-controller="CheckOut" method="post">
+                        <input asp-for="Amount" value="@ViewBag.Price" />
+                        <div class="form-group">
+                            <label asp-for="Name"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Address"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address"></span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label asp-for="City"></label>
+                                <input asp-for="City" class="form-control" />
+                                <span asp-validation-for="City"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="State"></label>
+                                <input asp-for="State" class="form-control" />
+                                <span asp-validation-for="State"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Zip"></label>
+                                <input asp-for="Zip" class="form-control" />
+                                <span asp-validation-for="Zip"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Country"></label>
+                            <input asp-for="Country" class="form-control" />
+                            <span asp-validation-for="Country"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Phone"></label>
+                            <input asp-for="Phone" class="form-control" />
+                            <span asp-validation-for="Phone"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="card-element">Credit or debit card</label>
+                            <div id="card-element" class="form-control">
+                                <!-- A Stripe Element will be inserted here. -->
+                            </div>
+                            <div id="card-errors" role="alert"></div>
+                        </div>
+                        <button id="submit-button" class="btn btn-primary">Submit Payment</button>
+                    </form>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="country">Country:</label>
-                <input type="text" id="country" name="Country" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone:</label>
-                <input type="tel" id="phone" name="Phone" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="card-element">
-                    Credit or debit card
-                </label>
-                <div id="card-element" class="form-control">
-                    <!-- A Stripe Element will be inserted here. -->
+
+            <!-- Order Details -->
+            <div class="col-md-5 order-details">
+                <div class="section-title text-center">
+                    <h3 class="title">Your Order</h3>
                 </div>
-
-                <!-- Used to display form errors. -->
-                <div id="card-errors" role="alert"></div>
+                <div class="order-summary">
+                    <div class="order-col">
+                        <div><strong>PRODUCT</strong></div>
+                        <div><strong>TOTAL</strong></div>
+                    </div>
+                    <div class="order-products">
+                        @foreach (CartItem item in ViewBag.Cart)
+                        {
+                            <div class="order-col">
+                                <div>@item.Quantity x - @item.Product.Title</div>
+                                <div>$@item.Product.Price</div>
+                            </div>
+                        }
+                    </div>
+                    <div class="order-col">
+                        <div><strong>TOTAL</strong></div>
+                        <div><strong class="order-total">$@ViewBag.Price</strong></div>
+                    </div>
+                </div>
             </div>
-
-            <button id="submit-button" class="btn btn-primary">Submit Payment</button>
-        </form>
+            <!-- /Order Details -->
+        </div>
+        <!-- /row -->
     </div>
+    <!-- /container -->
 </div>
 
 @section Scripts {
+    @{
+        // Render necessary partial validation scripts
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         // JavaScript code for Stripe integration

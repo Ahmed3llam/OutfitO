@@ -56,7 +56,7 @@ namespace OutfitO.Controllers
             return View("Error");
         }
         [HttpGet]
-        public IActionResult EditData(string id)
+        public async Task<IActionResult> EditDataAsync(string id)
         {
             User user = userRepository.GetUser(id);
             UserDataVM vm = new UserDataVM()
@@ -71,7 +71,20 @@ namespace OutfitO.Controllers
                 Gender = user.Gender,
                 Visa = user.Visa,
             };
-            return View("Edit", vm);
+            if (User.Identity.IsAuthenticated)
+            {
+                var roles = await userManager.GetRolesAsync(user);
+                bool isAdmin = roles.Contains("Admin");
+                if (isAdmin)
+                {
+                    return View("Edit", vm);
+                }
+                else
+                {
+                    return View("EditUser", vm);
+                }
+            }
+            return View("Error");
         }
         [HttpPost]
         public IActionResult EditData(UserDataVM user)

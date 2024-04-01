@@ -1,4 +1,5 @@
-﻿using OutfitO.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using OutfitO.Models;
 
 namespace OutfitO.Repository
 {
@@ -8,6 +9,10 @@ namespace OutfitO.Repository
         public PaymentRepository(OutfitoContext context) : base(context)
         {
             _context = context;
+        }
+        public Payment Get(string id)
+        {
+            return _context.Payment.Include(p=>p.User).Where(p => p.PaymentId == id).FirstOrDefault();
         }
         public User GetUserInformation(int id)
         {

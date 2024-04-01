@@ -1,7 +1,7 @@
 ﻿@model List<CartItem>
 @{
     decimal Tmony;
-    Layout  = "_CartLayout";
+    Layout  = "_UserLayout";
 }
 <head>
     
@@ -19,7 +19,7 @@
                     @foreach (var item in Model)
                     {
                         <div class="cart-card">
-                            <div class="cart-card-container" id="card">
+                            <div class="cart-card-container" id="card" style="display: flex;flex-direction: row;gap: 20px;">
                                 <div class="cartCard-image">
                                     @{
                                         string imagePath = $"~/Images/{item.Product.Img}";

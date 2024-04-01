@@ -2,8 +2,9 @@
 
 namespace OutfitO.Repository
 {
-    public interface IPaymentRepository
+    public interface IPaymentRepository:IRepository<Payment>
     {
+        public Payment Get(string id);
         public User GetUserInformation(int id);
         public List<Payment> GetPaymentForUSer(string id);
     }

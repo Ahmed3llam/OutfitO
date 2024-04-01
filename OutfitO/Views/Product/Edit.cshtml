@@ -2,76 +2,111 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "_AdminLayout";
 }
+<div class="head bg-white p-15 between-flex">
+    <div class="search p-relative">
+        <input class="p-10" type="search" placeholder="Search" />
+    </div>
+    <div class="icons d-flex align-center">
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
+                @ViewBag.User.FirstName
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" asp-controller="Profile" asp-action="EditData" asp-route-id="@ViewBag.User.Id" style="color: black;">
+                        <i class="fa-solid fa-gear fa-fw"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-action="Logout" asp-controller="User" asp-route-id="@ViewBag.User.Id" style="color: black;">
+                        <i class="fa-solid fa-sign-out-alt fa-fw"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#" onclick="DeleteAccount('@ViewBag.User.Id')" style="color: black;">
+                        <i class="fa-solid fa-trash-alt fa-fw"></i>
+                        <span>Delete Account</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        @{
+            string imagePath = $"~/Images/{ViewBag.User.ProfileImage}";
+        }
+        <img src="@Url.Content(imagePath)" alt="" style="border-radius:50%" />
+    </div>
+</div>
+
 
 <h1>Edit Product</h1>   
 <div id="modal-placeholder"></div>
 
-
-<form asp-action="Edit" asp-controller="Product" method="post" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input asp-for="Img" class="form-control" hidden />
-    <input asp-for="Id" class="form-control" hidden />
-
-    <div class="card mb-4 mb-xl-0">
-        <div class="card-header">Profile Picture</div>
-        <div class="card-body text-center">
-            <!-- Profile picture image-->
-            @{
-                string imagePath = $"~/Images/{Model.Img}";
-            }
-            <img class="img-fluid img-account-profile rounded-circle mb-2" style=" height: 10rem ;width:auto" src="@Url.Content(imagePath)" alt="">
-            <!-- Profile picture help block-->
-            <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-            <!-- Profile picture upload button-->
-            <a onclick="ChangeImg(@Model.Id)" class="btn btn-primary">Upload new image</a>
+<div style="width: 60vw;margin-left: 10vw;">
+    <form asp-action="Edit" asp-controller="Product" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input asp-for="Img" class="form-control" hidden />
+        <input asp-for="Id" class="form-control" hidden />
+        <input asp-for="UserID" class="form-control" hidden />
+        <div class="card mb-4 mb-xl-0">
+            <div class="card-header">Profile Picture</div>
+            <div class="card-body text-center">
+                <!-- Profile picture image-->
+                @{
+                     imagePath = $"~/Images/{Model.Img}";
+                }
+                <img class="img-fluid img-account-profile rounded-circle mb-2" style=" height: 10rem ;width:auto" src="@Url.Content(imagePath)" alt="">
+                <!-- Profile picture help block-->
+                <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                <!-- Profile picture upload button-->
+                <a onclick="ChangeImg(@Model.Id)" class="btn btn-primary">Upload new image</a>
+            </div>
         </div>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Title" class="control-label"></label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Description" class="control-label"></label>
-        <input asp-for="Description" class="form-control" />
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-   @*  <input type="checkbox"  id="ChangeImg" onchange="changeImgefun()" name="name"/>
-    <label class="control-label">Change Image</label> *@
-   
-    <div class="form-group">
-        <label asp-for="Price" class="control-label"></label>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Stock" class="control-label"></label>
-        <input asp-for="Stock" class="form-control" />
-        <span asp-validation-for="Stock" class="text-danger"></span>
-    </div>
-    @* <div class="form-group">
-        <label asp-for="CategoryId" class="control-label"></label>
-        <input asp-for="CategoryId" class="form-control" />
-        <span asp-validation-for="CategoryId" class="text-danger"></span>
-    </div> *@
-
-
-    <div class="form-group">
-        <label asp-for="CategoryId" class="control-label"></label>
-        <select asp-for="CategoryId" asp-items="@(ViewData["Categories"] as SelectList)" class="form-control">
-            <option value="">-- Select Category --</option>
-        </select>
-        <span asp-validation-for="CategoryId" class="text-danger"></span>
-    </div>
-
-
-    <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-primary" />
-    </div>
-</form>
+        <div class="form-group">
+            <label asp-for="Title" class="control-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Price" class="control-label"></label>
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Stock" class="control-label"></label>
+            <input asp-for="Stock" class="form-control" />
+            <span asp-validation-for="Stock" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoryId" class="control-label"></label>
+            <select asp-for="CategoryId" asp-items="@(ViewData["Categories"] as SelectList)" class="form-control">
+                <option value="">-- Select Category --</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+<br />
+<br />
+<div style="margin-left:30px">
+    <a asp-action="ProductDash" asp-controller="Product" class="btn btn-primary">Back to All Products</a>
+</div>
+<br />
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     console.log("nhmbmbv")
     function ChangeImg(id) {

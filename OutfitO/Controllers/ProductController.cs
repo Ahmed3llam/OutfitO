@@ -85,15 +85,18 @@ namespace OutfitO.Controllers
 
 		public IActionResult New()
 		{
-			var categories = categoryRepository.GetAll();
+            User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var categories = categoryRepository.GetAll();
 			ViewData["Categories"] = new SelectList(categories, "Id", "Title");
-			return View("NewProduct");
+            ViewData["User"] = user;
+            return View("NewProduct");
 		}
 
 		[HttpPost]
 		public IActionResult SaveNew(ProductWithCategoryList product, IFormFile Img)
 		{
-			if (Img != null && Img.Length > 0)
+            User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (Img != null && Img.Length > 0)
 			{
 				string FileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(Img.FileName);
 				string path = $"wwwroot/Images/{FileName}";
@@ -120,14 +123,14 @@ namespace OutfitO.Controllers
 				};
 				productRepository.Insert(newProduct);
 				productRepository.Save();
-				return RedirectToAction("Index");
+				return RedirectToAction("ProductDash");
 			}
 
 			ViewData["Category"] = categoryRepository.GetAll();
-			return View("NewProduct", product);
+            ViewData["User"] = user;
+            return View("NewProduct", product);
 		}
 
-		[HttpPost]
 		public IActionResult deleteProduct(int id)
 		{
 			var product = productRepository.GetById(id);
@@ -135,8 +138,8 @@ namespace OutfitO.Controllers
 			{
 				productRepository.delete(id);
 				productRepository.save();
-				return RedirectToAction("index");
-			}
+                return RedirectToAction("ProductDash");
+            }
 			else
 			{
 				return NotFound();
@@ -162,30 +165,33 @@ namespace OutfitO.Controllers
 				Stock = productData.Stock,
 				CategoryId = productData.CategoryId
 			};
-			return View(productViewModel);
+            User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewData["User"] = user;
+            return View(productViewModel);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult Edit(ProductWithCategoryList product)
 		{
+
 			if (ModelState.IsValid == true)
 			{
-				Product updatedProduct = new Product
-				{
-					Id = product.Id,
-					Title = product.Title,
-					Description = product.Description,
-					Img = product.Img,
-					Price = product.Price,
-					Stock = product.Stock,
-					CategoryId = product.CategoryId
-				};
-				productRepository.Update(updatedProduct);
+                var updatedProduct = productRepository.GetProduct(product.Id);
+                updatedProduct.Title = product.Title;
+                updatedProduct.Description = product.Description;
+                updatedProduct.Img = product.Img;
+                updatedProduct.Price = product.Price;
+                updatedProduct.Stock = product.Stock;
+                updatedProduct.CategoryId = product.CategoryId;
+				updatedProduct.UserID = product.UserID;
+                productRepository.Update(updatedProduct);
 				productRepository.Save();
-				return RedirectToAction(nameof(Index));
+				return RedirectToAction("ProductDash");
 			}
-			return View(product);
+            User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewData["User"] = user;
+            return View(product);
 		}
 
 		[HttpGet]
@@ -231,8 +237,8 @@ namespace OutfitO.Controllers
 				updated.Img = FileName;
 				productRepository.Update(updated);
 				productRepository.Save();
-				return RedirectToAction("Index");
-			}
+                return RedirectToAction("ProductDash");
+            }
 			return PartialView("_EditImagePartial", product);
 		}
 

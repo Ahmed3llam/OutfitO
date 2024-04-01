@@ -12,8 +12,7 @@ namespace OutfitO.ViewModels
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Amount is required")]
-        [Range(1, double.MaxValue, ErrorMessage = "Amount must be greater than 0")]
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
         [Required(ErrorMessage = "Address is required")]
         public string Address { get; set; }

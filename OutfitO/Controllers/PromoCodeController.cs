@@ -102,7 +102,7 @@ namespace OutfitO.Controllers
 			// Convert decimal to string before storing in TempData
 			TempData["TPromoPrice"] = TPromoPrice.ToString();
 
-			return RedirectToAction("Index", "Payment");
+			return RedirectToAction("Index", "CheckOut");
 		}
 
 	}

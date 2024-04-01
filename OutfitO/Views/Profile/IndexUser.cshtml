@@ -1,10 +1,12 @@
 ﻿@model OutfitO.Models.User
-
+@{
+    Layout = "_UserLayout";
+}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css" integrity="sha512-LX0YV/MWBEn2dwXCYgQHrpa9HJkwB+S+bnBpifSOTO1No27TqNMKYoAn6ff2FBh03THAzAiiCwQ+aPX+/Qt/Ow==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
     body {
-        margin-top: 20px;
+        /* margin-top: 20px; */
         background: #f7f8fa
     }
 
@@ -94,14 +96,14 @@
 
 </style>
 <div class="container">
-    <div class="row">
+    <div class="rw">
         <div id="modal-placeholder"></div>
     </div>
-    <div class="row">
+    <div class="rw">
         <div class="col-xl-8">
             <div class="card">
                 <div class="card-body pb-0">
-                    <div class="row align-items-center">
+                    <div class="rw align-items-center">
                         <div class="col-md-3">
                             <div class="text-center border-end">
                                 @{
@@ -110,130 +112,50 @@
                                 <img class="img-fluid avatar-xxl rounded-circle" style=" height: 10rem ;width:auto" src="@Url.Content(imagePath)" alt="">
                                 <h4 class="text-primary font-size-4 mt-3 mb-2" style="padding-bottom:12px">@Model.FirstName @Model.Lastname</h4>
                             </div>
+                            <div>
+                                <a asp-action="EditData" asp-controller="Profile" asp-route-id="@Model.Id" class="btn btn-primary">Edit Data</a>
+                                <a asp-action="Logout" asp-controller="User" asp-route-id="@Model.Id" class="btn btn-primary">LogOut</a>
+                                <a href="#" onclick="DeleteAccount('@Model.Id')" class="btn btn-primary">Delete Account</a>
+                            </div>
                         </div><!-- end col -->
                         <div class="col-md-9">
                             <div class="ms-3">
                                 <div>
-                                    <h4 class="card-title mb-2">Biography</h4>
+                                    <h4 class="card-title mb-2">Profile Data</h4>
                                 </div>
-                                <div class="row my-4">
+                                <div class="rw my-4">
                                     <div class="col-md-12">
                                         <div>
                                             <p class="text-muted mb-2 fw-medium">
-                                                <i class="mdi mdi-email-outline me-2"></i>@Model.Email
+                                                <i class="mdi mdi-email-outline me-2"></i> @Model.Email
                                             </p>
                                             <p class="text-muted fw-medium mb-0">
-                                                <i class="mdi mdi-phone-in-talk-outline me-2"></i>@Model.PhoneNumber
+                                                <i class="mdi mdi-phone-in-talk-outline me-2"></i> @Model.PhoneNumber
                                             </p>
                                         </div>
                                     </div><!-- end col -->
-                                </div><!-- end row -->
-
-                                <ul class="nav nav-tabs nav-tabs-custom border-bottom-0 mt-3 nav-justfied" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link px-4 active" data-bs-toggle="tab" href="#projects-tab" role="tab" aria-selected="false" tabindex="-1">
-                                            <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
-                                            <span class="d-none d-sm-block">Products</span>
-                                        </a>
-                                    </li><!-- end li -->
-                                    <li class="nav-item" role="presentation">
-                                        <a class="nav-link px-4" asp-action="UserOrders" asp-controller="Order">
-                                            <span class="d-block d-sm-none"><i class="mdi mdi-menu-open"></i></span>
-                                            <span class="d-none d-sm-block">Orders</span>
-
-                                        </a>
-                                    </li><!-- end li -->
-                                </ul><!-- end ul -->
+                                </div><!-- end rw -->
                             </div>
                         </div><!-- end col -->
-                    </div><!-- end row -->
+                    </div><!-- end rw -->
                 </div><!-- end card body -->
             </div><!-- end card -->
-
-            <div class="card">
-                <div class="tab-content p-4">
-                    <div class="tab-pane active show" id="projects-tab" role="tabpanel">
-                        <div class="row" id="all-Orders">
-                            <div class="card mb-4">
-                                <div class="card-header">Orders History</div>
-                                <div class="card-body p-0">
-                                    <div class="table-responsive table-billing-history">
-                                        <table class="table mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th class="border-gray-200" scope="col">Date</th>
-                                                    <th class="border-gray-200" scope="col">Price</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var item in ViewBag.Order)
-                                                {
-                                                    <tr>
-                                                        <td>@item.Date</td>
-                                                        <td>@item.Price</td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body">
                     <div>
-                        <h4 class="card-title mb-4">Personal Details</h4>
+                        <h4 class="card-title mb-4">Other Details</h4>
                         <div class="table-responsive">
                             <table class="table table-bordered mb-0">
                                 <tbody>
                                     <tr>
-                                        <th scope="row">UserName</th>
-                                        <td>@Model.UserName</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Address</th>
+                                        <th scope="rw">Address</th>
                                         <td>@Model.Address</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Gender</th>
+                                        <th scope="rw">Gender</th>
                                         <td>@Model.Gender</td>
                                     </tr>
-                                    <tr>
-                                        <th scope="row">Visa</th>
-                                        <td>@Model.Visa</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <div>
-                        <h4 class="card-title mb-4">Payment Data</h4>
-                        <div class="table-responsive">
-                            <table class="table table-bordered mb-0">
-                                <tbody>
-                                    <th>Method</th>
-                                    <th>Date</th>
-                                    <th>Amount</th>
-                                </tbody>
-                                <tbody>
-                                    @foreach (var item in ViewBag.Payment)
-                                    {
-                                        <tr>
-                                            <td>@item.Method</td>
-                                            <td>@item.Date</td>
-                                            <td>@item.Amount</td>
-                                        </tr>
-                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -242,11 +164,6 @@
             </div>
         </div>
     </div>
-</div>
-<div>
-    <a asp-action="EditData" asp-controller="Profile" asp-route-id="@Model.Id" class="btn btn-primary">Edit Data</a>
-    <a asp-action="Logout" asp-controller="User" asp-route-id="@Model.Id" class="btn btn-primary">LogOut</a>
-    <a href="#" onclick="DeleteAccount('@Model.Id')" class="btn btn-primary">Delete Account</a>
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>

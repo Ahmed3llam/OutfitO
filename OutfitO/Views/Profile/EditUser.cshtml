@@ -1,0 +1,129 @@
+﻿@{
+	ViewData["Title"] = "Profile";
+	Layout = "_UserLayout";
+}
+@model OutfitO.ViewModels.UserDataVM
+
+<div id="modal-placeholder"></div>
+<div class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<div class="col-md-7">
+				<!-- Billing Details -->
+				<div class="billing-details">
+					<div class="section-title">
+						<h3 class="title">Edit Your Data</h3>
+					</div>
+					<form asp-action="EditData" asp-controller="Profile" method="post">
+						<div class="row gx-3 mb-3">
+							<div class="col-md-6">
+								<label class="small mb-1" asp-for="FirstName"></label>
+								<input class="form-control" asp-for="FirstName" />
+								<span class="text-danger" asp-validation-for="FirstName"></span>
+							</div>
+							<div class="col-md-6">
+								<label class="small mb-1" asp-for="Lastname"></label>
+								<input class="form-control" asp-for="Lastname" />
+								<span class="text-danger" asp-validation-for="Lastname"></span>
+							</div>
+						</div>
+						<div class="row gx-3 mb-3">
+							<div class="col-md-6">
+								<label class="small mb-1" asp-for="Address"></label>
+								<input class="form-control" asp-for="Address" />
+								<span class="text-danger" asp-validation-for="Address"></span>
+							</div>
+							<div class="col-md-6">
+								<label class="small mb-1" asp-for="Gender"></label>
+								<select class="form-control" asp-for="Gender">
+									<option value="Male">Male</option>
+									<option value="Female">Female</option>
+								</select>
+								<span class="text-danger" asp-validation-for="Gender"></span>
+							</div>
+						</div>
+						<div class="mb-3">
+							<label class="small mb-1" asp-for="Email"></label>
+							<input class="form-control" asp-for="Email" />
+							<span class="text-danger" asp-validation-for="Email"></span>
+						</div>
+						<div class="mb-3">
+							<label class="small mb-1" asp-for="PhoneNumber"></label>
+							<input class="form-control" asp-for="PhoneNumber" />
+							<span class="text-danger" asp-validation-for="PhoneNumber"></span>
+						</div>
+						<div class="mb-3" style="display:none">
+							<label class="small mb-1" asp-for="ProfileImage"></label>
+							<input class="form-control" asp-for="ProfileImage" />
+							<span class="text-danger" asp-validation-for="ProfileImage"></span>
+						</div>
+						<br />
+						<button class="btn btn-primary" type="submit">Save changes</button>
+					</form>
+				</div>
+			</div>
+
+			<!-- Order Details -->
+			<div class="col-md-5 order-details">
+				<div class="section-title text-center">
+					<h3 class="title">Your Image</h3>
+				</div>
+				<div class="order-summary">
+					<div class="text-center">
+						<div class="d-flex justify-content-center mb-3">
+							@{
+								string imagePath = $"~/Images/{Model.ProfileImage}";
+							}
+							<img class="rad-half" src="@Url.Content(imagePath)" alt="" style="width:150px;height:150px;" />
+						</div>
+					</div>
+
+					<div class="sec-box mb-15 between-flex my-3">
+						<div>
+							<span>Image</span>
+						</div>
+						<a class="btn btn-primary" href="#" onclick="ChangeImg('@Model.Id')">Change</a>
+					</div>
+					<div class="sec-box mb-15 between-flex my-3">
+						<div>
+							<span>Password</span>
+						</div>
+						<a class="btn btn-primary" href="#" onclick="ChangePassword('@Model.Id')">Change</a>
+					</div>
+				</div>
+			</div>
+			<!-- /Order Details -->
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+	function ChangeImg(id) {
+		console.log("id=", id);
+		$.ajax({
+			url: `/Profile/EditImage/${id}`,
+			success: function (result) {
+				$("#modal-placeholder").html(result);
+				$('#editImageModal').modal('show'); // Show the modal
+				console.log(result);
+			}
+		});
+	}
+
+	function ChangePassword(id) {
+		console.log("id=", id);
+		$.ajax({
+			url: `/Profile/EditPassword/${id}`,
+			success: function (result) {
+				$("#modal-placeholder").html(result);
+				$('#editPasswordModal').modal('show'); // Show the modal
+				console.log(result);
+			}
+		});
+	}
+</script>

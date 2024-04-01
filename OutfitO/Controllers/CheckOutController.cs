@@ -1,28 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using OutfitO.Models;
+using OutfitO.Repository;
 using OutfitO.ViewModels;
 using Stripe;
 using System;
+using System.Security.Claims;
 
 namespace OutfitO.Controllers
 {
     public class CheckOutController : Controller
     {
-        private readonly OutfitoContext _dbContext;
-
-        public CheckOutController(OutfitoContext dbContext)
+        ICartRepository _cartRepository;
+        IPaymentRepository _paymentRepository;
+        UserManager<User> _userManager;
+        public CheckOutController(ICartRepository cartRepository, IPaymentRepository paymentRepository)
         {
-            _dbContext = dbContext;
+            _cartRepository = cartRepository;
+            _paymentRepository = paymentRepository;
         }
 
         public IActionResult Index()
         {
+            var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewData["Cart"] = _cartRepository.GetForUser(Userid);
+            ViewData["Price"] = TempData["TPromoPrice"];
             return View();
         }
 
         [HttpPost]
         public IActionResult ProcessPayment(PaymentViewModel model, string stripeToken)
         {
+            //model.Amount = (double)TempData["TPromoPrice"];
             try
             {
                 // Configure Stripe with your secret key
@@ -44,15 +53,21 @@ namespace OutfitO.Controllers
                 {
                     var payment = new Payment
                     {
-                        Name = model.Name,
-                        Email = model.Email,
                         PaymentId = charge.Id,
-                        Amount = (int)model.Amount,
-                        // Add other properties as needed
+                        Name=model.Name,
+                        Email=model.Email,
+                        Address=model.Address,
+                        City=model.City,
+                        Zip=model.Zip,
+                        Country=model.Country,
+                        State=model.State,
+                        Phone=model.Phone,
+                        UserId= User.FindFirstValue(ClaimTypes.NameIdentifier),
+                        TotalPrice = (decimal)TempData["TPromoPrice"],
                     };
 
-                    _dbContext.Payment.Add(payment);
-                    _dbContext.SaveChanges();
+                    _paymentRepository.Insert(payment);
+                    _paymentRepository.Save();
 
                     // Redirect to success view with payment information
                     return RedirectToAction("Success", new { paymentId = payment.PaymentId });
@@ -72,8 +87,10 @@ namespace OutfitO.Controllers
 
         public IActionResult Success(string paymentId)
         {
-            var payment = _dbContext.Payment.FirstOrDefault(p => p.PaymentId == paymentId);
-            return View(payment);
+            var payment =_paymentRepository.Get(paymentId);
+            TempData["Payment"] = payment.Id;
+            return RedirectToAction("Add", "Order");
+            //return View(payment);
         }
 
         public IActionResult Failed(string errorMessage)

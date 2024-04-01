@@ -91,8 +91,8 @@
                             @item.User.FirstName @item.User.Lastname
                         </td>
                         <td>
-                            <a href="#" onclick="editProduct('@item.Id')"><i class="fa fa-edit"></i></a> |
-                            <a href="#" onclick="deleteProduct('@item.Id')"><i class="fas fa-trash"></i></a>
+							<a asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a> |
+                            <a asp-controller="Product" asp-action="deleteProduct" asp-route-id="@item.Id"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
                 }
@@ -113,19 +113,9 @@
         </nav>
     </div>
 </div>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@* <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function editProduct(id) {
-        event.preventDefault();
-        $.ajax({
-            url: `/Product/Edit/${id}`,
-            success: function (result) {
-                $("#modal-placeholder").html(result);
-                $('#EditModal').modal('show');
-            }
-        });
-    }
     function deleteProduct(id) {
         event.preventDefault();
         $.ajax({
@@ -136,4 +126,4 @@
             }
         });
     }
-</script>
+</script> *@
