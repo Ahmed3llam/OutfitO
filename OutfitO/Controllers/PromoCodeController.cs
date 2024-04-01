@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OutfitO.Models;
 using OutfitO.Repository;
@@ -74,16 +75,16 @@ namespace OutfitO.Controllers
 		//}
 		//[Authorize("User")]
 		[HttpPost]
-		public IActionResult CheckOut(PromoCode promo)
+		public IActionResult CheckOut(string promo)
 		{
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			decimal TPrice = cartRepository.GetTotalPrice(Userid);
 			decimal TPromoPrice = 0;
 
 			/////
-			if (promo.Code != null)
+			if (promo != null)
 			{
-				var code = promoCodeRepository.GetPromoCode(promo.Code);
+				var code = promoCodeRepository.GetPromoCode(promo);
 				if (code != null)
 				{
 					decimal PromoPrice = TPrice * code.Percentage / 100;
@@ -99,10 +100,11 @@ namespace OutfitO.Controllers
 				TPromoPrice = TPrice;
 			}
 
-			// Convert decimal to string before storing in TempData
-			TempData["TPromoPrice"] = TPromoPrice.ToString();
+            // Convert decimal to string before storing in TempData
+            //TempData["TPromoPrice"] = TPromoPrice.ToString();
+            HttpContext.Session.SetString("TPromoPrice", TPromoPrice.ToString("0.00"));
 
-			return RedirectToAction("Index", "CheckOut");
+            return RedirectToAction("Index", "CheckOut");
 		}
 
 	}

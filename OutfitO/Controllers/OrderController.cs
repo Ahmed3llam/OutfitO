@@ -24,40 +24,51 @@ namespace OutfitO.Controllers
 
         public IActionResult Add()
         {
+            //string userId = TempData["User"] as string;
             var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Order NewOrder = new Order()
+            if (decimal.TryParse(TempData["TPrice"] as string, out decimal price))
             {
-                Date = DateTime.Now,
-                UserId = Userid,
-                Price = (decimal)TempData["TPromoPrice"],
-                PaymentId = (int)TempData["Payment"]
-            };
-            orderRepository.Insert(NewOrder);
-            orderRepository.Save();
-            TempData["Order"]=NewOrder.Id;
-            return RedirectToAction("AddItems", "OrderItem");
+                if (int.TryParse(TempData["Payment"] as string, out int paymentId))
+                {
+                    Order NewOrder = new Order()
+                    {
+                        Date = DateTime.Now,
+                        UserId = Userid,
+                        Price = price,
+                        PaymentId = paymentId 
+                    };
+                    orderRepository.Insert(NewOrder);
+                    orderRepository.Save();
+                    TempData["Order"] = NewOrder.Id.ToString();
+                    return RedirectToAction("AddItems", "OrderItem");
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
+		public IActionResult Index(int page = 1)
+		{
+			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			User user = userRepository.GetUser(userId);
+			int content = 8;
+			int skip = (page - 1) * content;
+			List<Order> orders = orderRepository.GetSomeOrders(skip, content);
+			int total = orderRepository.Count();
+			ViewData["Page"] = page;
+			ViewData["content"] = content;
+			ViewData["TotalItems"] = total;
+			ViewData["User"] = user;
+			return View("Index", orders);
+		}
 
-
-        //Order/Index   this is For Admin
-        public IActionResult Index(int page = 1)
-        {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            User user = userRepository.GetUser(userId);
-            int content = 8;
-            int skip = (page - 1) * content;
-            List<Order> orders = orderRepository.GetSome(skip, content);
-            int total = orderRepository.Count();
-            ViewData["Page"] = page;
-            ViewData["content"] = content;
-            ViewData["TotalItems"] = total;
-            ViewData["User"] = user;
-            return View("Index", orders);
-        }
-
-        //Order/History   this is For user
-        public IActionResult History(int page = 1)
+		public IActionResult History(int page = 1)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             User user = userRepository.GetUser(userId);

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OutfitO.Models;
 using OutfitO.Repository;
@@ -24,7 +25,22 @@ namespace OutfitO.Controllers
         {
             var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewData["Cart"] = _cartRepository.GetForUser(Userid);
-            ViewData["Price"] = TempData["TPromoPrice"];
+            ViewData["User"] = Userid;
+            var TPromoPrice = HttpContext.Session.GetString("TPromoPrice");
+            // Retrieve the price from TempData and parse it back to decimal
+            if (TPromoPrice != null && decimal.TryParse(TPromoPrice.ToString(), out decimal price))
+            {
+                ViewData["Price"] = price;
+            }
+            else
+            {
+                // Handle the case when TempData["TPromoPrice"] is null or parsing fails
+                ViewData["Price"] = 0; // or any default value you prefer
+            }
+            //var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //ViewData["Cart"] = _cartRepository.GetForUser(Userid);
+            //ViewData["User"] = Userid;
+            //ViewData["Price"] = TempData.Peek("TPromoPrice"); ;
             return View();
         }
 
@@ -62,8 +78,8 @@ namespace OutfitO.Controllers
                         Country=model.Country,
                         State=model.State,
                         Phone=model.Phone,
-                        UserId= User.FindFirstValue(ClaimTypes.NameIdentifier),
-                        TotalPrice = (decimal)TempData["TPromoPrice"],
+                        UserId= model.UserId,
+                        TotalPrice = model.Amount,
                     };
 
                     _paymentRepository.Insert(payment);
@@ -88,7 +104,8 @@ namespace OutfitO.Controllers
         public IActionResult Success(string paymentId)
         {
             var payment =_paymentRepository.Get(paymentId);
-            TempData["Payment"] = payment.Id;
+            TempData["Payment"] = payment.Id.ToString();
+            TempData["TPrice"] = payment.TotalPrice.ToString();
             return RedirectToAction("Add", "Order");
             //return View(payment);
         }

@@ -4,7 +4,8 @@ namespace OutfitO.Repository
 {
     public interface IOrderRepository:IRepository<Order>
     {
-        public Payment GetPaymentForOrder(int orderid);
+		public List<Order> GetSomeOrders(int skip, int content);
+		public Payment GetPaymentForOrder(int orderid);
         public User GetUserInformation(int orderid);
         public List<OrderItem> GetOrderItem(int orderid);
         public List<Order> GetOrderForUSer(string userid);

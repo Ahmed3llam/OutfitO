@@ -163,7 +163,8 @@ namespace OutfitO.Controllers
 				Img = productData.Img,
 				Price = productData.Price,
 				Stock = productData.Stock,
-				CategoryId = productData.CategoryId
+				CategoryId = productData.CategoryId,
+				UserID= productData.UserID
 			};
             User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
             ViewData["User"] = user;

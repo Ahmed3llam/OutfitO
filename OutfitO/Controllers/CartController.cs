@@ -59,9 +59,9 @@ namespace OutfitO.Controllers
 		{
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			CartItem cartItem = cartRepository.GetById(id, Userid);
-			if (cartItem == null || cartItem.Quantity >= 10)
+			if (cartItem == null || cartItem.Quantity >= cartItem.Product.Stock)
 			{
-				return NoContent();
+				return Json(new { message = "Not Allowed .. Max Quantity = " + cartItem.Product.Stock });
 			}
 			cartItem.Quantity += 1;
 			cartRepository.Update(id, Userid, cartItem);
@@ -75,8 +75,8 @@ namespace OutfitO.Controllers
 			CartItem cartItem = cartRepository.GetById(id, Userid);
 			if (cartItem == null || cartItem.Quantity <= 1)
 			{
-				return NoContent();
-			}
+                return Json(new { message = "Not Allowed .. Min Quantity = 1" });
+            }
 			cartItem.Quantity -= 1;
 			cartRepository.Update(id, Userid, cartItem);
 			cartRepository.Save();

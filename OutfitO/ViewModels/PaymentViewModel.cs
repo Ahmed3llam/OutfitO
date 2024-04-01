@@ -32,5 +32,6 @@ namespace OutfitO.ViewModels
         [Required(ErrorMessage = "Phone number is required")]
         [Phone(ErrorMessage = "Invalid Phone Number")]
         public string Phone { get; set; }
+        public string UserId { get; set; }
     }
 }

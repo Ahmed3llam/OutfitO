@@ -16,7 +16,8 @@
                         <h3 class="title">Billing Info</h3>
                     </div>
                     <form id="payment-form" asp-action="ProcessPayment" asp-controller="CheckOut" method="post">
-                        <input asp-for="Amount" value="@ViewBag.Price" />
+                        <input asp-for="Amount" value="@ViewBag.Price" hidden/>
+                        <input asp-for="UserId" value="@ViewBag.User" hidden/>
                         <div class="form-group">
                             <label asp-for="Name"></label>
                             <input asp-for="Name" class="form-control" />

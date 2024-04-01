@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="./css/cart.css">
 </head>
-
+<partial name="_AlertPartial" />
 <section class="container-fluid">
     <div class="vf-grid-wrap vf-grid-wrap-max">
         <div class="vf-grid-10 cart-container">
@@ -57,7 +57,6 @@
                 <div class="cart cart-summary">
                     <h3>Order Summary</h3>
                     <div class="summary-section">
-                        <form asp-controller="PromoCode" asp-action="CheckOut" method="post">
                             <div class="order-summary">
                                 <div class="code-input">
                                     <h5>
@@ -65,9 +64,6 @@
                                     </h5>
                                     <div class="input">
                                         <input type="text" placeholder="Enter promo code" dir="ltr" class="ng-untouched ng-pristine ng-valid" id="Promo">
-                                        @* <div class="promoCode-loading">
-                                        <input type="button" value="Apply" dir="ltr">
-                                        </div> *@
                                     </div>
                                 </div>
                                 <div class="order-cost">
@@ -82,13 +78,14 @@
                                     </div>
                                 </div>
                                 <div class="order-actions">
-                                    <button class="checkout-btn" id="check" type="submit">
-                                        <i class="fa fa-credit-card" style="font-size:20px"></i> Go to checkout
-                                    </button>
+                                    @if(ViewBag.Count>0){
+								        <button class="checkout-btn" id="check" onclick="checkout()">
+									        <i class="fa fa-credit-card" style="font-size:20px"></i> Go to checkout
+								        </button>
+                                    }
                                     <button class="shopping-btn" asp-action="Index" asp-controller="Product"> Continue shopping </button>
                                 </div>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -126,7 +123,10 @@
             url: '/Cart/DecreaseQuantity/' + itemId,
             type: 'POST',
             success: function (response) {
-                if (response) {
+                if (response.message === "Not Allowed .. Min Quantity = 1") {
+                    $('#msg').text(response.message)
+                    $('#MsgModal').modal('show');
+                }else{
                     console.log(response);
                     $('#quantity-' + itemId).val(response.quantity);
                     $('#total-' + itemId).text(response.quantity * response.itemPrice);
@@ -144,11 +144,14 @@
             url: '/Cart/IncrementQuantity/' + itemId,
             type: 'POST',
             success: function (response) {
-                if (response) {
+                if (response.message === undefined) {
                     console.log(response);
                     $('#quantity-' + itemId).val(response.quantity);
                     $('#total-' + itemId).text(response.quantity * response.itemPrice);
                     recalculateTotal();
+                } else {
+                    $('#msg').text(response.message)
+                    $('#MsgModal').modal('show');
                 }
             },
             error: function (xhr, status, error) {
@@ -157,15 +160,15 @@
         });
     }
 
-
-    function Checkout() {
-        let item = document.getElementById("Promo").value;
+    function checkout() {
+        let item = $("#Promo").val();
         $.ajax({
-            url: '/Cart/CheckOut',
+            url: '/PromoCode/CheckOut?promo='+item,
             type: 'POST',
-            data: { promo: item },
             success: function (response) {
-                console.log(response);
+                console.log("done");
+                // Redirect to the checkout page if needed
+                window.location.href = '/CheckOut/Index';
             },
             error: function (xhr, status, error) {
                 console.error(error);

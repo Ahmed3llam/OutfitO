@@ -18,7 +18,7 @@ namespace OutfitO.Controllers
             cartRepository = cartRepo;
             productRepository = productRepo;
         }
-        public IActionResult OrderItem() {
+        public IActionResult AddItems() {
             var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
             List<CartItem> cartItems = cartRepository.GetForUser(Userid);
             foreach (CartItem item in cartItems)
@@ -27,17 +27,24 @@ namespace OutfitO.Controllers
                 product.Stock -= item.Quantity;
                 productRepository.Update(product);
                 productRepository.Save();
-                OrderItem newItem = new OrderItem()
+                if(int.TryParse(TempData["Order"] as string, out int orderId))
                 {
-                    ProductId = item.ProductID,
-                    OrderId =(int)TempData["Order"],
-                    Quantity = item.Quantity,
-                    Price = cartRepository.GetTotalPriceOfOneItem(item)
-                };
-                orderItemsRepository.Insert(newItem);
-                orderItemsRepository.Save();
+                    OrderItem newItem = new OrderItem()
+                    {
+                        ProductId = item.ProductID,
+                        OrderId = orderId,
+                        Quantity = item.Quantity,
+                        Price = cartRepository.GetTotalPriceOfOneItem(item)
+                    };
+                    orderItemsRepository.Insert(newItem);
+                    orderItemsRepository.Save();
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            return RedirectToAction("DeleteAll","Cart");
+            return RedirectToAction("DeleteAll", "Cart");
         }
     }
 }

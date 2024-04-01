@@ -10,7 +10,11 @@ namespace OutfitO.Repository
         {
             _context = context;
         }
-        public List<Order> GetOrderForUSer(string userid)
+		public List<Order> GetSomeOrders(int skip, int content)
+		{
+			return _context.Order.Include(o => o.User).Skip(skip).Take(content).ToList();
+		}
+		public List<Order> GetOrderForUSer(string userid)
         {
             return _context.Order.Where(o=>o.UserId == userid).ToList();    
         }
