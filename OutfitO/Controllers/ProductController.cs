@@ -14,28 +14,41 @@ namespace OutfitO.Controllers
 		IProductRepository productRepository;
 		ICategoryRepository categoryRepository;
 		ICommentRepository commentRepository;
-		public ProductController(IProductRepository productRepo, ICategoryRepository categoryRepo, ICommentRepository commentRepo)
+		IUserRepository userRepository;
+		public ProductController(IProductRepository productRepo, ICategoryRepository categoryRepo, ICommentRepository commentRepo,IUserRepository userRepo)
 		{
 			productRepository = productRepo;
 			categoryRepository = categoryRepo;
 			commentRepository = commentRepo;
-
+			userRepository = userRepo;
         }
-        public IActionResult Index(int page = 1)
+
+		public IActionResult ProductDash(int page = 1)
+		{
+			int content = 9;
+			int skip = (page - 1) * content;
+            User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            List<Category> ParamCategory = categoryRepository.GetAll();
+			List<Product> products = productRepository.GetSpeceficProduct(skip, content, ParamCategory);
+            int total = productRepository.GetProductcount(ParamCategory);
+            ViewData["User"] = user;
+            ViewData["Page"] = page;
+            ViewData["content"] = content;
+            ViewData["TotalItems"] = total;
+            return View("ProductDash", products);
+		}
+
+		public IActionResult Index(int page = 1)
         {
             int content = 9;
             int skip = (page - 1) * content;
             List<Category> ParamCategory = categoryRepository.GetAll();
             List<Product> products = productRepository.GetSpeceficProduct(skip, content, ParamCategory);
-
-
 			int total = productRepository.GetProductcount(ParamCategory);
 			ViewData["Page"] = page;
 			ViewData["content"] = content;
 			ViewData["TotalItems"] = total;
-
 			ViewData["Category"] = categoryRepository.GetAll();
-
             return View("Index", products);
 		}
 
@@ -46,7 +59,6 @@ namespace OutfitO.Controllers
 			int total = 0;
             int skip = (page - 1) * content;
 			List<Product> products;
-
             if (Params.Count == 0)
 			{
                 List<Category> ParamCategory = categoryRepository.GetAll();
@@ -58,8 +70,6 @@ namespace OutfitO.Controllers
                 total = productRepository.GetProductcount(Params);
                 products = productRepository.GetSpeceficProduct(skip, content, Params);
 			}
-
-
             ViewData["Page"] = page;
             ViewData["content"] = content;
             ViewData["TotalItems"] = total;
@@ -67,22 +77,17 @@ namespace OutfitO.Controllers
             return PartialView("_ProductStorePartial", products);
         }
 
-
-        // details
-        public IActionResult Details(int id)
+		public IActionResult Details(int id)
 		{
 			var ProductDetails = productRepository.GetProduct(id);
 			return View("Details", ProductDetails);
 		}
 
-
 		public IActionResult New()
 		{
-
 			var categories = categoryRepository.GetAll();
 			ViewData["Categories"] = new SelectList(categories, "Id", "Title");
 			return View("NewProduct");
-
 		}
 
 		[HttpPost]
@@ -145,12 +150,8 @@ namespace OutfitO.Controllers
 			{
 				return NotFound();
 			}
-
-
-
 			var categories = categoryRepository.GetAll();
 			ViewBag.Categories = new SelectList(categories, "Id", "Title");
-
 			ProductWithCategoryList productViewModel = new ProductWithCategoryList
 			{
 				Id = productData.Id,
@@ -161,7 +162,6 @@ namespace OutfitO.Controllers
 				Stock = productData.Stock,
 				CategoryId = productData.CategoryId
 			};
-
 			return View(productViewModel);
 		}
 
@@ -181,14 +181,12 @@ namespace OutfitO.Controllers
 					Stock = product.Stock,
 					CategoryId = product.CategoryId
 				};
-
 				productRepository.Update(updatedProduct);
 				productRepository.Save();
 				return RedirectToAction(nameof(Index));
 			}
 			return View(product);
 		}
-
 
 		[HttpGet]
 		public IActionResult EditImage(int id)
@@ -201,6 +199,7 @@ namespace OutfitO.Controllers
 			};
 			return PartialView("_EditImagePartial", vm);
 		}
+
 		[HttpPost]
 		public IActionResult EditImage(productImageVM product, IFormFile NewImg)
 		{
@@ -209,19 +208,17 @@ namespace OutfitO.Controllers
 				string oldImg = product.OldImg;
 				string oldPath = $"wwwroot/Images/{oldImg}";
 				int retryAttempts = 3;
-				int retryDelayMs = 100; // milliseconds
+				int retryDelayMs = 100;
 
 				for (int i = 0; i < retryAttempts; i++)
 				{
 					try
 					{
 						System.IO.File.Delete(oldPath);
-						break; // Break out of the loop if deletion is successful
+						break;
 					}
 					catch (IOException)
 					{
-						// Log or handle the exception
-						// Wait for a short delay before retrying
 						Task.Delay(retryDelayMs).Wait();
 					}
 				}
@@ -238,7 +235,6 @@ namespace OutfitO.Controllers
 			}
 			return PartialView("_EditImagePartial", product);
 		}
-
 
 
 		// ---- Comment ---- //

@@ -1,7 +1,7 @@
 ﻿@model List<CartItem>
 @{
     decimal Tmony;
-    Layout  = "_ProductLayout";
+    Layout  = "_CartLayout";
 }
 <head>
     
@@ -38,12 +38,14 @@
                                             <input type="number" id="quantity-@item.ProductID" name="quantity" class="counter-disabled ng-untouched ng-pristine" disabled="" value="@item.Quantity">
                                             <input type="button" id="sum-@item.ProductID" onclick="sum('@item.ProductID')" value="+" class="plus">
                                         </div>
-                                    </div>
-                                    <div class="cart-actions" onclick="remove('@item.ProductID')">
-                                        <p>
-                                            <span class="glyphicon glyphicon-trash"></span>
-                                            Remove
-                                        </p>
+									</div>
+									<div class="cart-actions">
+                                        <a asp-action="Delete" asp-controller="Cart" asp-route-id="@item.ProductID" style="text-decoration:none">
+											<p>
+												<span class="glyphicon glyphicon-trash"></span>
+												Remove
+											</p>
+                                        </a>
                                     </div>
 
                                 </div>
@@ -71,12 +73,12 @@
                                 <div class="order-cost">
                                     <div class="subtotal">
                                         <p> Subtotal ( <span id="length">@ViewBag.Count</span> Items ) </p>
-                                        <p class="total">@ViewBag.Price</p>
+                                        <p class="total" id="subtotal">@ViewBag.Price</p>
                                     </div>
                                     <hr>
                                     <div class="vat">
                                         <p> Total </p>
-                                        <p class="total">@ViewBag.Price </p>
+                                        <p class="total" id="total">@ViewBag.Price </p>
                                     </div>
                                 </div>
                                 <div class="order-actions">
@@ -108,21 +110,16 @@
         //     });
         }
 
-    function remove(itemId) {
-        $.ajax({
-            url: '/Cart/Delete/' + itemId,
-            type: 'POST', // Change the HTTP method to POST
-            success: function (response) {
-                // Remove the cart item container from the DOM
-                $('#card-' + itemId).remove();
-            },
-            error: function (xhr, status, error) {
-                console.error(error);
-            }
+    function recalculateTotal() {
+        var subtotal = 0;
+        $('.cartProduct-price').each(function () {
+            subtotal += parseFloat($(this).text());
         });
+        $('#subtotal').text(subtotal.toFixed(2));
+        // var vat = subtotal * 0.15;
+        var total = subtotal /* + vat */;
+        $('#total').text(total.toFixed(2));
     }
-
-
 
     function sub(itemId) {
         $.ajax({
@@ -131,8 +128,9 @@
             success: function (response) {
                 if (response) {
                     console.log(response);
-                    $('#quantity-' + itemId).val(response.quantity); // Update quantity
-                    $('#total-' + itemId).text(response.quantity * response.itemPrice); // Update total price
+                    $('#quantity-' + itemId).val(response.quantity);
+                    $('#total-' + itemId).text(response.quantity * response.itemPrice);
+                    recalculateTotal();
                 }
             },
             error: function (xhr, status, error) {
@@ -148,8 +146,9 @@
             success: function (response) {
                 if (response) {
                     console.log(response);
-                    $('#quantity-' + itemId).val(response.quantity); // Update quantity
-                    $('#total-' + itemId).text(response.quantity * response.itemPrice); // Update total price
+                    $('#quantity-' + itemId).val(response.quantity);
+                    $('#total-' + itemId).text(response.quantity * response.itemPrice);
+                    recalculateTotal();
                 }
             },
             error: function (xhr, status, error) {

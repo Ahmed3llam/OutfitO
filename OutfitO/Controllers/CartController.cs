@@ -52,7 +52,7 @@ namespace OutfitO.Controllers
 				cartRepository.Insert(cartItem);
 			}
 			cartRepository.Save();
-			return RedirectToAction("Index", "Product");
+			return NoContent();
 		}
 		[HttpPost]
 		public IActionResult IncrementQuantity(int id)
@@ -82,13 +82,12 @@ namespace OutfitO.Controllers
 			cartRepository.Save();
             return Json(new { quantity = cartItem.Quantity, itemPrice = cartItem.Product.Price });
         }
-        [HttpPost]
         public IActionResult Delete(int id)
 		{
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			cartRepository.Delete(id, Userid);
 			cartRepository.Save();
-			return RedirectToAction("Cart", "Index");
+			return RedirectToAction("Index");
 		}
 
 		public ActionResult DeleteAll()
@@ -96,7 +95,7 @@ namespace OutfitO.Controllers
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			cartRepository.DeleteAll(Userid);
 			cartRepository.Save();
-			return RedirectToAction("Cart", "Index");
+			return RedirectToAction("Index","Cart");
 
 			//return RedirectToAction("Details","Order");
 		}

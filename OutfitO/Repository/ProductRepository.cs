@@ -23,63 +23,34 @@ namespace OutfitO.Repository
         {
             return _context.Product.Where(p => p.UserID == Userid).ToList();
         }
-
-       
-
         public Product GetProduct(int id)
         {
             return _context.Product.Include(c => c.Category).Include(c=>c.Comments).Where(p =>p.Id==id).FirstOrDefault();
         }
         public List<Product> GetSpeceficProduct(int skip, int content, List<Category> ParamCategory)
         {
-            var allProducts = _context.Product.Include(p => p.Category).ToList(); // Retrieve all products from the database
-
-            var filteredProducts = allProducts.Where(p => ParamCategory.Any(c => p.Category.Title.Contains(c.Title)))
-                                              .Skip(skip)
-                                              .Take(content)
-                                              .ToList(); // Filter products in-memory based on categories
-
+            var allProducts = _context.Product.Include(p => p.Category).Include(p=>p.User).ToList();
+            var filteredProducts = allProducts.Where(p => ParamCategory.Any(c => p.Category.Title.Contains(c.Title))).Skip(skip).Take(content).ToList();
             return filteredProducts;
         }
-
-
         public List<Product> GetSpeceficProduct(int skip, int content, List<string> ParamCategory)
         {
-            var allProducts = _context.Product.Include(p => p.Category).ToList(); // Retrieve all products from the database
-
-            var filteredProducts = allProducts.Where(p => ParamCategory.Any(c => p.Category.Title.Contains(c)))
-                                              .Skip(skip)
-                                              .Take(content)
-                                              .ToList(); // Filter products in-memory based on categories
-
+            var allProducts = _context.Product.Include(p => p.Category).Include(p => p.User).ToList();
+            var filteredProducts = allProducts.Where(p => ParamCategory.Any(c => p.Category.Title.Contains(c))).Skip(skip).Take(content).ToList();
             return filteredProducts;
         }
-
-
-
         public int GetProductcount(List<Category> ParamCategory)
         {
-            var allProducts = _context.Product.Include(p => p.Category).ToList(); // Retrieve all products from the database
-
-            var filteredProducts = allProducts.Where(p => ParamCategory.Any(c => p.Category.Title.Contains(c.Title)))
-                                              .ToList(); // Filter products in-memory based on categories
-
+            var allProducts = _context.Product.Include(p => p.Category).ToList();
+            var filteredProducts = allProducts.Where(p => ParamCategory.Any(c => p.Category.Title.Contains(c.Title))).ToList();
             return filteredProducts.Count;
         }
-
-
         public int GetProductcount(List<string> ParamCategory)
         {
-            var allProducts = _context.Product.Include(p => p.Category).ToList(); // Retrieve all products from the database
-
-            var filteredProducts = allProducts.Where(p => ParamCategory.Any(c => p.Category.Title.Contains(c)))
-                                              .ToList(); // Filter products in-memory based on categories
-
+            var allProducts = _context.Product.Include(p => p.Category).ToList();
+            var filteredProducts = allProducts.Where(p => ParamCategory.Any(c => p.Category.Title.Contains(c))).ToList();
             return filteredProducts.Count;
         }
-
-
-
         public List<Product> GetAll()
         {
             return _context.Product.ToList();
@@ -96,18 +67,15 @@ namespace OutfitO.Repository
         {
             _context.Update(obj);
         }
-
         public void delete(int id)
         {
             Product product = GetById(id);
             _context.Remove(product);
         }
-
         public int save()
         {
             return _context.SaveChanges();
         }
-
         public void insert(ProductWithCategoryList product)
         {
             throw new NotImplementedException();
