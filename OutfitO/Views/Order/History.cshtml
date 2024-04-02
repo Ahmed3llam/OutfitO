@@ -1,0 +1,107 @@
+﻿@model List<Order>
+@{
+    ViewData["Title"] = "History";
+    Layout = "_UserLayout";
+}
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .table-container {
+            max-height: 300px; /* Adjust this value as needed */
+            overflow-y: auto;
+        }
+
+            .table-container table thead th {
+                position: sticky;
+                top: 0;
+                background-color: #85C1E9;
+                z-index: 1;
+            }
+
+
+        a, span, i {
+            text-decoration: none;
+        }
+        table i{
+            color:blue;
+        }
+        a{
+            color:black;
+        }
+        h3{
+            margin-top:20px;
+        }
+
+    </style>
+</head>
+
+<div id="modal-placeholder">
+    <!--this is the partial view container-->
+</div>
+
+<div class="container p-20 bg-white rad-10 m-20">
+    <h3>History of Orders</h3>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Shipping Address</th>
+                    <th>Date</th>
+                    <th>Price</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Order order in Model)
+                {
+
+                    string FullAdress = $"{order.payment.Country} - {order.payment.City} - {order.payment.Address}";
+
+                    <tr>
+                        <td>@order.payment.Name</td>
+                        <td>@FullAdress</td>
+                        <td>@order.Date</td>
+                        <td>@order.Price</td>
+                        <td>
+                            <a href="#" onclick="OrderDetails('@order.Id')">  <i class="fa fa-eye"></i> </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+
+        <nav aria-label="Page navigation" class="my-5">
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
+                {
+                    <li class="page-item @(i == (int)ViewData["Page"] ? "active" : "")  ">
+                        <a class="page-link btn btn-secondary mx-1" asp-action="History" asp-controller="Order" asp-route-page="@i">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+    function OrderDetails(id) {
+        console.log(id);
+        event.preventDefault();
+        $.ajax({
+            url: `/Order/Details/${id}`,
+            success: function (result) {
+                console.log(result);
+                $("#modal-placeholder").html(result);
+                $('#OrderDetailsModal').modal('show');
+            }
+        });
+    }
+
+
+</script>

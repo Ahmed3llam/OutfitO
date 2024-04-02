@@ -20,7 +20,7 @@ namespace OutfitO.Repository
         }
         public List<Order> GetSomeOrdersForUser(string userid,int skip, int content)
         {
-            return _context.Order.Where(o => o.UserId == userid).Skip(skip).Take(content).ToList();
+            return _context.Order.Include(o => o.payment).Where(o => o.UserId == userid).Skip(skip).Take(content).ToList();
         }
         public List<OrderItem> GetOrderItem(int Orderid)
         {
