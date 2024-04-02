@@ -1,7 +1,7 @@
 ﻿@model List<Product>
 
 <!-- STORE -->
-<div id="store" class="col-md-9">
+<div id="store" class="col-md-9" style="display: table;">
 	<!-- store top filter -->
 
 
@@ -54,7 +54,7 @@
 
 </div>
 
-<nav aria-label="Page navigation" class="my-5 d-flex justify-content-center">
+<nav aria-label="Page navigation" class="my-5 d-flex justify-content-center" style="display: flex;flex-direction: row;justify-content: center;">
     <!-- Updated class here -->
     <ul class="store-pagination">
         @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
