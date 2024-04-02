@@ -2,6 +2,13 @@
 	ViewData["Title"] = "Profile";
 	Layout = "_UserLayout";
 }
+<style>
+	.details {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+</style>
 @model OutfitO.ViewModels.UserDataVM
 <div class="section">
 	<div class="container">
@@ -59,7 +66,7 @@
 					</form>
 				</div>
 			</div>
-			<div class="col-md-5 order-details">
+			<div class="col-md-5 details">
 				<div class="section-title text-center">
 					<h3 class="title">Your Image</h3>
 				</div>
