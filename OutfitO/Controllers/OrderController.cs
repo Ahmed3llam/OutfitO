@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using OutfitO.Models;
 using OutfitO.Repository;
@@ -52,8 +53,8 @@ namespace OutfitO.Controllers
                 return NotFound();
             }
         }
-
-		public IActionResult Index(int page = 1)
+        //[Authorize(Roles ="Admin")]
+        public IActionResult Index(int page = 1)
 		{
 			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			User user = userRepository.GetUser(userId);

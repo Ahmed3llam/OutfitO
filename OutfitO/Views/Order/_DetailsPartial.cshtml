@@ -5,7 +5,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalLabel">Order Items</h5>
-                <a class="btn-close" asp-action="Index" ></a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="btn-close" asp-controller="Order" asp-action="Index"></a>
+                }
+                else
+                {
+                    <a class="btn-close" asp-controller="Order" asp-action="History"></a>
+                }
             </div>
             <div class="modal-body">
                 @{
@@ -43,7 +50,14 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-secondary" asp-action="Index">Close</a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="btn btn-secondary" asp-controller="Order" asp-action="Index">Close</a>
+                }
+                else
+                {
+                    <a class="btn btn-secondary" asp-controller="Order" asp-action="History">Close</a>
+                }
             </div>
         </div>
     </div>
