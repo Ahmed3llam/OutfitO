@@ -4,9 +4,6 @@
     Layout  = "_UserLayout";
 }
 <head>
-    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="./css/cart.css">
 </head>
 <partial name="_AlertPartial" />
@@ -124,7 +121,8 @@
             type: 'POST',
             success: function (response) {
                 if (response.message === "Not Allowed .. Min Quantity = 1") {
-                    $('#msg').text(response.message)
+                    $('#msg').text(response.message);
+                    $('#MsgModal').addClass('show');
                     $('#MsgModal').modal('show');
                 }else{
                     console.log(response);
@@ -151,6 +149,7 @@
                     recalculateTotal();
                 } else {
                     $('#msg').text(response.message)
+                    $('#MsgModal').addClass('show');
                     $('#MsgModal').modal('show');
                 }
             },
