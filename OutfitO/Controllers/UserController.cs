@@ -87,6 +87,9 @@ namespace OutfitO.Controllers
                     if (found)
                     {
                         await signInManager.SignInAsync(data, uservm.RememberMe);//Id,Name,[Role]
+                        HttpContext.Session.SetString("UserName",data.FirstName );
+                        HttpContext.Session.SetString("UserId",data.Id );
+                        HttpContext.Session.SetString("UserImg",data.ProfileImage );
                         //return RedirectToAction("Index", "Product");
                         return RedirectToAction("Index", "Profile");
 

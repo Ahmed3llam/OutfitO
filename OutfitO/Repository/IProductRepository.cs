@@ -8,7 +8,7 @@ namespace OutfitO.Repository
     {
 
         public List<Product> GetForCategory(int CategoryId);
-        public List<Product> GetForUser(string Userid);
+        public List<Product> GetForUser(int skip, int content, string Userid);
 
         public List<Product> GetSpeceficProduct(int skip, int content, List<Category> ParamCategory);
 

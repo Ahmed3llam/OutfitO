@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -15,6 +17,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;500&display=swap" rel="stylesheet" />
 </head>
 <body>
+    @{
+        var session = HttpContextAccessor.HttpContext.Session;
+        var userName = session.GetString("UserName");
+        var userId = session.GetString("UserId");
+        var UserImg = session.GetString("UserImg");
+    }
     <div class="page d-flex">
         <div class="sidebar bg-white p-20 p-relative">
             <h3 class="p-relative txt-c mt-0">OutfitO</h3>
@@ -26,7 +34,7 @@
                     </a>
                 </li>
                 <li>
-                    <a class="d-flex align-center fs-14 c-black rad-6 p-10" asp-controller="Product" asp-action="ProductDash">
+                    <a class="d-flex align-center fs-14 c-black rad-6 p-10" asp-controller="Product" asp-action="AdminProduct" asp-route-id="@userId">
                         <i class="fa-solid fa-diagram-project fa-fw"></i>
                         <span>My Products</span>
                     </a>
@@ -62,5 +70,19 @@
             @RenderSection("Scripts", required: false)
         </div>
     </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function DeleteAccount(id) {
+            event.preventDefault();
+            $.ajax({
+                url: `/Profile/DeleteUser/${id}`,
+                success: function (result) {
+                    $("#modal-placeholder").html(result);
+                    $('#DeleteModal').modal('show');
+                }
+            });
+        }
+    </script>
 </body>
 </html>

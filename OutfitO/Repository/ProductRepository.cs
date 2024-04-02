@@ -19,9 +19,9 @@ namespace OutfitO.Repository
         {
             return _context.Product.Where(p => p.Title == Category).ToList();
         }
-        public List<Product> GetForUser(string Userid)
+        public List<Product> GetForUser(int skip, int content, string Userid)
         {
-            return _context.Product.Where(p => p.UserID == Userid).ToList();
+            return _context.Product.Include(p=>p.Category).Include(p=>p.User).Where(p => p.UserID == Userid).Skip(skip).Take(content).ToList();
         }
         public Product GetProduct(int id)
         {

@@ -56,7 +56,7 @@ namespace OutfitO.Controllers
             return View("Error");
         }
         [HttpGet]
-        public async Task<IActionResult> EditDataAsync(string id)
+        public async Task<IActionResult> EditData(string id)
         {
             User user = userRepository.GetUser(id);
             UserDataVM vm = new UserDataVM()

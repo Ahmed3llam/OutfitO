@@ -37,8 +37,21 @@ namespace OutfitO.Controllers
             ViewData["TotalItems"] = total;
             return View("ProductDash", products);
 		}
-
-		public IActionResult Index(int page = 1)
+        public IActionResult AdminProduct(int page = 1)
+        {
+            int content = 9;
+            int skip = (page - 1) * content;
+            User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            List<Category> ParamCategory = categoryRepository.GetAll();
+            List<Product> products = productRepository.GetForUser(skip, content,user.Id);
+            int total = productRepository.GetProductcount(ParamCategory);
+            ViewData["User"] = user;
+            ViewData["Page"] = page;
+            ViewData["content"] = content;
+            ViewData["TotalItems"] = total;
+            return View("AdminProduct", products);
+        }
+        public IActionResult Index(int page = 1)
         {
             int content = 9;
             int skip = (page - 1) * content;
