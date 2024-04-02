@@ -1,38 +1,29 @@
-﻿@* Strong Type Model *@
-@model List<Product>
+﻿@model List<Product>
 @{
+    ViewData["Title"] = "Products";
     Layout = "_ProductLayout";
 }
-
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         .product .product-img {
             display: flex;
-            justify-content: center; /* Horizontally center the content */
-            align-items: center; /* Vertically center the content */
-            height: 200px; /* Set the height of the product image container */
-            overflow: hidden; /* Hide overflowing content */
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            overflow: hidden;
         }
-
-
-            .product .product-img > img {
-                max-width: 150px;
-                max-height: 200px;
-            }
-
-
-
-
+        .product .product-img > img {
+            max-width: 150px;
+            max-height: 200px;
+        }
         .tooltip-container {
             position: relative;
             display: inline-block;
         }
-
         .product-rating {
             z-index: 1;
         }
-
         .tooltip-container .tooltipp {
             visibility: hidden;
             width: 120px;
@@ -49,30 +40,22 @@
             opacity: 0;
             transition: opacity 0.3s;
         }
-
         .tooltip-container:hover .tooltipp {
             visibility: visible;
             opacity: 1;
         }
-
         .quick-view {
             background: none;
             border: none;
             cursor: pointer;
         }
-
-            .quick-view .fa-eye {
+        .quick-view .fa-eye {
                 color: black;
-            }
-
-            .quick-view:hover .fa-eye {
-                color: blue; /* Change color on hover if needed */
-            }
-
+        }
+        .quick-view:hover .fa-eye {
+            color: blue;
         }
     </style>
-
-
 </head>
 <div class="section">
     <div class="container">
@@ -97,16 +80,14 @@
 
             </div>
         </div>
-
         <div id="FilteredProducts" @* style="display:flex;flex-direction:column" *@>
             @Html.Partial("_ProductStorePartial", Model)
         </div>
        
     </div>
 </div>
-<div class="row">
+<div>
     <nav aria-label="Page navigation" class="my-5 d-flex justify-content-center" style="display: flex;flex-direction: row;justify-content: center;">
-        <!-- Updated class here -->
         <ul class="store-pagination">
             @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
             {
@@ -117,16 +98,11 @@
         </ul>
     </nav>
 </div>
-
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
 <script>
     document.querySelectorAll('.delete-form').forEach(form => {
         form.addEventListener('submit', function (event) {
             event.preventDefault();
-
-
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'Are you sure you want to delete this Course?',
@@ -152,32 +128,22 @@
         });
     });
 </script>
-
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-
     var selectedCategories = [];
     function getCat(){
-
         selectedCategories = [];
         event.preventDefault();
-
-        // var selectedCategories = [];
-
         $('input[type="checkbox"]').each(function () {
             if ($(this).is(':checked')) {
                 var categoryName = $(this).siblings('label').text().trim();
                 selectedCategories.push(categoryName);
             }
         });
-
-        console.log(selectedCategories);
     }
-
     function Filter() {
         getCat();
-
         $.ajax({
             url: '/Product/Filter',
             method: 'POST',
@@ -185,18 +151,14 @@
             success: function (result) {
                 $("#FilteredProducts").html("");
                 $("#FilteredProducts").html(result);
-
-                console.log(result);
             },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
             }
         });
     }
-
     function pagination(pageNum) {
         getCat();
-
         $.ajax({
             url: '/Product/Filter',
             method: 'POST',
@@ -204,13 +166,13 @@
             success: function (result) {
                $("#FilteredProducts").html("");
                 $("#FilteredProducts").html(result);
-
-                console.log(result);
             },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
             }
         });
     }
-
 </script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

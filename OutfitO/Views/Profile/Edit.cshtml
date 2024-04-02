@@ -2,45 +2,9 @@
 @{
     ViewData["Title"] = "Settings";
     Layout = "_AdminLayout";
+    string imagePath = $"~/Images/{Model.ProfileImage}";
 }
 <div id="modal-placeholder"></div>
-<div class="head bg-white p-15 between-flex">
-    <div class="search p-relative">
-        <input class="p-10" type="search" placeholder="Search" />
-    </div>
-    <div class="icons d-flex align-center">
-        <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
-                @Model.FirstName
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                    <a class="dropdown-item" asp-controller="Profile" asp-action="EditData" asp-route-id="@Model.Id" style="color: black;">
-                        <i class="fa-solid fa-gear fa-fw"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" asp-action="Logout" asp-controller="User" asp-route-id="@Model.Id" style="color: black;">
-                        <i class="fa-solid fa-sign-out-alt fa-fw"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="#" onclick="DeleteAccount('@Model.Id')" style="color: black;">
-                        <i class="fa-solid fa-trash-alt fa-fw"></i>
-                        <span>Delete Account</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        @{
-            string imagePath = $"~/Images/{Model.ProfileImage}";
-        }
-        <img src="@Url.Content(imagePath)" alt="" style="border-radius:50%" />
-    </div>
-</div>
 <div class="settings-page m-20 d-grid gap-20">
     <div class="p-20 bg-white rad-10">
         <div class="text-left">
@@ -69,8 +33,6 @@
             <a class="btn btn-primary" href="#" onclick="ChangePassword('@Model.Id')">Change</a>
         </div>
     </div>
-
-
     <div class="p-20 bg-white rad-10">
         <h2 class="mt-0 mb-10">General Info</h2>
         <p class="mt-0 mb-20 c-grey fs-15">General Information About Your Account</p>

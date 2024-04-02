@@ -1,64 +1,15 @@
 ﻿@model List<Category>
-
 @{
     ViewData["Title"] = "Category";
     Layout = "_AdminLayout";
 }
-<div id="modal-placeholder">
-    <!--this is the partial view container-->
-</div>
-
-
-<!--this is search nav-->
-<div class="head bg-white p-15 between-flex">
-    <div class="search p-relative">
-        <input class="p-10" type="search" placeholder="Search" />
-    </div>
-    <div class="icons d-flex align-center">
-        <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
-                @ViewBag.User.FirstName
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                    <a class="dropdown-item" asp-controller="Profile" asp-action="EditData" asp-route-id="@ViewBag.User.Id" style="color: black;">
-                        <i class="fa-solid fa-gear fa-fw"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" asp-action="Logout" asp-controller="User" asp-route-id="@ViewBag.User.Id" style="color: black;">
-                        <i class="fa-solid fa-sign-out-alt fa-fw"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="#" onclick="DeleteAccount('@ViewBag.User.Id')" style="color: black;">
-                        <i class="fa-solid fa-trash-alt fa-fw"></i>
-                        <span>Delete Account</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        @{
-            string imagePath = $"~/Images/{ViewBag.User.ProfileImage}";
-        }
-        <img src="@Url.Content(imagePath)" alt="" style="border-radius:50%" />
-    </div>
-</div>
-
-
-
+<div id="modal-placeholder"></div>
 <div class="Section p-20 bg-white rad-10 m-20">
     <h2 class="mt-0 mb-20">Categories</h2>
     <div class="responsive-table">
         <p>
             <a href="#" onclick="add()">Create New</a>
         </p><br />
-
-
-
         <table>
             <thead>
                 <tr>
@@ -81,9 +32,6 @@
                 }
             </tbody>
         </table>
-
-
-
         <nav aria-label="Page navigation" class="my-5">
             <ul class="pagination justify-content-center">
                 @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
@@ -104,8 +52,8 @@
         $.ajax({
             url: `/Category/Add`,
             success: function (result) {
-                $("#modal-placeholder").html(result); // this is the container in this view
-                $('#AddModal').modal('show'); //this id in the partial view
+                $("#modal-placeholder").html(result);
+                $('#AddModal').modal('show');
             }
         });
     }

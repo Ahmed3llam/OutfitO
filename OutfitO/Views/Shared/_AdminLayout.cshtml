@@ -1,5 +1,4 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,8 +32,8 @@
                         <span>Profile</span>
                     </a>
                 </li>
-                <li>
-                    <a class="d-flex align-center fs-14 c-black rad-6 p-10" asp-controller="Product" asp-action="AdminProduct" asp-route-id="@userId">
+				<li>
+                    <a class="d-flex align-center fs-14 c-black rad-6 p-10" asp-controller="Product" asp-action="AdminProduct">
                         <i class="fa-solid fa-diagram-project fa-fw"></i>
                         <span>My Products</span>
                     </a>
@@ -58,6 +57,12 @@
                     </a>
                 </li>
                 <li>
+                    <a class="d-flex align-center fs-14 c-black rad-6 p-10" asp-controller="Role" asp-action="AddRole">
+                        <i class="far fa-plus fa-fw"></i>
+                        <span>AddRole</span>
+                    </a>
+                </li>
+                <li>
                     <a class="d-flex align-center fs-14 c-black rad-6 p-10" asp-controller="PromoCode" asp-action="Index">
                         <i class="fa-regular fa-credit-card fa-fw"></i>
                         <span>PromoCodes</span>
@@ -66,6 +71,43 @@
             </ul>
         </div>
         <div class="content w-full">
+            <div class="head bg-white p-15 between-flex">
+                <div class="search p-relative">
+                    <input class="p-10" type="search" placeholder="Search" />
+                </div>
+                <div class="icons d-flex align-center">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
+                            @userName
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" asp-controller="Profile" asp-action="EditData" asp-route-id="@userId" style="color: black;">
+                                    <i class="fa-solid fa-gear fa-fw"></i>
+                                    <span>Settings</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-action="Logout" asp-controller="User" asp-route-id="@userId" style="color: black;">
+                                    <i class="fa-solid fa-sign-out-alt fa-fw"></i>
+                                    <span>Logout</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="DeleteAccount('@userId')" style="color: black;">
+                                    <i class="fa-solid fa-trash-alt fa-fw"></i>
+                                    <span>Delete Account</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    @{
+                        string imagePath = $"~/Images/{UserImg}";
+                    }
+                    <img src="@Url.Content(imagePath)" alt="" style="border-radius:50%" />
+                </div>
+            </div>
             @RenderBody()
             @RenderSection("Scripts", required: false)
         </div>

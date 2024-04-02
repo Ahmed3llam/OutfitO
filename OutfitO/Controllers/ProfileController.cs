@@ -42,14 +42,10 @@ namespace OutfitO.Controllers
                 bool isAdmin = roles.Contains("Admin");
                 if (isAdmin)
                 {
-                    ViewData["Category"] = categoryRepository.GetAll();
-                    ViewData["Products"] = ProductRepository.GetForUser(Id);
                     return View("Index", user);
                 }
                 else
                 {
-                    ViewData["Order"]=orderRepository.GetOrderForUSer(Id);
-                    ViewData["Payment"]=PaymentRepository.GetPaymentForUSer(Id);
                     return View("IndexUser", user);
                 }
             }

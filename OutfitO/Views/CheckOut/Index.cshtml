@@ -3,7 +3,11 @@
     ViewData["Title"] = "Index";
     Layout = "_UserLayout";
 }
-
+<style>
+    .form-group span{
+       color:red;
+    }
+</style>
 <div class="section">
     <!-- container -->
     <div class="container">
@@ -104,12 +108,10 @@
     </div>
     <!-- /container -->
 </div>
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 @section Scripts {
-    @{
-        // Render necessary partial validation scripts
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         // JavaScript code for Stripe integration

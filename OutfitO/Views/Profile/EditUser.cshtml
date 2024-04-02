@@ -3,15 +3,10 @@
 	Layout = "_UserLayout";
 }
 @model OutfitO.ViewModels.UserDataVM
-
-@* <div id="modal-placeholder"></div> *@
 <div class="section">
-	<!-- container -->
 	<div class="container">
-		<!-- row -->
 		<div class="row">
 			<div class="col-md-7">
-				<!-- Billing Details -->
 				<div class="billing-details">
 					<div class="section-title">
 						<h3 class="title">Edit Your Data</h3>
@@ -64,8 +59,6 @@
 					</form>
 				</div>
 			</div>
-
-			<!-- Order Details -->
 			<div class="col-md-5 order-details">
 				<div class="section-title text-center">
 					<h3 class="title">Your Image</h3>
@@ -79,7 +72,6 @@
 							<img class="rad-half" src="@Url.Content(imagePath)" alt="" style="width:150px;height:150px;" />
 						</div>
 					</div>
-
 					<div class="sec-box mb-15 between-flex my-3">
 						<div>
 							<span>Image</span>
@@ -94,11 +86,8 @@
 					</div>
 				</div>
 			</div>
-			<!-- /Order Details -->
 		</div>
-		<!-- /row -->
 	</div>
-	<!-- /container -->
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -114,7 +103,6 @@
 			}
 		});
 	}
-
 	function ChangePassword(id) {
 		console.log("id=", id);
 		$.ajax({
