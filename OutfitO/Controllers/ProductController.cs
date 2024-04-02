@@ -92,8 +92,9 @@ namespace OutfitO.Controllers
 
 		public IActionResult Details(int id)
 		{
-			var ProductDetails = productRepository.GetProduct(id);
-			return View("Details", ProductDetails);
+			ViewData["ProductDetails"] = productRepository.GetProduct(id);
+			var comment = commentRepository.GetForProduct(id);
+			return View("Details", comment);
 		}
 
 		public IActionResult New()
@@ -260,46 +261,37 @@ namespace OutfitO.Controllers
 		// ---- Comment ---- //
 
 		[HttpGet]
+		public IActionResult comments(int id)
+		{
+			var comment = commentRepository.GetForProduct(id);
+			return PartialView("_AllCommentsPartial", comment);
+		}
+
+		[HttpGet]
 		public IActionResult Addcomment(int productId)
 		{
 			var commentViewModel = new CommentWithItsUser { ProductID = productId };
 			return PartialView("__ProductAddCommentPartial", commentViewModel);
 		}
 
-		//[HttpPost]
-		//public IActionResult Addcomment(CommentWithItsUser comment)
-		//{
-		//    if (ModelState.IsValid == true)
-		//    {
-		//        var newComment = new Comment
-		//        {
-		//            Body = comment.Body,
-		//            ProductID = comment.ProductID,
-		//        };
 
-		//        commentRepository.Insert(newComment);
-		//        commentRepository.Save();
-		//        return RedirectToAction("Details", "Product", new { id = comment.ProductID });
-		//    }
-		//    return PartialView("_ProductAddCommentPartial", comment);
-		//}
 		[HttpPost]
 		public IActionResult AddComment(CommentWithItsUser comment)
 		{
 			string user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			if (comment.Body!=null&&comment.ProductID!=null)
+			if (comment.Body != null && comment.ProductID != null)
 			{
 				var newComment = new Comment
 				{
 					Body = comment.Body,
 					ProductID = comment.ProductID,
-					UserId=user
+					UserId = user
 
 				};
-				
+
 				commentRepository.Insert(newComment);
 				commentRepository.Save();
-				return RedirectToAction("Details", "Product", new { id = comment.ProductID });
+				return RedirectToAction("comments", "Product", new { id = comment.ProductID });
 			}
 			return PartialView("__ProductAddCommentPartial", comment);
 		}
@@ -334,7 +326,6 @@ namespace OutfitO.Controllers
 				}
 
 				existingComment.Body = comment.Body;
-				existingComment.Body = comment.Body;
 
 				commentRepository.Update(existingComment);
 				commentRepository.Save();
@@ -342,6 +333,8 @@ namespace OutfitO.Controllers
 			}
 			return PartialView("_EditCommentPartial", comment);
 		}
+
+
 		[HttpPost]
 		public IActionResult DeleteComment(int commentId)
 		{

@@ -1,97 +1,140 @@
-﻿@model OutfitO.Models.Product
+﻿@model List<Comment>
 @{
     Layout = "_ProductDetailsLayout";
+    Product data = ViewBag.ProductDetails;
 }
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&family=Kalam:wght@300;400;700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 </head>
+
+<style>
+    body {
+        font-family: "Montserrat", sans-serif;
+        color: #333;
+    }
+
+    .col-md-3 {
+        flex: 0 0 auto;
+        width: 25.33333333%;
+    }
+
+    .col-md-6 {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    .clearboth {
+        clear: both;
+    }
+
+    ol, ul {
+        padding-left: 0px !important;
+    }
+
+    #Display_Review {
+        display: flex;
+        /* justify-content:space-between ; */
+    }
+
+    .detail {
+        margin-left: 10%;
+    }
+
+    .review-link {
+        color: #2B2D42;
+        font-weight: 500;
+        transition: all 0.3s ease-in-out;
+        text-decoration: none;
+    }
+
+        .review-link:hover {
+            color: red;
+        }
+
+    .fa-facebook-f, .fa-twitter, .fa-google-plus-g, .fa-envelope, .product-links {
+        color: #333;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .fa-facebook-f:hover, .fa-twitter:hover, .fa-google-plus-g:hover, .fa-envelope:hover, .product-links:hover {
+            color: red;
+            text-decoration: none;
+        }
+
+    .add-to-cart-btn a {
+        text-decoration: none;
+    }
+</style>
+
+
 <div id="modal-placeholder"></div>
 
 <!-- Product main img -->
-<div class="col-md-5">
-    <img src="~/Images/@Model.Img" height="500px" />
-</div>
-<!-- /Product main img -->
-<!-- Product details -->
-<div class="col-md-5">
-    <div class="product-details">
-        <h2 class="product-name">@Model.Title</h2>
-        <div>
-            <div class="product-rating">
-                <i class="fa fa-star-fill"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-o"></i>
-            </div>
-            <a class="review-link" href="#tab3">10 Review(s) | Add your review</a>
-        </div>
-        <div>
-            <h3 class="product-price">@Model.Price <del class="product-old-price">@(2 * @Model.Price)</del></h3>
-            <span class="product-available">@Model.Stock In Stock</span>
-        </div>
-        <p>@Model.Description.</p>
-
-        <div class="product-options">
-            <label>
-                Size
-                <select class="input-select">
-                    <option value="0">X</option>
-                </select>
-            </label>
-            <label>
-                Color
-                <select class="input-select">
-                    <option value="0">Red</option>
-                </select>
-            </label>
-        </div>
-
-        <div class="add-to-cart">
-            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-            <a href="/Product/Index">
-                👈 Back To List
-            </a>
-        </div>
-
+<div>
+    <div class="col-md-5  flexMain" style="width:40%">
+        <img src="~/Images/@data.Img" height="300px" width="100%" />
     </div>
 
-</div>
-<div class="clearboth"></div>
-<div class="col-md-12">
-    <div id="product-tab">
-        <!-- product tab nav -->
-        <ul class="tab-nav">
-            <li><a data-toggle="tab" href="#tab3">All Reviews (@Model.Comments.Count) </a></li>
-        </ul>
-        <!-- Review Form -->
-        <div id="review" style="display: none;">
-            <div id="Display_Review">
-                <div id="all-comments">
-                    @Html.Partial("_AllCommentsPartial", Model.Comments)
+    <!-- /Product main img -->
+    <!-- Product details -->
+    <!-- Product details -->
+    <div class="col-md-5 detail flexMain ">
+        <div class="product-details">
+            <h2 class="product-name">@data.Title</h2>
+            <div>
+                <div class="product-rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
                 </div>
-                <div class="col-md-3">
-                    <div id="review-form">
-                        <form class="review-form">
-                            <textarea class="input" placeholder="Your Review"></textarea>
-                            <div class="input-rating">
-                                <span>Your Rating: </span>
-                                <div class="stars">
-                                    <input id="star5" name="rating" value="5" type="radio"><label for="star5"></label>
-                                    <input id="star4" name="rating" value="4" type="radio"><label for="star4"></label>
-                                    <input id="star3" name="rating" value="3" type="radio"><label for="star3"></label>
-                                    <input id="star2" name="rating" value="2" type="radio"><label for="star2"></label>
-                                    <input id="star1" name="rating" value="1" type="radio"><label for="star1"></label>
-                                </div>
-                            </div>
-                            <button class="primary-btn">Submit</button>
-                        </form>
-                    </div>
-                </div>
+                <a class="review-link" href="#product-tab">(@data.Comments.Count) Reviews | Add your review</a>
+            </div>
+            <div>
+                <h3 class="product-price fw-bold">$@data.Price <del class="product-old-price">$@(2 * @data.Price)</del></h3>
+                <span class="product-available">@data.Stock In Stock</span>
+            </div>
+            <p style="color:#333 ; line-height: 1.42857143;font-size: 14px;">@data.Description.</p>
+
+
+
+
+
+
+            <ul class="product-links">
+                <li>Category:</li>
+                <li><a href="#" style="text-decoration:none;color:#333">@data.Category.Title</a></li>
+
+            </ul>
+
+            <ul class="product-links">
+                <li>Share:</li>
+
+
+
+                <li><a href="#"> <i class="fa-brands fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa-brands fa-google-plus-g"></i></a></li>
+                <li><a href="#"><i class="fa-solid fa-envelope"></i></a></li>
+
+
+            </ul>
+            <div class="add-to-cart">
+                <a asp-action="AddToCart" asp-route-id="@data.Id" asp-controller="Cart">
+                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                </a>
+                <a href="/Product/Index">
+                    <button class="add-to-cart-btn"><i class="fa-regular fa-backward"></i> Back To List</button>
+                </a>
 
             </div>
         </div>
-
     </div>
 </div>
 <!-- /Product details -->
@@ -100,14 +143,102 @@
     <div id="product-tab">
         <!-- product tab nav -->
         <ul class="tab-nav">
-            <li><a data-toggle="tab" href="#tab3">All Reviews (@Model.Comments.Count)</a></li>
+            <li><a data-toggle="tab" href="#tab3">All Reviews (@data.Comments.Count)</a></li>
         </ul>
-        <!-- Review Form -->
-        <div id="review" style="display: none;">
+
+        <div id="review">
             <div id="Display_Review">
-                <div id="all-comments">
-                    @Html.Partial("_AllCommentsPartial", Model.Comments)
+
+
+                <!-- Rating -->
+                <div class="col-md-3">
+                    <div id="rating">
+                        <div class="rating-avg">
+                            <span>4.5</span>
+                            <div class="rating-stars">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-o"></i>
+                            </div>
+                        </div>
+                        <ul class="rating">
+                            <li>
+                                <div class="rating-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="rating-progress">
+                                    <div style="width: 80%;"></div>
+                                </div>
+                                <span class="sum">3</span>
+                            </li>
+                            <li>
+                                <div class="rating-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <div class="rating-progress">
+                                    <div style="width: 60%;"></div>
+                                </div>
+                                <span class="sum">2</span>
+                            </li>
+                            <li>
+                                <div class="rating-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <div class="rating-progress">
+                                    <div></div>
+                                </div>
+                                <span class="sum">0</span>
+                            </li>
+                            <li>
+                                <div class="rating-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <div class="rating-progress">
+                                    <div></div>
+                                </div>
+                                <span class="sum">0</span>
+                            </li>
+                            <li>
+                                <div class="rating-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <div class="rating-progress">
+                                    <div></div>
+                                </div>
+                                <span class="sum">0</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+                <!-- /Rating -->
+                <div class="col-md-6 comments-container" id="all-comments">
+
+                    @Html.Partial("_AllCommentsPartial", Model)
+                </div>
+
+                <!-- Review Form -->
                 <div class="col-md-3">
                     <div id="review-form">
                         <form class="review-form" id="commentForm">
@@ -126,6 +257,9 @@
                         </form>
                     </div>
                 </div>
+                <!-- /Review Form -->
+
+
             </div>
         </div>
     </div>
@@ -143,51 +277,43 @@
 
 <script>
     $(document).ready(function () {
-        $('#product-tab').on('click', 'a[data-toggle="tab"]', function (e) {
-            var target = $(e.target).attr("href");
-            if (target === "#tab3") {
-                $('#review').toggle();
-            }
-        });
 
         $('#commentForm').submit(function (e) {
             e.preventDefault();
             var formData = {
                 Body: $('#commentBody').val(),
-                ProductID: @Model.Id // Assuming Id is the property of Product model
-                };
+                ProductID: @data.Id
+                        };
             $.ajax({
                 type: "POST",
                 url: "/Product/AddComment",
                 data: formData,
                 success: function (response) {
-                    // Reload the comments section to display the updated list of comments
-                    $('#all-comments').load('/Product/Details/@Model.Id #all-comments');
 
-                    // Clear the textarea after successfully adding a comment
+                    $('#all-comments').html("");
+                    $('#all-comments').html(response);
                     $('#commentBody').val('');
+
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.error("Error adding comment: " + errorThrown);
                 }
             });
         });
+
+
+
     });
+    function editeComment(commentId) {
+        event.preventDefault();
+        $.ajax({
+            url: '/product/EditComment?commentId=' + commentId,
+            success: function (result) {
+                console.log(result)
+                $("#modal-placehold2").html(result);
+                $('#EditModal2').modal('show');
+            }
+        });
+    }
 </script>
 
-
-<style>
-    .clearboth {
-        clear: both;
-    }
-
-    #Display_Review {
-        display: flex;
-    }
-
-    .detail
-    {
-        margin-left:10%;
-
-    }
-</style>
