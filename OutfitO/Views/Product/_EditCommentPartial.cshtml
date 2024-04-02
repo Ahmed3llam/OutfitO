@@ -1,10 +1,9 @@
 ﻿@model OutfitO.ViewModels.CommentWithItsUser
-<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade in" id="EditModal2" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Comment</h5>
-                <a class="btn-close" asp-action="Index" ></a>
+                <h5 class="modal-title" id="editModalLabel">Edit Your  Comment</h5>
             </div>
             <div class="modal-body">
                 <form asp-action="EditComment" asp-controller="Product" method="post">
@@ -18,9 +17,7 @@
                 </form>
 
             </div>
-            <div class="modal-footer">
-                <a class="btn btn-secondary" asp-action="Index">Close</a>
-            </div>
+
         </div>
     </div>
 </div>
@@ -29,4 +26,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-
