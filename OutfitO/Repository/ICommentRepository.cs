@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OutfitO.Models;
+﻿using OutfitO.Models;
 
 namespace OutfitO.Repository
 {
@@ -7,7 +6,7 @@ namespace OutfitO.Repository
     {
         public List<Comment> GetForProduct(int ProductId);
         public List<Comment> GetForUser(string Userid);
-
+        public List<Comment> GetForProduct(int ProductId, int skip, int content);
         public List<Comment> GetAll();
 
         public Comment GetById(int id);

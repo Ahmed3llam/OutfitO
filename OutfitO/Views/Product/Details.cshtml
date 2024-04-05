@@ -2,6 +2,7 @@
 @{
     Layout = "_ProductDetailsLayout";
     Product data = ViewBag.ProductDetails;
+    bool didHebuyIt = ViewBag.productExists;
 }
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -69,15 +70,18 @@
     .add-to-cart-btn a {
         text-decoration: none;
     }
+
+
 </style>
 
+<input type="hidden" id="productId" value="@ViewBag.ProductID" />
 
 <div id="modal-placeholder"></div>
 
 <!-- Product main img -->
 <div>
     <div class="col-md-5  flexMain" style="width:40%">
-        <img src="~/Images/@data.Img" height="300px" width="100%" />
+        <img src="~/Images/@data.Img" height="300px" width="100%" /> 
     </div>
 
     <!-- /Product main img -->
@@ -175,7 +179,7 @@
                                 <div class="rating-progress">
                                     <div style="width: 80%;"></div>
                                 </div>
-                                <span class="sum">3</span>
+                              
                             </li>
                             <li>
                                 <div class="rating-stars">
@@ -188,7 +192,7 @@
                                 <div class="rating-progress">
                                     <div style="width: 60%;"></div>
                                 </div>
-                                <span class="sum">2</span>
+                                
                             </li>
                             <li>
                                 <div class="rating-stars">
@@ -201,7 +205,7 @@
                                 <div class="rating-progress">
                                     <div></div>
                                 </div>
-                                <span class="sum">0</span>
+                              
                             </li>
                             <li>
                                 <div class="rating-stars">
@@ -214,7 +218,7 @@
                                 <div class="rating-progress">
                                     <div></div>
                                 </div>
-                                <span class="sum">0</span>
+                             
                             </li>
                             <li>
                                 <div class="rating-stars">
@@ -227,7 +231,7 @@
                                 <div class="rating-progress">
                                     <div></div>
                                 </div>
-                                <span class="sum">0</span>
+                               
                             </li>
                         </ul>
                     </div>
@@ -253,7 +257,14 @@
                                     <input id="star1" name="rating" value="1" type="radio"><label for="star1"></label>
                                 </div>
                             </div>
-                            <button class="primary-btn" type="submit">Submit</button>
+                            @if (didHebuyIt)
+                            {
+                                <button class="primary-btn" type="submit">Submit</button>
+                            }
+                            else
+                            {
+                                <p style="color:white;padding:5px;background-color:red; border-radius:5px;font-weight:bold">you should buy this product First</p>
+                            }
                         </form>
                     </div>
                 </div>
@@ -277,43 +288,63 @@
 
 <script>
     $(document).ready(function () {
-
         $('#commentForm').submit(function (e) {
             e.preventDefault();
+            // Get the value of the textarea
+            var commentBody = $('#commentBody').val().trim();
+
+            // Check if the textarea is empty
+            if (commentBody === '') {
+                Swal.fire(
+                    'Error!',
+                    'Please write a review before submitting.',
+                    'error'
+                );
+                return;
+            }
+
+            // Assuming @data.Id is a server-side variable, you should output it properly
+            var productId = @data.Id;
+            console.log(commentBody, productId);
+
             var formData = {
-                Body: $('#commentBody').val(),
-                ProductID: @data.Id
-                        };
+                Body: commentBody,
+                ProductID: productId
+            }; 
+
             $.ajax({
                 type: "POST",
                 url: "/Product/AddComment",
                 data: formData,
                 success: function (response) {
-
-                    $('#all-comments').html("");
+                    console.log(response);
                     $('#all-comments').html(response);
                     $('#commentBody').val('');
-
+                    Swal.fire(
+                        'Success',
+                        'Comment has been added successfully',
+                        'success'
+                    );
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.error("Error adding comment: " + errorThrown);
                 }
             });
         });
-
-
-
     });
-    function editeComment(commentId) {
+
+    function CommentsPagination(page) {
         event.preventDefault();
+        var productId = $('#productId').val(); // Get the product ID
+
         $.ajax({
-            url: '/product/EditComment?commentId=' + commentId,
+            url: `/Product/CommentsPagination?page=${page}&productId=${productId}`,
             success: function (result) {
-                console.log(result)
-                $("#modal-placehold2").html(result);
-                $('#EditModal2').modal('show');
+                $("#all-comments").html(result);
             }
         });
     }
+
+
 </script>
 
