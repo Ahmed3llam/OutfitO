@@ -68,8 +68,22 @@ namespace OutfitO.Controllers
 			ViewData["User"] = user;
 			return View("Index", orders);
 		}
+        public IActionResult OrderPagination(int page = 1)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User user = userRepository.GetUser(userId);
+            int content = 8;
+            int skip = (page - 1) * content;
+            List<Order> orders = orderRepository.GetSomeOrders(skip, content);
+            int total = orderRepository.Count();
+            ViewData["Page"] = page;
+            ViewData["content"] = content;
+            ViewData["TotalItems"] = total;
+            ViewData["User"] = user;
+            return PartialView("_OrderPaginationPartial", orders);
+        }
 
-		public IActionResult History(int page = 1)
+        public IActionResult History(int page = 1)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             User user = userRepository.GetUser(userId);

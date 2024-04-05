@@ -1,0 +1,36 @@
+﻿@model List<Order>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>User Full Name</th>
+                    <th>Date</th>
+                    <th>Price</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Order order in Model)
+                {
+                    string FullName = $"{order.User.FirstName} {order.User.Lastname}";
+                    <tr>
+                        <td>@FullName</td>
+                        <td>@order.Date</td>
+                        <td>@order.Price</td>
+                        <td>
+                            <a href="#" onclick="OrderDetails('@order.Id')">  <i class="fa fa-eye"></i> </a> 
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation" class="my-5">
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
+                {
+                    <li class="page-item @(i == (int)ViewData["Page"] ? "active" : "")  ">
+                          <a class="page-link btn btn-secondary mx-1" onclick="OrdersPagination('@i')">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
