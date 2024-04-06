@@ -2226,3 +2226,33 @@ textarea.input {
         margin-top: 10px;
     }
 }
+
+@media screen and (max-width: 1392px){
+    .shop-img .babyImg{
+        height:350px;
+    }
+}
+
+@media screen and (max-width: 1177px) {
+    .shop-img .babyImg {
+        height: 300px;
+    }
+}
+
+@media screen and (max-width: 997px) {
+    .shop-img .babyImg {
+        height: 280px;
+    }
+}
+
+@media screen and (max-width: 985px) {
+    .shop-img .babyImg {
+        height: 220px;
+    }
+}
+
+@media screen and (max-width: 754px) {
+    .shop-img .babyImg {
+        height: 480px;
+    }
+}
