@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using OutfitO.Models;
 using OutfitO.Repository;
-
-using System.Diagnostics;
 using System.Security.Claims;
 
 
@@ -16,7 +12,7 @@ namespace OutfitO.Controllers
         IUserRepository userRepository;
         IOrderItemsRepository orderItemsRepository;
 
-        public OrderController(IOrderRepository orderRepo, IUserRepository userRepository , IOrderItemsRepository orderItemsRepository)
+        public OrderController(IOrderRepository orderRepo, IUserRepository userRepository, IOrderItemsRepository orderItemsRepository)
         {
             this.orderRepository = orderRepo;
             this.userRepository = userRepository;
@@ -36,7 +32,7 @@ namespace OutfitO.Controllers
                         Date = DateTime.Now,
                         UserId = Userid,
                         Price = price,
-                        PaymentId = paymentId 
+                        PaymentId = paymentId
                     };
                     orderRepository.Insert(NewOrder);
                     orderRepository.Save();
@@ -55,19 +51,19 @@ namespace OutfitO.Controllers
         }
         //[Authorize(Roles ="Admin")]
         public IActionResult Index(int page = 1)
-		{
-			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			User user = userRepository.GetUser(userId);
-			int content = 8;
-			int skip = (page - 1) * content;
-			List<Order> orders = orderRepository.GetSomeOrders(skip, content);
-			int total = orderRepository.Count();
-			ViewData["Page"] = page;
-			ViewData["content"] = content;
-			ViewData["TotalItems"] = total;
-			ViewData["User"] = user;
-			return View("Index", orders);
-		}
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User user = userRepository.GetUser(userId);
+            int content = 8;
+            int skip = (page - 1) * content;
+            List<Order> orders = orderRepository.GetSomeOrders(skip, content);
+            int total = orderRepository.Count();
+            ViewData["Page"] = page;
+            ViewData["content"] = content;
+            ViewData["TotalItems"] = total;
+            ViewData["User"] = user;
+            return View("Index", orders);
+        }
         public IActionResult OrderPagination(int page = 1)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -83,13 +79,14 @@ namespace OutfitO.Controllers
             return PartialView("_OrderPaginationPartial", orders);
         }
 
+
         public IActionResult History(int page = 1)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             User user = userRepository.GetUser(userId);
             int content = 8;
             int skip = (page - 1) * content;
-            List<Order> orders = orderRepository.GetSomeOrdersForUser(userId , skip, content);
+            List<Order> orders = orderRepository.GetSomeOrdersForUser(userId, skip, content);
             int total = orderRepository.CountOrdersForUser(userId);
             ViewData["Page"] = page;
             ViewData["content"] = content;
@@ -97,16 +94,25 @@ namespace OutfitO.Controllers
             ViewData["User"] = user;
             return View("History", orders);
         }
+        public IActionResult OrdersPaginationHistory(int page = 1)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User user = userRepository.GetUser(userId);
+            int content = 8;
+            int skip = (page - 1) * content;
+            List<Order> orders = orderRepository.GetSomeOrdersForUser(userId, skip, content);
+            int total = orderRepository.CountOrdersForUser(userId);
+            ViewData["Page"] = page;
+            ViewData["content"] = content;
+            ViewData["TotalItems"] = total;
+            ViewData["User"] = user;
+            return PartialView("_OrderPaginationHistoryPartial", orders);
+        }
 
         //Order/Details
         public IActionResult Details(int id)
         {
             List<OrderItem> orderItems = orderRepository.GetOrderItem(id);
-            //if (orderItems.IsNullOrEmpty() || orderItems.Count == 0)
-            //{
-            //    orderItems = new List<OrderItem>();
-              
-            //}
             return PartialView("_DetailsPartial", orderItems);
         }
 
