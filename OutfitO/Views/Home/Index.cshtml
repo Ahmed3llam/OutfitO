@@ -1,8 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "_UserLayout";
 }
 
-<div class="text-center">
+@* <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     <a class="d-block" href="/Admin/Register">   /Admin/Register   </a>
@@ -17,4 +18,324 @@
 
     <a class="d-block" href="/product/index"> /product/index   </a>
 
+</div> *@
+
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+<style>
+	img{
+		width:100%;
+	}
+
+	.newsletter form .newsletter-btn {
+		width: 159px;
+	}
+
+	.babyImg{
+		max-height:415px;
+	}
+	.product-img img{
+		height:350px;
+	}
+</style>
+
+<!-- SECTION -->
+<div class="section" data-aos="fade-up">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<!-- shop -->
+			<div class="col-md-4 col-xs-6">
+				<div class="shop">
+					<div class="shop-img">
+						<img src="/Images/T-shirt1.png" alt="">
+					</div>
+					<div class="shop-body">
+						<h3>T-Shirts<br>Collection</h3>
+						<a asp-action="index" asp-controller="Product" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+					</div>
+				</div>
+			</div>
+			<!-- /shop -->
+			<!-- shop -->
+			<div class="col-md-4 col-xs-6">
+				<div class="shop">
+					<div class="shop-img">
+						<img class="babyImg" src="/Images/BabyClothing9.png" alt="">
+					</div>
+					<div class="shop-body">
+						<h3>Kids<br>Collection</h3>
+						<a asp-action="index" asp-controller="Product" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+					</div>
+				</div>
+			</div>
+			<!-- /shop -->
+			<!-- shop -->
+			<div class="col-md-4 col-xs-6">
+				<div class="shop">
+					<div class="shop-img">
+						<img src="/Images/Skirt4.png" alt="">
+					</div>
+					<div class="shop-body">
+						<h3>Skirts<br>Collection</h3>
+						<a asp-action="index" asp-controller="Product" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+					</div>
+				</div>
+			</div>
+			<!-- /shop -->
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
 </div>
+<!-- /SECTION -->
+
+<!-- ---------------------------------------------------------- -->
+<!-- HOT DEAL SECTION -->
+<div id="hot-deal" class="section" data-aos="zoom-in">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<div class="col-md-3">
+				<img src="/Images/T-shirt3.png" />
+			</div>
+			<div class="col-md-6">
+				<div class="hot-deal">
+
+					<ul class="hot-deal-countdown">
+						<li>
+							<div>
+								<h3>02</h3>
+								<span>Days</span>
+							</div>
+						</li>
+						<li>
+							<div>
+								<h3>10</h3>
+								<span>Hours</span>
+							</div>
+						</li>
+						<li>
+							<div>
+								<h3>34</h3>
+								<span>Mins</span>
+							</div>
+						</li>
+						<li>
+							<div>
+								<h3>60</h3>
+								<span>Secs</span>
+							</div>
+						</li>
+					</ul>
+					<h2 class="text-uppercase">hot deal this week</h2>
+					<p>New Collection Up to 50% OFF</p>
+					<a class="primary-btn cta-btn" asp-action="index" asp-controller="Product">Shop now</a>
+
+				</div>
+				
+
+			</div>
+			<div class="col-md-3">
+				<img width="90%" src="/Images/Skirt4.png" />
+			</div>
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<!-- /HOT DEAL SECTION -->
+
+<!-- ---------------------------------------------------------- -->
+<!-- Top Selling Section -->
+<!-- SECTION -->
+<div class="section" data-aos="zoom-in-up">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+
+			<!-- section title -->
+			<div class="col-md-12">
+				<div class="section-title">
+					<h3 class="title">Top selling</h3>
+				</div>
+			</div>
+			<!-- /section title -->
+
+			<!-- Products tab & slick -->
+			<div class="col-md-12">
+				<div class="row">
+					<div class="products-tabs">
+						<!-- tab -->
+						<div id="tab2" class="tab-pane fade in active">
+							<div class="products-slick" data-nav="#slick-nav-2">
+								<!-- product -->
+								<div class="product">
+									<div class="product-img">
+										<img src="/Images/T-shirt6.png" alt="">
+										<div class="product-label">
+											<span class="sale">-30%</span>
+											<span class="new">NEW</span>
+										</div>
+									</div>
+									<div class="product-body">
+										<p class="product-category">T-Shirts</p>
+										<h3 class="product-name"><a href="#">Men T-shirt</a></h3>
+										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+										<div class="product-rating">
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										</div>
+									</div>
+								</div>
+								<!-- /product -->
+
+								<!-- product -->
+								<div class="product">
+									<div class="product-img">
+										<img src="/Images/Skirt9.png" alt="">
+										<div class="product-label">
+											<span class="new">NEW</span>
+										</div>
+									</div>
+									<div class="product-body">
+										<p class="product-category">Skirts</p>
+										<h3 class="product-name"><a href="#">EleganceFlare Skirt</a></h3>
+										<h4 class="product-price">$650.00 <del class="product-old-price">$800.00</del></h4>
+										<div class="product-rating">
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star-o"></i>
+										</div>
+									</div>
+								</div>
+								<!-- /product -->
+
+								<!-- product -->
+								<div class="product">
+									<div class="product-img">
+										<img src="/Images/Pant 8.png" alt="">
+										<div class="product-label">
+											<span class="sale">-30%</span>
+										</div>
+									</div>
+									<div class="product-body">
+										<p class="product-category">Pants</p>
+										<h3 class="product-name"><a href="#">MidnightMuse Pants</a></h3>
+										<h4 class="product-price">$520.00 <del class="product-old-price">$600.00</del></h4>
+										<div class="product-rating">
+										</div>
+									</div>
+								</div>
+								<!-- /product -->
+
+								<!-- product -->
+								<div class="product">
+									<div class="product-img">
+										<img src="/Images/BabyClothing5.png" alt="">
+									</div>
+									<div class="product-body">
+										<p class="product-category">Kids</p>
+										<h3 class="product-name"><a href="#">BabyBlossom Attire</a></h3>
+										<h4 class="product-price">$700.00 <del class="product-old-price">$870.00</del></h4>
+										<div class="product-rating">
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										</div>
+									</div>
+								</div>
+								<!-- /product -->
+
+								<!-- product -->
+								<div class="product">
+									<div class="product-img">
+										<img src="/Images/BlueDress.png" alt="">
+									</div>
+									<div class="product-body">
+										<p class="product-category">Category</p>
+										<h3 class="product-name"><a href="#">ScarletShadow Dress</a></h3>
+										<h4 class="product-price">$800.00 <del class="product-old-price">$990.00</del></h4>
+										<div class="product-rating">
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										</div>
+									</div>
+								</div>
+								<!-- /product -->
+							</div>
+							<div id="slick-nav-2" class="products-slick-nav"></div>
+						</div>
+						<!-- /tab -->
+					</div>
+				</div>
+			</div>
+			<!-- /Products tab & slick -->
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<!-- /SECTION -->
+
+
+<!-- ---------------------------------------------------------- -->
+<!-- Sign Up Section -->
+<!-- NEWSLETTER -->
+<div id="newsletter" class="section" data-aos="fade-up">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="newsletter">
+					<p>Sign Up for the <strong>NEWSLETTER</strong></p>
+					<form>
+						<input class="input" type="email" placeholder="Enter Your Email">
+						<button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
+					</form>
+					<ul class="newsletter-follow">
+						<li>
+							<a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+						</li>
+						<li>
+							<a href="#"><i class="fa-brands fa-twitter"></i></a>
+						</li>
+						<li>
+							<a href="#"><i class="fa-brands fa-instagram"></i></a>
+						</li>
+						<li>
+							<a href="#"><i class="fa-brands fa-pinterest"></i></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<!-- /NEWSLETTER -->
+
+<script>
+	AOS.init({
+		duration: 1200,
+	})
+</script>
+
+
