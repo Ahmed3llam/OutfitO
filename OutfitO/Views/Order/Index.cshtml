@@ -16,9 +16,10 @@
     }
 </style>
 <div id="modal-placeholder"></div>
-<div class="Section p-20 bg-white rad-10 m-20">
+<div  class="Section p-20 bg-white rad-10 m-20">
     <h2 class="mt-0 mb-20">Orders</h2>
-    <div class="responsive-table">
+
+    <div id="modalForPagination" class="responsive-table">
         <table>
             <thead>
                 <tr>
@@ -48,12 +49,13 @@
                 @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
                 {
                     <li class="page-item @(i == (int)ViewData["Page"] ? "active" : "")  ">
-                        <a class="page-link btn btn-secondary mx-1" asp-action="Index" asp-controller="Order" asp-route-page="@i">@i</a>
+                        <a class="page-link btn btn-secondary mx-1" onclick="OrdersPagination('@i')">@i</a>
                     </li>
                 }
             </ul>
         </nav>
     </div>
+
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -65,6 +67,16 @@
             success: function (result) {
                 $("#modal-placeholder").html(result);
                 $('#OrderDetailsModal').modal('show');
+            }
+        });
+    }
+
+    function OrdersPagination(id) {
+        event.preventDefault();
+        $.ajax({
+            url: `/Order/OrderPagination?page=${id}`,
+            success: function (result) {
+                $("#modalForPagination").html(result);
             }
         });
     }

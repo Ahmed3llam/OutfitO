@@ -42,8 +42,9 @@
 
 <div class="container p-20 bg-white rad-10 m-20">
     <h3>History of Orders</h3>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
+    <div class="table-responsive" id="modalForPagination">
+        @Html.Partial("_OrderPaginationHistoryPartial", Model)
+@*         <table class="table table-striped table-hover">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -83,7 +84,7 @@
                     </li>
                 }
             </ul>
-        </nav>
+        </nav> *@
     </div>
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -103,5 +104,13 @@
         });
     }
 
-
+    function OrdersPaginationHistory(id) {
+        event.preventDefault();
+        $.ajax({
+            url: `/Order/OrdersPaginationHistory?page=${id}`,
+            success: function (result) {
+                $("#modalForPagination").html(result);
+            }
+        });
+    }
 </script>

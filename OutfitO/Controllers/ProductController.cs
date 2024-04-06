@@ -15,12 +15,14 @@ namespace OutfitO.Controllers
 		ICategoryRepository categoryRepository;
 		ICommentRepository commentRepository;
 		IUserRepository userRepository;
-		public ProductController(IProductRepository productRepo, ICategoryRepository categoryRepo, ICommentRepository commentRepo,IUserRepository userRepo)
+		IOrderItemsRepository orderItemsRepository;
+		public ProductController(IProductRepository productRepo, ICategoryRepository categoryRepo, ICommentRepository commentRepo,IUserRepository userRepo, IOrderItemsRepository orderItemsRepo)
 		{
 			productRepository = productRepo;
 			categoryRepository = categoryRepo;
 			commentRepository = commentRepo;
 			userRepository = userRepo;
+			orderItemsRepository= orderItemsRepo;
         }
 
 		public IActionResult ProductDash(int page = 1)
@@ -93,11 +95,39 @@ namespace OutfitO.Controllers
 		public IActionResult Details(int id)
 		{
 			ViewData["ProductDetails"] = productRepository.GetProduct(id);
-			var comment = commentRepository.GetForProduct(id);
-			return View("Details", comment);
+			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewData["productExists"]= orderItemsRepository.productExists(id, userId);
+           // var comment = commentRepository.GetForProduct(id);
+            #region
+            int content = 4;
+			int page = 1;
+            int skip = (page - 1) * content;
+            List<Comment> comments = commentRepository.GetForProduct(id, skip, content);
+            int total =  commentRepository.GetForProduct(id).Count();
+            ViewBag.ProductID = id;
+            ViewBag.Page = page;
+            ViewBag.Content = content;
+            ViewBag.TotalItems = total;
+        
+            #endregion
+
+            return View("Details", comments);
 		}
 
-		public IActionResult New()
+        public IActionResult CommentsPagination( int productId,int page = 1)
+		{
+            int content = 4;
+            int skip = (page - 1) * content;
+            List<Comment> comments = commentRepository.GetForProduct(productId, skip, content);
+            int total = commentRepository.GetForProduct(productId).Count();
+            ViewBag.ProductID = productId;
+            ViewBag.Page = page;
+            ViewBag.Content = content;
+            ViewBag.TotalItems = total;
+            return PartialView("_AllCommentsPartial", comments);
+        }
+
+        public IActionResult New()
 		{
             User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var categories = categoryRepository.GetAll();
@@ -112,7 +142,7 @@ namespace OutfitO.Controllers
             User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (Img != null && Img.Length > 0)
 			{
-				string FileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(Img.FileName);
+				string FileName = Path.GetFileName(Img.FileName);
 				string path = $"wwwroot/Images/{FileName}";
 				FileStream fs = new FileStream(path, FileMode.Create);
 				Img.CopyTo(fs);
@@ -243,7 +273,7 @@ namespace OutfitO.Controllers
 						Task.Delay(retryDelayMs).Wait();
 					}
 				}
-				string FileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(NewImg.FileName);
+				string FileName = Path.GetFileName(NewImg.FileName);
 				string path = $"wwwroot/Images/{FileName}";
 				FileStream fs = new FileStream(path, FileMode.Create);
 				NewImg.CopyTo(fs);
@@ -278,6 +308,7 @@ namespace OutfitO.Controllers
 		[HttpPost]
 		public IActionResult AddComment(CommentWithItsUser comment)
 		{
+			
 			string user = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			if (comment.Body != null && comment.ProductID != null)
 			{
@@ -291,7 +322,8 @@ namespace OutfitO.Controllers
 
 				commentRepository.Insert(newComment);
 				commentRepository.Save();
-				return RedirectToAction("comments", "Product", new { id = comment.ProductID });
+                HttpContext.Session.SetInt32("productID", comment.ProductID);
+                return RedirectToAction("CommentsPagination", "Product");
 			}
 			return PartialView("__ProductAddCommentPartial", comment);
 		}

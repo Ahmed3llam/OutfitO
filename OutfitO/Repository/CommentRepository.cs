@@ -14,7 +14,14 @@ namespace OutfitO.Repository
 		{
 			return _context.Comment.Include(e => e.user).Include(p => p.product).Where(c => c.ProductID == ProductId).ToList();
 		}
-		public List<Comment> GetForUser(string Userid)
+        public List<Comment> GetForProduct(int ProductId,int skip,int content)
+        {
+            return _context.Comment.Include(e => e.user).Include(p => p.product)
+                .Where(c => c.ProductID == ProductId)
+                .Skip(skip).Take(content)
+                .ToList();
+        }
+        public List<Comment> GetForUser(string Userid)
         {
             return _context.Comment.Where(c => c.UserId == Userid).ToList();
         }
