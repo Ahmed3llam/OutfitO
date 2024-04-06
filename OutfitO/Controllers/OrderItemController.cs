@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OutfitO.Models;
 using OutfitO.Repository;
 using System.Security.Claims;
 
 namespace OutfitO.Controllers
 {
+    [Authorize]
     public class OrderItemController : Controller
     {
         IOrderRepository orderRepository;

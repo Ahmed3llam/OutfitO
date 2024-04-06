@@ -35,7 +35,6 @@ namespace OutfitO.Controllers
 				FileStream fs = new FileStream(path, FileMode.Create);
 				ProfileImage.CopyTo(fs);
 				uservm.ProfileImage = FileName;
-                //ModelState.SetModelValue("ProfileImage", new ValueProviderResult(FileName));
             }
 			if (uservm.FirstName !=null && uservm.Lastname !=null && uservm.Password !=null && uservm.ConfirmPassword !=null && 
                 uservm.PhoneNumber !=null  && uservm.Gender !=null && uservm.Address !=null){

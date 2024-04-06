@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OutfitO.Models;
 using OutfitO.Repository;
 using System.Security.Claims;
@@ -6,6 +7,7 @@ using System.Security.Claims;
 
 namespace OutfitO.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         IOrderRepository orderRepository;
@@ -18,10 +20,9 @@ namespace OutfitO.Controllers
             this.userRepository = userRepository;
             this.orderItemsRepository = orderItemsRepository;
         }
-
+        
         public IActionResult Add()
         {
-            //string userId = TempData["User"] as string;
             var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (decimal.TryParse(TempData["TPrice"] as string, out decimal price))
             {
@@ -49,7 +50,7 @@ namespace OutfitO.Controllers
                 return NotFound();
             }
         }
-        //[Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Admin")]
         public IActionResult Index(int page = 1)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -64,6 +65,7 @@ namespace OutfitO.Controllers
             ViewData["User"] = user;
             return View("Index", orders);
         }
+
         public IActionResult OrderPagination(int page = 1)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -109,7 +111,6 @@ namespace OutfitO.Controllers
             return PartialView("_OrderPaginationHistoryPartial", orders);
         }
 
-        //Order/Details
         public IActionResult Details(int id)
         {
             List<OrderItem> orderItems = orderRepository.GetOrderItem(id);

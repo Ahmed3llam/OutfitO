@@ -20,6 +20,7 @@ namespace OutfitO.Controllers
         }
         [Authorize("User")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Add(Payment payment)
         {
             if(ModelState.IsValid) {

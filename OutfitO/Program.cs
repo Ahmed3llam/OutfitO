@@ -29,6 +29,15 @@ builder.Services.AddIdentity<User, IdentityRole>(
                         options.Password.RequiredLength = 8;
                     }).AddEntityFrameworkStores<OutfitoContext>();
 
+#region to redirect the visitor to login page 
+// Configure authentication to use cookies
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Set the login path
+    options.LoginPath = "/User/Login";
+});
+builder.Services.AddAuthorization();
+#endregion
 
 builder.Services.AddScoped<ICartRepository,CartRepository>();
 builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
@@ -58,6 +67,7 @@ app.UseSession();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",
