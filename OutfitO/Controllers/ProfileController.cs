@@ -83,6 +83,7 @@ namespace OutfitO.Controllers
             return View("Error");
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult EditData(UserDataVM user)
         {
             if(ModelState.IsValid)
@@ -115,6 +116,7 @@ namespace OutfitO.Controllers
             return PartialView("_EditImagePartial", vm);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult EditImage(UserImageVm user ,IFormFile ProfileImg)
         {
             if(ProfileImg != null && ProfileImg.Length > 0)
@@ -163,6 +165,7 @@ namespace OutfitO.Controllers
             return PartialView("_EditPasswordPartial", vm);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPassword(UserPasswordVM user)
         {
             if (ModelState.IsValid)
@@ -198,7 +201,6 @@ namespace OutfitO.Controllers
             }
             ViewData["ModelState"] = ModelState;
             return PartialView("_EditPasswordPartial", user);
-            //return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -208,6 +210,7 @@ namespace OutfitO.Controllers
             return PartialView("_DeletePartial", user);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult DeleteUser(User user)
         {
             string oldImg = user.ProfileImage;

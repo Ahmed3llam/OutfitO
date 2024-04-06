@@ -130,7 +130,7 @@
 								<a class="dropdown-toggle" asp-action="Index" asp-controller="Cart">
 									<i class="fa fa-shopping-cart"></i>
 									<span style="text-decoration:none">Your Cart</span>
-									@* <div class="qty">3</div> *@
+									<div class="qty">@session.GetInt32("cartItemsCounter")</div>
 								</a>
 							</div>
 							<!-- /Cart -->

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OutfitO.Models;
@@ -34,20 +35,15 @@ namespace OutfitO.Controllers
             }
             else
             {
-                // Handle the case when TempData["TPromoPrice"] is null or parsing fails
                 ViewData["Price"] = 0; // or any default value you prefer
             }
-            //var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //ViewData["Cart"] = _cartRepository.GetForUser(Userid);
-            //ViewData["User"] = Userid;
-            //ViewData["Price"] = TempData.Peek("TPromoPrice"); ;
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult ProcessPayment(PaymentViewModel model, string stripeToken)
         {
-            //model.Amount = (double)TempData["TPromoPrice"];
             try
             {
                 // Configure Stripe with your secret key
@@ -100,7 +96,7 @@ namespace OutfitO.Controllers
                 return RedirectToAction("Failed", new { errorMessage = ex.Message });
             }
         }
-
+        [Authorize]
         public IActionResult Success(string paymentId)
         {
             var payment =_paymentRepository.Get(paymentId);
@@ -109,7 +105,7 @@ namespace OutfitO.Controllers
             return RedirectToAction("Add", "Order");
             //return View(payment);
         }
-
+        [Authorize]
         public IActionResult Failed(string errorMessage)
         {
             try

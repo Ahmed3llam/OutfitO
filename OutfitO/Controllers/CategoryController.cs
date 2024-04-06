@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Core.Types;
 using OutfitO.Models;
 using OutfitO.Repository;
@@ -7,6 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OutfitO.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class CategoryController : Controller
     {
         ICategoryRepository categoryRepository;
@@ -35,6 +37,7 @@ namespace OutfitO.Controllers
             return PartialView("_AddPartial");
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Add(Category category)
         {
             if (category.Title!=null)
@@ -53,6 +56,7 @@ namespace OutfitO.Controllers
             return PartialView("_EditPartial",data);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(Category category)
         {
             if (category.Title!=null)
@@ -70,6 +74,7 @@ namespace OutfitO.Controllers
             return PartialView("_DeleteCategoryPartial",category);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(Category category)
         {
             if (category == null)
