@@ -70,7 +70,7 @@ namespace OutfitO.Controllers
 		[HttpPost]
         public IActionResult Filter(List<string> Params ,int page = 1)
         {
-            int content = 3;
+            int content = 9;
 			int total = 0;
             int skip = (page - 1) * content;
 			List<Product> products;

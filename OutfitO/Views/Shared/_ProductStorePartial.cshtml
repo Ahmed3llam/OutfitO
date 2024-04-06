@@ -1,48 +1,53 @@
 ﻿@model List<Product>
-
-
-            <div id="store" class="col-md-9">
-                <h3>Products</h3>
-                <section class="d-block w-100">
-                    @foreach (var item in Model)
-                    {
-                        <div class="col-md-4 col-xs-6 productCard">
-                            <div class="product">
-                                <div class="product-img">
-                                    <img src="~/Images/@item.Img" height="500px" />
-                                </div>
-                                <div class="product-body">
-                                    <h3 class="product-name"><a href="#"> @item.Title</a></h3>
-                                    <h4 class="product-price">$@item.Price @* <del class="product-old-price">$@(2 * @item.Price)</del> *@</h4>
-                                    <div class="product-rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                    <div class="product-btns">
-                                        @* <button class="add-to-cart-btn" asp-action="AddToCart" asp-route-id="@item.Id" asp-controller="Cart"><i class="fa fa-shopping-cart"></i> <span class="tooltipp">add to Cart</span></button> *@
-
-                                        <a href="/Product/Details/@item.Id" class="tooltip-container">
-                                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-                                        </a>
-
-                                        <a asp-action="AddToCart" asp-route-id="@item.Id" asp-controller="Cart" class="tooltip-container">
-                                            <button class="add-to-cart-btn" style="border:none; background-color:transparent;"><i class="fa fa-shopping-cart"></i> <span class="tooltipp">add to Cart</span></button>
-                                        </a>
-
-                                    </div>
-                                </div>
-                                @* <div class="add-to-cart">
-                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                            </div> *@
-                            </div>
+<div id="store" class="row">
+    <h3>Products</h3>
+    <section class="d-block w-100">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 col-xs-6 productCard">
+                <div class="product">
+                    <div class="product-img">
+                        <img src="~/Images/@item.Img" height="500px" />
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-name"><a href="#"> @item.Title</a></h3>
+                        <h4 class="product-price">$@item.Price @* <del class="product-old-price">$@(2 * @item.Price)</del> *@</h4>
+                        <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
                         </div>
-                    }
-                </section>
-                <br />
+                        <div class="product-btns">
+                            <a href="/Product/Details/@item.Id" class="tooltip-container">
+                                <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                            </a>
+                            <a asp-action="AddToCart" asp-route-id="@item.Id" asp-controller="Cart" class="tooltip-container">
+                                <button class="add-to-cart-btn" style="border:none; background-color:transparent;"><i class="fa fa-shopping-cart"></i> <span class="tooltipp">add to Cart</span></button>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
             </div>
+        }
+    </section>
+    <br />
+</div>
+<div class="row">
+    <nav aria-label="Page navigation" class="my-5 d-flex justify-content-center" style="display: flex;flex-direction: row;justify-content: center;">
+        <ul class="store-pagination">
+            @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
+            {
+                <li class="page-item @(i == (int)ViewData["Page"] ? "active" : "")">
+                    <a class="page-link btn btn-secondary mx-1" onclick="pagination(@i)">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
 
             
 

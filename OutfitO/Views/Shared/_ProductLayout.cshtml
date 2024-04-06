@@ -63,7 +63,7 @@
 					}
 					<div class="icons d-flex align-center">
 						<div class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black;">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:white;">
 								<i class="fa fa-user-o" style="color:#D10024;"></i> <span id="user" style="color:white;"> @userName </span>
 							</a>
 							<ul class="dropdown-menu">
@@ -173,6 +173,7 @@
 	</nav>
 	<!-- /NAVIGATION -->
 	<!-- SECTION -->	@RenderBody()
+	@RenderSection("Scripts", required: false)
 	@* <div class="section">
 		<!-- container -->
 		<div class="container">
@@ -185,40 +186,6 @@
 		<!-- /container -->
 	</div> *@
 	<!-- /SECTION -->
-	<!-- NEWSLETTER -->
-	<div id="newsletter" class="section">
-		<!-- container -->
-		<div class="container">
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-12">
-					<div class="newsletter">
-						<p>Sign Up for the <strong>NEWSLETTER</strong></p>
-						<form>
-							<input class="input" type="email" placeholder="Enter Your Email">
-							<button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
-						</form>
-						<ul class="newsletter-follow">
-							<li>
-								<a href="#"><i class="fa fa-facebook"></i></a>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-twitter"></i></a>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-instagram"></i></a>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-pinterest"></i></a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</div>
 	<!-- /NEWSLETTER -->
 	<!-- FOOTER -->
 	<footer id="footer">

@@ -80,7 +80,7 @@
 
 <!-- Product main img -->
 <div>
-    <div class="col-md-5  flexMain" style="width:40%">
+    <div class="col-md-5  flexMain" style="margin:15px 0px;">
         <img src="~/Images/@data.Img" height="300px" width="100%" /> 
     </div>
 
@@ -129,12 +129,12 @@
 
 
             </ul>
-            <div class="add-to-cart">
+            <div class="add-to-cart" style="margin-top: 30px;">
                 <a asp-action="AddToCart" asp-route-id="@data.Id" asp-controller="Cart">
                     <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
                 </a>
                 <a href="/Product/Index">
-                    <button class="add-to-cart-btn"><i class="fa-regular fa-backward"></i> Back To List</button>
+                    <button class="add-to-cart-btn" style="margin-top: 10px;"><i class="fa-regular fa-backward"></i> Back To List</button>
                 </a>
 
             </div>
