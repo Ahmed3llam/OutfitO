@@ -34,8 +34,8 @@ namespace OutfitO.Controllers
 			List<CartItem> cartItems = cartRepository.GetForUser(Userid);
 			ViewData["Price"] = cartRepository.GetTotalPrice(Userid);
 			ViewData["Count"] = cartItems.Count;
-			cartItemsCounter= cartItems.Count();
-			HttpContext.Session.SetInt32("cartItemsCounter", cartItemsCounter);
+			//cartItemsCounter= cartItems.Count();
+			//HttpContext.Session.SetInt32("cartItemsCounter", cartItemsCounter);
 			return View("Index", cartItems);
 		}
 		[Authorize]
@@ -55,14 +55,14 @@ namespace OutfitO.Controllers
 					Quantity = 1
 				};
 				cartRepository.Insert(cartItem);
-				cartItemsCounter++;
-                HttpContext.Session.SetInt32("cartItemsCounter", cartItemsCounter);
+				int count = (int)HttpContext.Session.GetInt32("Count");
+				HttpContext.Session.SetInt32("Count", ++count);
 			}
 			cartRepository.Save();
-			return NoContent();
+			return PartialView("_UserNavPartial");
 		}
 		[HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public IActionResult IncrementQuantity(int id)
 		{
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -77,7 +77,7 @@ namespace OutfitO.Controllers
             return Json(new { quantity = cartItem.Quantity, itemPrice = cartItem.Product.Price });
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public IActionResult DecreaseQuantity(int id)
 		{
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -97,7 +97,8 @@ namespace OutfitO.Controllers
 			cartRepository.Delete(id, Userid);
 			cartRepository.Save();
             cartItemsCounter--;
-            HttpContext.Session.SetInt32("cartItemsCounter", cartItemsCounter);
+            int count = (int)HttpContext.Session.GetInt32("Count");
+            HttpContext.Session.SetInt32("Count", --count);
             return RedirectToAction("Index");
 		}
 

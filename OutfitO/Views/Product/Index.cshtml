@@ -184,6 +184,18 @@
             }
         });
     }
+    function addToCart(id) {
+        $.ajax({
+            url: '/Cart/AddToCart/'+id,
+            success: function (result) {
+                $("#head").html("");
+                $("#head").html(result);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
 </script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>

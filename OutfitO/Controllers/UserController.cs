@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OutfitO.Models;
 using OutfitO.ViewModels;
+using OutfitO.Repository;
 using static System.Net.Mime.MediaTypeNames;
 using System.Net;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -12,11 +13,13 @@ namespace OutfitO.Controllers
     {
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
+        ICartRepository cartRepository;
 
-        public UserController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public UserController(UserManager<User> userManager, SignInManager<User> signInManager,ICartRepository cart)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.cartRepository = cart;
         }
         [HttpGet]
         public IActionResult Register()
@@ -88,7 +91,9 @@ namespace OutfitO.Controllers
                         await signInManager.SignInAsync(data, uservm.RememberMe);//Id,Name,[Role]
                         HttpContext.Session.SetString("UserName",data.FirstName );
                         HttpContext.Session.SetString("UserId",data.Id );
-                        HttpContext.Session.SetString("UserImg",data.ProfileImage );
+                        int CartCount = cartRepository.GetForUser(data.Id).Count;
+						HttpContext.Session.SetInt32("Count", CartCount);
+						HttpContext.Session.SetString("UserImg",data.ProfileImage );
                         //return RedirectToAction("Index", "Product");
                         return RedirectToAction("Index", "Profile");
 
