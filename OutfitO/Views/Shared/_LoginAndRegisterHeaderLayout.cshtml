@@ -19,7 +19,7 @@
 	<link type="text/css" rel="stylesheet" href="/css/slick-theme.css" />
 
 	<!-- nouislider -->
-	<link type="text/css" rel="stylesheet" href="/css/nouislider.min.css" /> 
+	<link type="text/css" rel="stylesheet" href="/css/nouislider.min.css" />
 
 	<!-- Font Awesome Icon -->
 	<link rel="stylesheet" href="/css/font-awesome.min.css">
@@ -33,15 +33,15 @@
 		text-decoration: none;
 	}
 
-	.logo:hover{
+	.logo:hover {
 		text-decoration: none;
 	}
 
 	.header-ctn {
 		display: flex;
 		flex-direction: row;
-		
 	}
+
 	i:hover {
 		text-decoration: none;
 		color: #D10024;
@@ -58,6 +58,13 @@
 
 	html::-webkit-scrollbar-thumb {
 		background-image: linear-gradient(to bottom, #D10024 0%, #D10020 100%);
+	}
+
+	.header-ctn {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		width: 60vw;
 	}
 </style>
 <body>
@@ -124,21 +131,11 @@
 								<h1 style="color: white;margin: 15px;">
 									OutfitO
 								</h1>
-								 @* <img src="./logo/logo.png" alt=""> *@
+								@* <img src="./logo/logo.png" alt=""> *@
 							</a>
 						</div>
 					</div>
 					<!-- /LOGO -->
-					<!-- SEARCH BAR -->
-					<div class="col-md-6">
-						<div class="header-search">
-							<form>
-								<input class="input" placeholder="Search here">
-								<button class="search-btn">Search</button>
-							</form>
-						</div>
-					</div>
-					<!-- /SEARCH BAR -->
 					<!-- ACCOUNT -->
 					<div class="col-md-3 clearfix">
 						<div class="header-ctn">
@@ -170,31 +167,10 @@
 		<!-- /MAIN HEADER -->
 	</header>
 	<!-- /HEADER -->
-	<!-- NAVIGATION -->
-	<nav id="navigation">
-		<!-- container -->
-		<div class="container">
-			<!-- responsive-nav -->
-			<div id="responsive-nav">
-				<!-- NAV -->
-				<ul class="main-nav nav navbar-nav" style="flex-direction: row;padding: 10px;">
-					<li><a asp-controller="Home" asp-action="Index">Home</a></li>
-					<li><a asp-controller="Product" asp-action="Index">Products</a></li>
-					<li><a asp-controller="Order" asp-action="History">Orders</a></li>
-				</ul>
-				<!-- /NAV -->
-			</div>
-			<!-- /responsive-nav -->
-		</div>
-		<!-- /container -->
-	</nav>
-	<div id="modal-placeholder"></div>
-	<!-- /NAVIGATION -->
 	<!-- SECTION -->
 	@RenderBody()
 	@RenderSection("Scripts", required: false)
 	<!-- /SECTION -->
-	
 	<!-- FOOTER -->
 	<footer id="footer">
 		<!-- top footer -->
@@ -276,9 +252,8 @@
 							<li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
 						</ul>
 						<span class="copyright">
-							
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-							Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+							Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Powered by <a href="https://colorlib.com" target="_blank">OutfitO</a>
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 						</span>
 					</div>
