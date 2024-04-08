@@ -71,7 +71,6 @@ namespace OutfitO.Controllers
 			return RedirectToAction("Index", "PromoCode");
 		}
 		[HttpPost]
-        [ValidateAntiForgeryToken]
 		[Authorize]
         public IActionResult CheckOut(string promo)
 		{

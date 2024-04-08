@@ -1,0 +1,11 @@
+@media screen and (max-width:450px){
+    .overlay-container{
+        display:none;
+    }
+    form {
+        width: 94vw;
+    }
+    .RememberMe {
+        margin-right: -40px !important;
+    }
+}

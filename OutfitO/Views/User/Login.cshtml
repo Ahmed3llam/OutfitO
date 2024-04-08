@@ -13,6 +13,8 @@
      <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <link rel="stylesheet" href="/css/login.css" />
+
     <title>Login</title>
 
 
@@ -54,8 +56,8 @@ a {
 
 .btn {
   border-radius: 20px;
-  border: 1px solid #FF4B2B;
-  background-color: #FF4B2B;
+            border: 1px solid #D10024;
+            background-color: #D10024;
   color: #FFFFFF;
   font-size: 12px;
   font-weight: bold;
@@ -68,7 +70,7 @@ a {
 }
 
 .btn:hover{
-  background-color: #fa6449;
+                background-color: #D10045;
   color: #ffffff;
 
 
@@ -88,8 +90,8 @@ a {
   transition: all 0.4s ease-in-out;
 }
 .btn.ghost:hover{
-  background: #fa3462;
-  border-color: #f86464;
+                    background: #D10024;
+                    border-color: #D10045;
 
 }
 form {
@@ -252,7 +254,7 @@ input {
 }
 
 .signup-link:hover {
-    color: #FF4B2B;
+    color: #D10024;
     text-decoration: none;
 }
 
@@ -281,7 +283,7 @@ input {
 
 
             <form asp-action="Login" asp-controller="User" method="post">
-                <h1>Sign in</h1>
+                <h1>Login</h1>
 
                 <div class="social-container">
                     <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -289,7 +291,6 @@ input {
                     <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
                 </div>
 
-                <div asp-validation-summary="All" class="text-danger"></div>
                 @* <input type="text" placeholder="Name" class="form-control" /> *@
                     <input asp-for="Email"  placeholder="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
@@ -298,7 +299,7 @@ input {
                     <span asp-validation-for="Password" class="text-danger"></span>
                 
                     <div class="form-check" style="display:flex;margin-left: -85% ; width:59%">
-                        <input asp-for="RememberMe" style="margin-right:-25px;" />
+                        <input asp-for="RememberMe" style="margin-right:-50px;" class="RememberMe" />
                         <span for="RememberMe" style="width:150px; margin-top:5px;">
                             Remember Me
                         </span>

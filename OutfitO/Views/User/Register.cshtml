@@ -37,9 +37,25 @@
         
     }
 
-    /* .btn{
-                background-color: #B5C0D0;
-            } */
+    .signup-text {
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .signup-link {
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 17px;
+        margin-left: 5px;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .signup-link:hover {
+            color: #D10024;
+            text-decoration: none;
+        }
+
 
             
 </style>
@@ -63,7 +79,6 @@
                                             </div>
                                         </div>
                                         <form asp-action="Register" asp-controller="User" method="post" enctype="multipart/form-data">
-                                            <div asp-validation-summary="All" class="text-danger"></div>
 
                                             <div class="row gy-3 overflow-hidden" id="firstForm">
                                                 <div class="col-md-6">
@@ -100,7 +115,7 @@
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="d-grid">
-                                                        <button class="btn btn-outline-primary btn-lg" type="button" id="nextBtn">Next</button>
+                                                        <button class="btn btn-outline-primary btn-lg" type="button" style="padding:1px" id="nextBtn">Next</button>
                                                     </div>
 
                                                 </div>
@@ -108,6 +123,10 @@
                                                     <div class="progress">
                                                         <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
                                                     </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <p class="signup-text">Already Have An Account? <a href="/user/login" class="signup-link">Login</a></p>
+
                                                 </div>
                                             </div>
 
@@ -135,11 +154,11 @@
 
                                                 <div class="row g-3 justify-content-center my-3">
                                                     <div class="col">
-                                                        <button style="padding: 5px 23px;" class="btn btn-outline-primary secondFormBtn me-1  btn-lg" type="button" id="BackBtn">Back</button>
+                                                        <button style="padding: 1px 23px;" class="btn btn-outline-primary secondFormBtn me-1  btn-lg" type="button" id="BackBtn">Back</button>
 
                                                     </div>
                                                     <div class="col">
-                                                        <button style="padding: 5px 23px;" class="btn btn-outline-success secondFormBtn btn-lg" value="Create" id="SubmitBtn">Submit</button>
+                                                        <button style="padding: 1px 23px;" class="btn btn-outline-success secondFormBtn btn-lg" value="Create" id="SubmitBtn">Submit</button>
 
                                                     </div>
                                                 </div>

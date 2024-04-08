@@ -55,12 +55,34 @@
         border: 1px solid #D10024;
         color: #D10024;
         transition:all 0.4s ease-in-out;
+        padding:1px;
     }
 
         #nextBtn:hover, #backBtn:hover{
             background-color: #D10024;
             color:#fff;
     }
+    
+    .signup-text {
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .signup-link {
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 17px;
+        margin-left: 5px;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .signup-link:hover {
+            color: #D10024;
+            text-decoration: none;
+        }
+
+
 </style>
 <body>
 
@@ -128,6 +150,11 @@
                                                         <div class="progress-bar" role="progressbar" style="width: 50%; background-color:#D10024;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-12">
+                                                    <p class="signup-text">Already Have An Account? <a href="/user/login" class="signup-link">Login</a></p>
+
+                                                </div>
                                             </div>
 
                                             <div class="row gy-3 overflow-hidden" id="secondForm" style="display: none;">
@@ -154,11 +181,11 @@
 
                                                 <div class="row g-3 justify-content-center my-3">
                                                     <div class="col">
-                                                        <button style="padding: 5px 23px;" class="btn  secondFormBtn me-1  btn-lg" type="button" id="BackBtn">Back</button>
+                                                        <button style="padding: 1px 23px;" class="btn  secondFormBtn me-1  btn-lg" type="button" id="backBtn">Back</button>
 
                                                     </div>
                                                     <div class="col">
-                                                        <button style="padding: 5px 23px;" class="btn btn-outline-success secondFormBtn btn-lg" value="Create" id="SubmitBtn">Submit</button>
+                                                        <button style="padding: 1px 23px;" class="btn btn-outline-success secondFormBtn btn-lg" value="Create" id="SubmitBtn">Submit</button>
 
                                                     </div>
                                                 </div>
@@ -198,7 +225,7 @@
                 });
             });
 
-            $('#BackBtn').click(function () {
+            $('#backBtn').click(function () {
                 $('#secondForm').fadeOut('slow', function () {
                     $('#firstForm').fadeIn('slow');
                 });
