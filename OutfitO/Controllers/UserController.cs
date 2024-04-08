@@ -59,7 +59,7 @@ namespace OutfitO.Controllers
                 {
                     IdentityResult resultRole = await userManager.AddToRoleAsync(user,"User");
                     await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Login", "User");
                 }
                 foreach (var error in result.Errors)
                 {

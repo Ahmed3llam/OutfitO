@@ -47,8 +47,11 @@
 				}
 				else if (userName == null && ViewBag.Title == "Home Page")
 				{
-					<a class="nav-link" asp-action="Login" asp-controller="User" role="button" style="color:white;">
+					<a class="nav-link" asp-action="Login" asp-controller="User" role="button" style="color:white;display: inline;">
 						<i class="fa fa-user-o" style="color:#D10024;"></i> <span id="user" style="color:white;"> Login </span>
+					</a>
+					<a class="nav-link" asp-action="Register" asp-controller="User" role="button" style="color:white;display: inline;">
+						<i class="fa-solid fa-user-plus" style="color:#D10024;"></i> <span id="user" style="color:white;"> Sign Up </span>
 					</a>
 				}
 				else
