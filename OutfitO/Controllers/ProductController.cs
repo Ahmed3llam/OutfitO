@@ -113,10 +113,11 @@ namespace OutfitO.Controllers
             return View("Details", comments);
 		}
 
-        public IActionResult CommentsPagination( int productId,int page = 1)
+        public IActionResult CommentsPagination(int page = 1)
 		{
             int content = 4;
             int skip = (page - 1) * content;
+            int productId =(int) HttpContext.Session.GetInt32("productID");
             List<Comment> comments = commentRepository.GetForProduct(productId, skip, content);
             int total = commentRepository.GetForProduct(productId).Count();
             ViewBag.ProductID = productId;

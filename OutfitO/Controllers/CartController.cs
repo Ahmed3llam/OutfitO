@@ -61,6 +61,7 @@ namespace OutfitO.Controllers
 			cartRepository.Save();
 			return PartialView("_UserNavPartial");
 		}
+
 		[HttpPost]
         //[ValidateAntiForgeryToken]
         public IActionResult IncrementQuantity(int id)
