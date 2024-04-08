@@ -1,4 +1,5 @@
-﻿@model OutfitO.ViewModels.PaymentViewModel
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@model OutfitO.ViewModels.PaymentViewModel
 @{
     ViewData["Title"] = "Index";
     Layout = "_UserLayout";
@@ -100,7 +101,19 @@
                                 <div>$@item.Product.Price</div>
                             </div>
                         }
+                        @{
+                            var session = HttpContextAccessor.HttpContext.Session;
+                            string promoPercent = session.GetString("promoPercent");
+                        }
+                        @if (promoPercent != "")
+                        {
+                            <div class="order-col">
+                                <div>Promo Code Percentage</div>
+                                <div>-@promoPercent%</div>
+                            </div>
+                        }
                     </div>
+               
                     <div class="order-col">
                         <div><strong>TOTAL</strong></div>
                         <div><strong class="order-total">$@ViewBag.Price</strong></div>

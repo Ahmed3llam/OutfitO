@@ -81,8 +81,10 @@ namespace OutfitO.Controllers
                     _paymentRepository.Insert(payment);
                     _paymentRepository.Save();
 
-                    // Redirect to success view with payment information
-                    return RedirectToAction("Success", new { paymentId = payment.PaymentId });
+					
+					HttpContext.Session.SetInt32("Count", 0);
+					// Redirect to success view with payment information
+					return RedirectToAction("Success", new { paymentId = payment.PaymentId });
                 }
                 else
                 {
