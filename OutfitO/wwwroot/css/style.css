@@ -1,6 +1,4 @@
 ﻿/*
-Template Name: Electro - HTML Ecommerce Template
-Author: yaminncco
 
 Colors:
 	Body 		: #333
@@ -2193,6 +2191,7 @@ textarea.input {
 
     #rating {
         text-align: center;
+        display: none !important;
     }
 
     #reviews {
@@ -2200,6 +2199,7 @@ textarea.input {
         margin-bottom: 30px;
     }
 }
+
 
 @media only screen and (max-width: 767px) {
     .section-title .section-nav {
@@ -2209,6 +2209,21 @@ textarea.input {
 
     .section-tab-nav li {
         margin-top: 10px;
+    }
+
+    #review {
+        display: flex;
+        flex-direction: column-reverse
+    }
+
+    .reverse {
+        width:95vw;
+        flex-direction: column-reverse;
+    }
+
+    #rating {
+        text-align: center;
+        display: none !important;
     }
 }
 
@@ -2227,32 +2242,43 @@ textarea.input {
     }
 }
 
-@media screen and (max-width: 1392px){
-    .shop-img .babyImg{
-        height:350px;
+@media only screen and (max-width: 356px) {
+    /* Hide #rating on tablet screens */
+    #rating {
+        display: none;
     }
 }
 
-@media screen and (max-width: 1177px) {
-    .shop-img .babyImg {
-        height: 300px;
+@media only screen and (max-width: 991px) {
+    #rating {
+        text-align: center;
+        display: none;
+    }
+
+    .reverse {
+        flex-direction: column-reverse;
     }
 }
 
-@media screen and (max-width: 997px) {
-    .shop-img .babyImg {
-        height: 280px;
+@media only screen and (max-width: 989px) {
+
+    .product-details {
+        text-align: center;
+        width: 70vw;
+    }
+
+    .flexMain img {
+        width: 70vw;
     }
 }
 
-@media screen and (max-width: 985px) {
-    .shop-img .babyImg {
-        height: 220px;
-    }
-}
+@media only screen and (max-width: 830px) {
 
-@media screen and (max-width: 754px) {
-    .shop-img .babyImg {
-        height: 480px;
+    .product-details {
+        width: 70vw;
+    }
+
+    .flexMain img {
+        width: 70vw;
     }
 }

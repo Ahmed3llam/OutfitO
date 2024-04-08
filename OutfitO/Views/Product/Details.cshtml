@@ -13,19 +13,22 @@
 </head>
 
 <style>
+    *{
+        box-sizing:border-box;
+    }
     body {
         font-family: "Montserrat", sans-serif;
         color: #333;
     }
 
     .col-md-3 {
-        flex: 0 0 auto;
+       /*  flex: 0 0 auto; */
         width: 25.33333333%;
     }
 
     .col-md-6 {
-        flex: 0 0 auto;
-        width: 100%;
+        /* flex: 0 0 auto; */
+        width: 50%;
     }
 
     .clearboth {
@@ -52,9 +55,9 @@
         text-decoration: none;
     }
 
-        .review-link:hover {
-            color: red;
-        }
+    .review-link:hover {
+        color: red;
+    }
 
     .fa-facebook-f, .fa-twitter, .fa-google-plus-g, .fa-envelope, .product-links {
         color: #333;
@@ -62,16 +65,16 @@
         transition: all 0.3s ease-in-out;
     }
 
-        .fa-facebook-f:hover, .fa-twitter:hover, .fa-google-plus-g:hover, .fa-envelope:hover, .product-links:hover {
-            color: red;
-            text-decoration: none;
-        }
+    .fa-facebook-f:hover, .fa-twitter:hover, .fa-google-plus-g:hover, .fa-envelope:hover, .product-links:hover {
+        color: red;
+        text-decoration: none;
+    }
 
     .add-to-cart-btn a {
         text-decoration: none;
     }
 
-
+        
 </style>
 
 <input type="hidden" id="productId" value="@ViewBag.ProductID" />
@@ -80,7 +83,7 @@
 
 <!-- Product main img -->
 <div>
-    <div class="col-md-5  flexMain" style="margin:15px 0px;">
+    <div class="col-md-5  flexMain" style="margin:15px 0px;display: flex;justify-content: center;">
         <img src="~/Images/@data.Img" height="300px" width="100%" /> 
     </div>
 
@@ -104,7 +107,7 @@
                 <h3 class="product-price fw-bold">$@data.Price <del class="product-old-price">$@(2 * @data.Price)</del></h3>
                 <span class="product-available">@data.Stock In Stock</span>
             </div>
-            <p style="color:#333 ; line-height: 1.42857143;font-size: 14px;">@data.Description.</p>
+            <p style="color:#333 ; line-height: 1.42857143;font-size: 14px;word-wrap: break-word;">@data.Description.</p>
 
 
 
@@ -130,7 +133,7 @@
 
             </ul>
             <div class="add-to-cart" style="margin-top: 30px;">
-                <a asp-action="AddToCart" asp-route-id="@data.Id" asp-controller="Cart">
+                <a onclick="addToCart('@data.Id')">
                     <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
                 </a>
                 <a href="/Product/Index">
@@ -143,135 +146,130 @@
 </div>
 <!-- /Product details -->
 
-<div class="col-md-12">
+<div >
     <div id="product-tab">
         <!-- product tab nav -->
         <ul class="tab-nav">
             <li><a data-toggle="tab" href="#tab3">All Reviews (@data.Comments.Count)</a></li>
         </ul>
-
-        <div id="review">
-            <div id="Display_Review">
-
+        <div id="tab3" class="tab-pane fade in">
+            <div class="row reverse">
 
                 <!-- Rating -->
-                <div class="col-md-3">
-                    <div id="rating">
-                        <div class="rating-avg">
-                            <span>4.5</span>
-                            <div class="rating-stars">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-o"></i>
+                        <div class="col-md-3" >
+                            <div id="rating" >
+                                <div class="rating-avg">
+                                    <span>4.5</span>
+                                    <div class="rating-stars">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+                                </div>
+                                <ul class="rating">
+                                    <li>
+                                        <div class="rating-stars">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <div class="rating-progress">
+                                            <div style="width: 80%;"></div>
+                                        </div>
+                              
+                                    </li>
+                                    <li>
+                                        <div class="rating-stars">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                        <div class="rating-progress">
+                                            <div style="width: 60%;"></div>
+                                        </div>
+                                
+                                    </li>
+                                    <li>
+                                        <div class="rating-stars">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                        <div class="rating-progress">
+                                            <div></div>
+                                        </div>
+                              
+                                    </li>
+                                    <li>
+                                        <div class="rating-stars">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                        <div class="rating-progress">
+                                            <div></div>
+                                        </div>
+                             
+                                    </li>
+                                    <li>
+                                        <div class="rating-stars">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                        <div class="rating-progress">
+                                            <div></div>
+                                        </div>
+                               
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                        <ul class="rating">
-                            <li>
-                                <div class="rating-stars">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="rating-progress">
-                                    <div style="width: 80%;"></div>
-                                </div>
-                              
-                            </li>
-                            <li>
-                                <div class="rating-stars">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="rating-progress">
-                                    <div style="width: 60%;"></div>
-                                </div>
-                                
-                            </li>
-                            <li>
-                                <div class="rating-stars">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="rating-progress">
-                                    <div></div>
-                                </div>
-                              
-                            </li>
-                            <li>
-                                <div class="rating-stars">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="rating-progress">
-                                    <div></div>
-                                </div>
-                             
-                            </li>
-                            <li>
-                                <div class="rating-stars">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="rating-progress">
-                                    <div></div>
-                                </div>
-                               
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /Rating -->
-                <div class="col-md-6 comments-container" id="all-comments">
-
-                    @Html.Partial("_AllCommentsPartial", Model)
-                </div>
-
-                <!-- Review Form -->
-                <div class="col-md-3">
-                    <div id="review-form">
-                        <form class="review-form" id="commentForm">
-                            <textarea class="input" id="commentBody" placeholder="Your Review"></textarea>
-                            <div class="input-rating">
-                                <span>Your Rating: </span>
-                                <div class="stars">
-                                    <input id="star5" name="rating" value="5" type="radio"><label for="star5"></label>
-                                    <input id="star4" name="rating" value="4" type="radio"><label for="star4"></label>
-                                    <input id="star3" name="rating" value="3" type="radio"><label for="star3"></label>
-                                    <input id="star2" name="rating" value="2" type="radio"><label for="star2"></label>
-                                    <input id="star1" name="rating" value="1" type="radio"><label for="star1"></label>
-                                </div>
+                        <!-- /Rating -->
+                        <div class="col-md-6 comments-container" id="all-comments" style="display: flex;flex-direction: column;align-items: center;gap: 20px;">
+                            @Html.Partial("_AllCommentsPartial", Model)
+                        </div>
+                        <!-- Review Form -->
+                        <div class="col-md-3">
+                            <div id="review-form">
+                                <form class="review-form" id="commentForm">
+                                    <textarea class="input" id="commentBody" placeholder="Your Review"></textarea>
+                                    <div class="input-rating">
+                                        <span>Your Rating: </span>
+                                        <div class="stars">
+                                            <input id="star5" name="rating" value="5" type="radio"><label for="star5"></label>
+                                            <input id="star4" name="rating" value="4" type="radio"><label for="star4"></label>
+                                            <input id="star3" name="rating" value="3" type="radio"><label for="star3"></label>
+                                            <input id="star2" name="rating" value="2" type="radio"><label for="star2"></label>
+                                            <input id="star1" name="rating" value="1" type="radio"><label for="star1"></label>
+                                        </div>
+                                    </div>
+                                    @if (didHebuyIt)
+                                    {
+                                        <button class="primary-btn" type="submit">Submit</button>
+                                    }
+                                    else
+                                    {
+                                        <p style="color:white;padding:5px;background-color:red; border-radius:5px;font-weight:bold">you should buy this product First</p>
+                                    }
+                                </form>
                             </div>
-                            @if (didHebuyIt)
-                            {
-                                <button class="primary-btn" type="submit">Submit</button>
-                            }
-                            else
-                            {
-                                <p style="color:white;padding:5px;background-color:red; border-radius:5px;font-weight:bold">you should buy this product First</p>
-                            }
-                        </form>
-                    </div>
-                </div>
-                <!-- /Review Form -->
+                        </div>
+                        <!-- /Review Form -->
 
-
-            </div>
+          </div>
         </div>
     </div>
 </div>
@@ -344,7 +342,19 @@
             }
         });
     }
-
+    function addToCart(id) {
+        $.ajax({
+            url: '/Cart/AddToCart/' + id,
+            success: function (result) {
+                $("#head").html("");
+                $("#head").html(result);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+    
 
 </script>
 
