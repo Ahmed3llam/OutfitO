@@ -85,33 +85,7 @@
 						var userId = session.GetString("UserId");
 						var UserImg = session.GetString("UserImg");
 					}
-					<div class="icons d-flex align-center">
-						<div class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black;">
-								<i class="fa fa-user-o" style="color:#D10024;"></i> <span id="user" style="color:white;"> @userName </span>
-							</a>
-							<ul class="dropdown-menu">
-								<li>
-									<a class="dropdown-item" asp-controller="Profile" asp-action="EditData" asp-route-id="@userId" style="color: black;">
-										<i class="fa-solid fa-gear fa-fw"></i>
-										<span>Settings</span>
-									</a>
-								</li>
-								<li>
-									<a class="dropdown-item" asp-action="Logout" asp-controller="User" asp-route-id="@userId" style="color: black;">
-										<i class="fa-solid fa-sign-out-alt fa-fw"></i>
-										<span>Logout</span>
-									</a>
-								</li>
-								<li>
-									<a class="dropdown-item" href="#" onclick="DeleteAccount('@userId')" style="color: black;">
-										<i class="fa-solid fa-trash-alt fa-fw"></i>
-										<span>Delete Account</span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
+				
 					@* <li><a href="#"><i class="fa fa-dollar"></i> USD</a></li> *@
 					@* <li><a asp-action="Index" asp-controller="Profile" style="text-decoration:none"><i class="fa fa-user-o"></i> <span id="user"></span></a></li> *@
 				</ul>
@@ -136,29 +110,7 @@
 						</div>
 					</div>
 					<!-- /LOGO -->
-					<!-- ACCOUNT -->
-					<div class="col-md-3 clearfix">
-						<div class="header-ctn">
-							<!-- Cart -->
-							<div>
-								<a asp-action="Index" asp-controller="Cart">
-									<i class="fa fa-shopping-cart"></i>
-									<span style="text-decoration:none">Your Cart</span>
-									@* <div class="qty">3</div> *@
-								</a>
-							</div>
-							<!-- /Cart -->
-							<!-- Menu Toogle -->
-							<div class="menu-toggle">
-								<a href="#">
-									<i class="fa fa-bars"></i>
-									<span>Menu</span>
-								</a>
-							</div>
-							<!-- /Menu Toogle -->
-						</div>
-					</div>
-					<!-- /ACCOUNT -->
+				
 				</div>
 				<!-- row -->
 			</div>
@@ -195,11 +147,11 @@
 						<div class="footer">
 							<h3 class="footer-title">Categories</h3>
 							<ul class="footer-links">
-								<li><a href="#">Hot deals</a></li>
-								<li><a href="#">Laptops</a></li>
-								<li><a href="#">Smartphones</a></li>
-								<li><a href="#">Cameras</a></li>
-								<li><a href="#">Accessories</a></li>
+								<li><a href="#">Dresses</a></li>
+								<li><a href="#">T-Shitrs</a></li>
+								<li><a href="#">Kids</a></li>
+								<li><a href="#">Skirts</a></li>
+								<li><a href="#">Pants</a></li>
 							</ul>
 						</div>
 					</div>
@@ -244,12 +196,12 @@
 				<div class="row">
 					<div class="col-md-12 text-center">
 						<ul class="footer-payments">
-							<li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
-							<li><a href="#"><i class="fa fa-credit-card"></i></a></li>
-							<li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
-							<li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
-							<li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
-							<li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
+							<li><a href="#"><i class="fa-brands fa-cc-visa"></i></a></li>
+							<li><a href="#"><i class="fa-regular fa-credit-card"></i></a></li>
+							<li><a href="#"><i class="fa-brands fa-cc-paypal"></i></a></li>
+							<li><a href="#"><i class="fa-brands fa-cc-mastercard"></i></a></li>
+							<li><a href="#"><i class="fa-brands fa-cc-discover"></i></a></li>
+							<li><a href="#"><i class="fa-brands fa-cc-amex"></i></a></li>
 						</ul>
 						<span class="copyright">
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
