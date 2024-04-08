@@ -5,6 +5,8 @@
 }
 <head>
     <link rel="stylesheet" href="./css/cart.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+
 </head>
 <partial name="_AlertPartial" />
 <section class="container-fluid">
@@ -90,20 +92,67 @@
 </section>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <script>
+
+    function delete (id){
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this item!",
+            icon: "warning",
+            buttons: {
+                cancel: "Cancel",
+                confirm: "Delete",
+            },
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal({
+                        title: "Success",
+                        text: "Product Deleted From Card successfully!",
+                        icon: "success",
+                    });
+                    $.ajax({
+                        url: '/Cart/Delete/' + id,
+                        success: function (response) {
+                            console.log(response);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+
+                } else {
+                    swal({
+                        title: "Cancelled",
+                        text: "Deleted Cancelled!",
+                        icon: "success",
+                    });
+                }
+
+              
+
+
+            });
+
+     
+    }
+
     function detail(itemId) {
-        // $.ajax({
-        //     // url: '/Product/--------',
-        //     // type: 'GET',
-        //     // data: { -- -: itemId
-        // },
-        //     success: function (response) {
-        //         console.log(response);
-        //     },
-        //     error: function (xhr, status, error) {
-        //         console.error(error);
-        //     }
-        //     });
+        $.ajax({
+            // url: '/Product/--------',
+            // type: 'GET',
+            // data: { -- -: itemId
+        },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+            });
         }
 
     function recalculateTotal() {
