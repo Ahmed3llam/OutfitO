@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using OutfitO.Models;
@@ -8,8 +9,10 @@ using System.Security.Claims;
 
 namespace OutfitO.Controllers
 {
+	[Authorize]
 	public class CartController : Controller
 	{
+		int cartItemsCounter;
 		ICartRepository cartRepository;
 		IProductRepository productRepository;
 		IOrderRepository orderRepository;
@@ -24,16 +27,18 @@ namespace OutfitO.Controllers
 			orderItemsRepository = orderItemsRepo;
 			userManager = user;
 		}
+		[HttpGet]
 		public IActionResult Index()
 		{
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			List<CartItem> cartItems = cartRepository.GetForUser(Userid);
 			ViewData["Price"] = cartRepository.GetTotalPrice(Userid);
 			ViewData["Count"] = cartItems.Count;
-
+			//cartItemsCounter= cartItems.Count();
+			//HttpContext.Session.SetInt32("cartItemsCounter", cartItemsCounter);
 			return View("Index", cartItems);
 		}
-
+		[Authorize]
 		public IActionResult AddToCart(int id)
 		{
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -50,12 +55,15 @@ namespace OutfitO.Controllers
 					Quantity = 1
 				};
 				cartRepository.Insert(cartItem);
+				int count = (int)HttpContext.Session.GetInt32("Count");
+				HttpContext.Session.SetInt32("Count", ++count);
 			}
 			cartRepository.Save();
-			return NoContent();
+			return PartialView("_UserNavPartial");
 		}
 		[HttpPost]
-		public IActionResult IncrementQuantity(int id)
+        //[ValidateAntiForgeryToken]
+        public IActionResult IncrementQuantity(int id)
 		{
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			CartItem cartItem = cartRepository.GetById(id, Userid);
@@ -69,6 +77,7 @@ namespace OutfitO.Controllers
             return Json(new { quantity = cartItem.Quantity, itemPrice = cartItem.Product.Price });
         }
         [HttpPost]
+        //[ValidateAntiForgeryToken]
         public IActionResult DecreaseQuantity(int id)
 		{
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -87,7 +96,10 @@ namespace OutfitO.Controllers
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			cartRepository.Delete(id, Userid);
 			cartRepository.Save();
-			return RedirectToAction("Index");
+            cartItemsCounter--;
+            int count = (int)HttpContext.Session.GetInt32("Count");
+            HttpContext.Session.SetInt32("Count", --count);
+            return RedirectToAction("Index");
 		}
 
 		public ActionResult DeleteAll()
@@ -95,48 +107,9 @@ namespace OutfitO.Controllers
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			cartRepository.DeleteAll(Userid);
 			cartRepository.Save();
-			return RedirectToAction("Index","Cart");
-
-			//return RedirectToAction("Details","Order");
+            cartItemsCounter=0;
+            HttpContext.Session.SetInt32("cartItemsCounter", cartItemsCounter);
+            return RedirectToAction("Index","Cart");
 		}
-		//public IActionResult CheckOut()
-		//{
-		//    //promocode - action on promocontroller check for value of promocode then redirct to payment--
-		//    //payment -> partialview tod isplay all payment methods for this user to select one of them the redirct to order
-		//    //order -> (get userid from claims + gettotalprice using cartrepository then apply precentage of promocode) then redirct to orderitems
-		//    //orderitem -> (get list of cartitem using cart repo  + update product for each item in cart list using product repo to decrease stock attr with quantity ) then redirct to delete cart items
-		//    //delete cartitem -> delete cart then redirct to details for this order or history for all orders
-		//    //details for this order -> display details for order
-		//    var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-		//    List<CartItem> cartItems = cartRepository.GetForUser(Userid);
-		//    decimal TPrice = cartRepository.GetTotalPrice(Userid);
-		//    Order NewOrder = new Order()
-		//    {
-		//        Date = DateTime.Now,
-		//        UserId = Userid,
-		//        Price = TPrice,
-		//        PaymentId = 1////
-		//    };
-		//    orderRepository.Insert(NewOrder);
-		//    orderRepository.Save();
-		//    foreach (CartItem item in cartItems)
-		//    {
-		//        Product product = productRepository.Get(item.ProductID);
-		//        product.Stock -= item.Quantity;
-		//        productRepository.Update(product);
-		//        productRepository.Save();
-		//        OrderItem newItem = new OrderItem()
-		//        {
-		//            ProductId = item.ProductID,
-		//            OrderId = NewOrder.Id,
-		//            Quantity = item.Quantity,
-		//            Price = cartRepository.GetTotalPriceOfOneItem(item)
-		//        };
-		//        orderItemsRepository.Insert(newItem);
-		//        cartRepository.Delete(item.Id);
-		//        cartRepository.Save();
-		//    }
-		//    return RedirectToAction("Index", "Order");
-		//}
 	}
 }

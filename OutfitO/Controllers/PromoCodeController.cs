@@ -20,8 +20,8 @@ namespace OutfitO.Controllers
 			promoCodeRepository = promoCodeRepo;
 			userRepository = userRepo;
 		}
-		//[Authorize("Admin")]
-		public IActionResult Index(int page = 1)
+        [Authorize(Roles = "Admin")]
+        public IActionResult Index(int page = 1)
 		{
 			User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
 			int content = 8;
@@ -34,15 +34,17 @@ namespace OutfitO.Controllers
 			ViewData["User"] = user;
 			return View("Index", promoCodes);
 		}
-		//[Authorize("Admin")]
-		[HttpGet]
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
 		public IActionResult Add()
 		{
 			return PartialView("_AddPartial");
 		}
-		//[Authorize("Admin")]
+		
 		[HttpPost]
-		public IActionResult Add(PromoCode promoCode)
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Add(PromoCode promoCode)
 		{
 			if (ModelState.IsValid)
 			{
@@ -52,36 +54,31 @@ namespace OutfitO.Controllers
 			}
 			return PartialView("_AddPartial", promoCode);
 		}
-		//[Authorize("Admin")]
-		[HttpGet]
-		public IActionResult Delete(int id)
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id)
 		{
 			PromoCode code = promoCodeRepository.Get(id);
 			return PartialView("_DeletePartial", code);
 		}
-		//[Authorize("Admin")]
 		[HttpPost]
-		public IActionResult Delete(PromoCode promo)
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(PromoCode promo)
 		{
 			promoCodeRepository.Delete(promo.Id);
 			promoCodeRepository.Save();
 			return RedirectToAction("Index", "PromoCode");
 		}
-		//[Authorize("User")]
-		//[HttpGet]
-		//public IActionResult CheckOut()
-		//{
-		//    return PartialView();
-		//}
-		//[Authorize("User")]
 		[HttpPost]
-		public IActionResult CheckOut(string promo)
+        [ValidateAntiForgeryToken]
+		[Authorize]
+        public IActionResult CheckOut(string promo)
 		{
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			decimal TPrice = cartRepository.GetTotalPrice(Userid);
 			decimal TPromoPrice = 0;
 
-			/////
 			if (promo != null)
 			{
 				var code = promoCodeRepository.GetPromoCode(promo);
@@ -99,9 +96,6 @@ namespace OutfitO.Controllers
 			{
 				TPromoPrice = TPrice;
 			}
-
-            // Convert decimal to string before storing in TempData
-            //TempData["TPromoPrice"] = TPromoPrice.ToString();
             HttpContext.Session.SetString("TPromoPrice", TPromoPrice.ToString("0.00"));
 
             return RedirectToAction("Index", "CheckOut");

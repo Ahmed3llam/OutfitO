@@ -104,23 +104,11 @@
 
             </div>
         </div>
-        <div id="FilteredProducts" @* style="display:flex;flex-direction:column" *@>
+        <div id="FilteredProducts" class="col-md-9  container" @* style="display:flex;flex-direction:column" *@>
             @Html.Partial("_ProductStorePartial", Model)
         </div>
        
     </div>
-</div>
-<div>
-    <nav aria-label="Page navigation" class="my-5 d-flex justify-content-center" style="display: flex;flex-direction: row;justify-content: center;">
-        <ul class="store-pagination">
-            @for (int i = 1; i <= Math.Ceiling((double)(int)ViewData["TotalItems"] / (int)ViewData["content"]); i++)
-            {
-                <li class="page-item @(i == (int)ViewData["Page"] ? "active" : "")">
-                    <a class="page-link btn btn-secondary mx-1" onclick="pagination(@i)">@i</a>
-                </li>
-            }
-        </ul>
-    </nav>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
@@ -190,6 +178,18 @@
             success: function (result) {
                $("#FilteredProducts").html("");
                 $("#FilteredProducts").html(result);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+    function addToCart(id) {
+        $.ajax({
+            url: '/Cart/AddToCart/'+id,
+            success: function (result) {
+                $("#head").html("");
+                $("#head").html(result);
             },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);

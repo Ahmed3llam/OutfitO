@@ -6,5 +6,6 @@ namespace OutfitO.Repository
     {
         public Product GetProduct(int id);
         public Order GetOrder(int id);
+        public bool productExists(int productID, string userID);
     }
 }

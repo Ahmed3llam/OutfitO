@@ -21,6 +21,6 @@ namespace OutfitO.Models
 
         // Navigation Properties
         public virtual User User { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual List<Order> orders { get; set; }=new List<Order>();
     }
 }

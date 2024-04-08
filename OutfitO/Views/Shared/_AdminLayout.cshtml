@@ -24,6 +24,12 @@
         var userId = session.GetString("UserId");
         var UserImg = session.GetString("UserImg");
     }
+    @if (userName == null)
+    {
+        <script>
+            window.location.href = "/User/Login";
+        </script>
+    }
     <div class="page d-flex">
         <div class="sidebar bg-white p-20 p-relative">
             <h3 class="p-relative txt-c mt-0">OutfitO</h3>

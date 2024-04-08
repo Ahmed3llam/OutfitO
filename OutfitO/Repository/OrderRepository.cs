@@ -18,11 +18,17 @@ namespace OutfitO.Repository
         {
             return _context.Order.Where(o=>o.UserId == userid).ToList();    
         }
-        public List<Order> GetSomeOrdersForUser(string userid,int skip, int content)
+        public List<Order> GetSomeOrdersForUser(string userid, int skip, int content)
         {
-            return _context.Order.Include(o => o.payment).Where(o => o.UserId == userid).Skip(skip).Take(content).ToList();
+            return _context.Order
+                     .Include(o => o.payment) // Include the payment navigation property
+                     .Include(o => o.User)    // Include the User navigation property if needed
+                     .Where(o => o.UserId == userid)
+                     .Skip(skip)
+                     .Take(content)
+                     .ToList();
         }
-        public List<OrderItem> GetOrderItem(int Orderid)
+            public List<OrderItem> GetOrderItem(int Orderid)
         {
             return _context.OrderItem
                            .Include(o => o.Product).Include(o => o.Order)

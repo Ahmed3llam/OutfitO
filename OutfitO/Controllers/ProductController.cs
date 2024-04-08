@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NuGet.Protocol.Core.Types;
 using OutfitO.Models;
@@ -15,15 +16,17 @@ namespace OutfitO.Controllers
 		ICategoryRepository categoryRepository;
 		ICommentRepository commentRepository;
 		IUserRepository userRepository;
-		public ProductController(IProductRepository productRepo, ICategoryRepository categoryRepo, ICommentRepository commentRepo,IUserRepository userRepo)
+		IOrderItemsRepository orderItemsRepository;
+		public ProductController(IProductRepository productRepo, ICategoryRepository categoryRepo, ICommentRepository commentRepo,IUserRepository userRepo, IOrderItemsRepository orderItemsRepo)
 		{
 			productRepository = productRepo;
 			categoryRepository = categoryRepo;
 			commentRepository = commentRepo;
 			userRepository = userRepo;
+			orderItemsRepository= orderItemsRepo;
         }
-
-		public IActionResult ProductDash(int page = 1)
+        [Authorize(Roles = "Admin")]
+        public IActionResult ProductDash(int page = 1)
 		{
 			int content = 9;
 			int skip = (page - 1) * content;
@@ -37,6 +40,7 @@ namespace OutfitO.Controllers
             ViewData["TotalItems"] = total;
             return View("ProductDash", products);
 		}
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminProduct(int page = 1)
         {
             int content = 9;
@@ -68,7 +72,7 @@ namespace OutfitO.Controllers
 		[HttpPost]
         public IActionResult Filter(List<string> Params ,int page = 1)
         {
-            int content = 3;
+            int content = 9;
 			int total = 0;
             int skip = (page - 1) * content;
 			List<Product> products;
@@ -93,11 +97,36 @@ namespace OutfitO.Controllers
 		public IActionResult Details(int id)
 		{
 			ViewData["ProductDetails"] = productRepository.GetProduct(id);
-			var comment = commentRepository.GetForProduct(id);
-			return View("Details", comment);
+			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewData["productExists"]= orderItemsRepository.productExists(id, userId);
+
+            int content = 4;
+			int page = 1;
+            int skip = (page - 1) * content;
+            List<Comment> comments = commentRepository.GetForProduct(id, skip, content);
+            int total =  commentRepository.GetForProduct(id).Count();
+            ViewBag.ProductID = id;
+            ViewBag.Page = page;
+            ViewBag.Content = content;
+            ViewBag.TotalItems = total;
+
+            return View("Details", comments);
 		}
 
-		public IActionResult New()
+        public IActionResult CommentsPagination( int productId,int page = 1)
+		{
+            int content = 4;
+            int skip = (page - 1) * content;
+            List<Comment> comments = commentRepository.GetForProduct(productId, skip, content);
+            int total = commentRepository.GetForProduct(productId).Count();
+            ViewBag.ProductID = productId;
+            ViewBag.Page = page;
+            ViewBag.Content = content;
+            ViewBag.TotalItems = total;
+            return PartialView("_AllCommentsPartial", comments);
+        }
+        [Authorize(Roles = "Admin")]
+        public IActionResult New()
 		{
             User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var categories = categoryRepository.GetAll();
@@ -107,7 +136,9 @@ namespace OutfitO.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult SaveNew(ProductWithCategoryList product, IFormFile Img)
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public IActionResult SaveNew(ProductWithCategoryList product, IFormFile Img)
 		{
             User user = userRepository.GetUser(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (Img != null && Img.Length > 0)
@@ -117,7 +148,6 @@ namespace OutfitO.Controllers
 				FileStream fs = new FileStream(path, FileMode.Create);
 				Img.CopyTo(fs);
 				product.Img = FileName;
-				//ModelState.SetModelValue("ProfileImage", new ValueProviderResult(FileName));
 			}
 			if (product.Title != null && product.Price != null && product.Stock != null && product.Id != null && product.Description != null && product.CategoryId != null)
 			{
@@ -132,7 +162,6 @@ namespace OutfitO.Controllers
 					Stock = product.Stock,
 					CategoryId = product.CategoryId,
 					UserID = User.FindFirstValue(ClaimTypes.NameIdentifier)
-					//categories = categoryRepository.GetAll(),
 
 				};
 				productRepository.Insert(newProduct);
@@ -144,8 +173,8 @@ namespace OutfitO.Controllers
             ViewData["User"] = user;
             return View("NewProduct", product);
 		}
-
-		public IActionResult deleteProduct(int id)
+        [Authorize(Roles = "Admin")]
+        public IActionResult deleteProduct(int id)
 		{
 			var product = productRepository.GetById(id);
 			if (product != null)
@@ -159,8 +188,8 @@ namespace OutfitO.Controllers
 				return NotFound();
 			}
 		}
-
-		public IActionResult Edit(int id)
+        [Authorize(Roles = "Admin")]
+        public IActionResult Edit(int id)
 		{
 			Product productData = productRepository.GetById(id);
 			if (productData == null)
@@ -187,7 +216,8 @@ namespace OutfitO.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult Edit(ProductWithCategoryList product)
+        [Authorize(Roles = "Admin")]
+        public IActionResult Edit(ProductWithCategoryList product)
 		{
 
 			if (ModelState.IsValid == true)
@@ -210,7 +240,8 @@ namespace OutfitO.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult EditImage(int id)
+        [Authorize(Roles = "Admin")]
+        public IActionResult EditImage(int id)
 		{
 			var ProductDetails = productRepository.GetById(id);
 			productImageVM vm = new productImageVM()
@@ -222,7 +253,9 @@ namespace OutfitO.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult EditImage(productImageVM product, IFormFile NewImg)
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public IActionResult EditImage(productImageVM product, IFormFile NewImg)
 		{
 			if (NewImg != null && NewImg.Length > 0)
 			{
@@ -258,9 +291,9 @@ namespace OutfitO.Controllers
 		}
 
 
-		// ---- Comment ---- //
+        #region comments
 
-		[HttpGet]
+        [HttpGet]
 		public IActionResult comments(int id)
 		{
 			var comment = commentRepository.GetForProduct(id);
@@ -268,6 +301,7 @@ namespace OutfitO.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IActionResult Addcomment(int productId)
 		{
 			var commentViewModel = new CommentWithItsUser { ProductID = productId };
@@ -276,8 +310,10 @@ namespace OutfitO.Controllers
 
 
 		[HttpPost]
+		[Authorize]
 		public IActionResult AddComment(CommentWithItsUser comment)
 		{
+			
 			string user = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			if (comment.Body != null && comment.ProductID != null)
 			{
@@ -291,10 +327,12 @@ namespace OutfitO.Controllers
 
 				commentRepository.Insert(newComment);
 				commentRepository.Save();
-				return RedirectToAction("comments", "Product", new { id = comment.ProductID });
+                HttpContext.Session.SetInt32("productID", comment.ProductID);
+                return RedirectToAction("CommentsPagination", "Product");
 			}
 			return PartialView("__ProductAddCommentPartial", comment);
 		}
+		[Authorize]
 		public IActionResult Editcomment(int commentId)
 		{
 			Comment commentData = commentRepository.GetById(commentId);
@@ -315,6 +353,7 @@ namespace OutfitO.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize]
 		public IActionResult EditComment(CommentWithItsUser comment)
 		{
 			if (ModelState.IsValid)
@@ -336,6 +375,7 @@ namespace OutfitO.Controllers
 
 
 		[HttpPost]
+		[Authorize]
 		public IActionResult DeleteComment(int commentId)
 		{
 			var comment = commentRepository.GetById(commentId);
@@ -347,5 +387,6 @@ namespace OutfitO.Controllers
 			// Redirect back to the product details page or wherever appropriate
 			return RedirectToAction("Details", "Product", new { id = comment?.ProductID });
 		}
-	}
+        #endregion
+    }
 }

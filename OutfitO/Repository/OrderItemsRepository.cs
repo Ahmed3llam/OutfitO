@@ -1,4 +1,5 @@
-﻿using OutfitO.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using OutfitO.Models;
 
 namespace OutfitO.Repository
 {
@@ -19,6 +20,10 @@ namespace OutfitO.Repository
         {
             int Orderid = _context.OrderItem.Where(o => o.Id == id).Select(o=>o.OrderId).FirstOrDefault();
             return _context.Order.Where(o=>o.Id==Orderid).FirstOrDefault();
+        }
+
+        public bool productExists(int productID,string userID) {
+            return _context.OrderItem.Include(oi => oi.Order).Any(oi => oi.ProductId == productID && oi.Order.UserId == userID);
         }
     }
 }
