@@ -19,7 +19,7 @@
 	<link type="text/css" rel="stylesheet" href="/css/slick-theme.css" />
 
 	<!-- nouislider -->
-	<link type="text/css" rel="stylesheet" href="/css/nouislider.min.css" /> 
+	<link type="text/css" rel="stylesheet" href="/css/nouislider.min.css" />
 
 	<!-- Font Awesome Icon -->
 	<link rel="stylesheet" href="/css/font-awesome.min.css">
@@ -33,15 +33,15 @@
 		text-decoration: none;
 	}
 
-	.logo:hover{
+	.logo:hover {
 		text-decoration: none;
 	}
 
 	.header-ctn {
 		display: flex;
 		flex-direction: row;
-		
 	}
+
 	i:hover {
 		text-decoration: none;
 		color: #D10024;
@@ -59,36 +59,118 @@
 	html::-webkit-scrollbar-thumb {
 		background-image: linear-gradient(to bottom, #D10024 0%, #D10020 100%);
 	}
+
+	.header-ctn {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		width: 60vw;
+	}
 </style>
 <body>
 	<!-- HEADER -->
-	<partial name="_UserNavPartial">
-	<!-- /HEADER -->
-	<!-- NAVIGATION -->
-	<nav id="navigation">
-		<!-- container -->
-		<div class="container">
-			<!-- responsive-nav -->
-			<div id="responsive-nav">
-				<!-- NAV -->
-				<ul class="main-nav nav navbar-nav" style="flex-direction: row;padding: 10px;">
-					<li><a asp-controller="Home" asp-action="Index">Home</a></li>
-					<li><a asp-controller="Product" asp-action="Index">Products</a></li>
-					<li><a asp-controller="Order" asp-action="History">Orders</a></li>
+	<header>
+		<!-- TOP HEADER -->
+		<div id="top-header" style=" min-height: 50px;">
+			<div class="container">
+				<ul class="header-links pull-left">
+					<li><a href="#"><i class="fa fa-phone"></i> +01014782114</a></li>
+					<li><a href="#"><i class="fa fa-envelope-o"></i> OutfitO@gmail.com</a></li>
+					<li><a href="#"><i class="fa fa-map-marker"></i> Cairo,Egypt</a></li>
 				</ul>
-				<!-- /NAV -->
+				<ul class="header-links pull-right">
+					@{
+						var session = HttpContextAccessor.HttpContext.Session;
+						var userName = session.GetString("UserName");
+						var userId = session.GetString("UserId");
+						var UserImg = session.GetString("UserImg");
+					}
+					<div class="icons d-flex align-center">
+						<div class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black;">
+								<i class="fa fa-user-o" style="color:#D10024;"></i> <span id="user" style="color:white;"> @userName </span>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="dropdown-item" asp-controller="Profile" asp-action="EditData" asp-route-id="@userId" style="color: black;">
+										<i class="fa-solid fa-gear fa-fw"></i>
+										<span>Settings</span>
+									</a>
+								</li>
+								<li>
+									<a class="dropdown-item" asp-action="Logout" asp-controller="User" asp-route-id="@userId" style="color: black;">
+										<i class="fa-solid fa-sign-out-alt fa-fw"></i>
+										<span>Logout</span>
+									</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="#" onclick="DeleteAccount('@userId')" style="color: black;">
+										<i class="fa-solid fa-trash-alt fa-fw"></i>
+										<span>Delete Account</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					@* <li><a href="#"><i class="fa fa-dollar"></i> USD</a></li> *@
+					@* <li><a asp-action="Index" asp-controller="Profile" style="text-decoration:none"><i class="fa fa-user-o"></i> <span id="user"></span></a></li> *@
+				</ul>
 			</div>
-			<!-- /responsive-nav -->
 		</div>
-		<!-- /container -->
-	</nav>
-	<div id="modal-placeholder"></div>
-	<!-- /NAVIGATION -->
+		<!-- /TOP HEADER -->
+		<!-- MAIN HEADER -->
+		<div id="header">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<!-- LOGO -->
+					<div class="col-md-3">
+						<div class="header-logo">
+							<a asp-action="Index" asp-controller="Home" class="logo">
+								<h1 style="color: white;margin: 15px;">
+									OutfitO
+								</h1>
+								@* <img src="./logo/logo.png" alt=""> *@
+							</a>
+						</div>
+					</div>
+					<!-- /LOGO -->
+					<!-- ACCOUNT -->
+					<div class="col-md-3 clearfix">
+						<div class="header-ctn">
+							<!-- Cart -->
+							<div>
+								<a asp-action="Index" asp-controller="Cart">
+									<i class="fa fa-shopping-cart"></i>
+									<span style="text-decoration:none">Your Cart</span>
+									@* <div class="qty">3</div> *@
+								</a>
+							</div>
+							<!-- /Cart -->
+							<!-- Menu Toogle -->
+							<div class="menu-toggle">
+								<a href="#">
+									<i class="fa fa-bars"></i>
+									<span>Menu</span>
+								</a>
+							</div>
+							<!-- /Menu Toogle -->
+						</div>
+					</div>
+					<!-- /ACCOUNT -->
+				</div>
+				<!-- row -->
+			</div>
+			<!-- container -->
+		</div>
+		<!-- /MAIN HEADER -->
+	</header>
+	<!-- /HEADER -->
 	<!-- SECTION -->
 	@RenderBody()
 	@RenderSection("Scripts", required: false)
 	<!-- /SECTION -->
-	
 	<!-- FOOTER -->
 	<footer id="footer">
 		<!-- top footer -->
@@ -170,9 +252,8 @@
 							<li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
 						</ul>
 						<span class="copyright">
-							
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-							Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+							Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Powered by <a href="https://colorlib.com" target="_blank">OutfitO</a>
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 						</span>
 					</div>

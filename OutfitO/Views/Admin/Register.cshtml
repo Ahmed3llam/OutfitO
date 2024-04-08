@@ -1,7 +1,9 @@
-﻿@model OutfitO.ViewModels.UserVM
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model OutfitO.ViewModels.UserVM
 
 @{
-    // Layout = null;
+    Layout = "_LoginAndRegisterHeaderLayout";
 }
 
 <!DOCTYPE html>
@@ -9,75 +11,229 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
     <title>Register</title>
 </head>
+<style>
+    body{
+        height:fit-content;
+    }
+    *{
+        margin:0;
+        padding:0;
+    }
+    #secondForm {
+        display: none;
+    }
+
+    .register-form {
+        max-width: 100%;
+        display: block;
+        margin: auto;
+        width: 100%;
+    }
+
+    .card-parent {
+        width: 90%
+    }
+
+    .border-light-subtle {
+        width: 100%;
+    }
+
+    .secondFormBtn {
+        width: 105%;
+    }
+
+    .admin-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #nextBtn, #backBtn {
+        border: 1px solid #D10024;
+        color: #D10024;
+        transition:all 0.4s ease-in-out;
+    }
+
+        #nextBtn:hover, #backBtn:hover{
+            background-color: #D10024;
+            color:#fff;
+    }
+</style>
 <body>
 
-<h4>UserVM</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register" asp-controller="Admin" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+
+    <section class="register-form p-3 p-md-4 p-xl-5">
+        <div class="container registration-section">
+            <div class="row justify-content-center">
+                <div class="col-8 col-xxl-11 card-parent">
+                    <div class="card border-light-subtle shadow-sm">
+                        <div class="row g-0">
+                            <div class="col-12 col-md-6 admin-container">
+                                <img class="img-fluid rounded-start w-80 h-50 my-auto object-fit-cover" loading="lazy" src="https://cdn.discordapp.com/attachments/1214262181802152009/1226635970485682206/Video1-ezgif.com-crop.gif?ex=66257cc5&is=661307c5&hm=e93994e6202dc771b43dcc1f31421d56a4b3b90c9e1238bf023c40dc334d6e80&" alt="Welcome back you've been missed!">
+                            </div>
+                            <div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                                <div class="col-12 col-lg-11 col-xl-10">
+                                    <div class="card-body p-3 p-md-4 p-xl-5" id="formContainer">
+                                        <div class="row">
+                                            <div class="col-12">
+                                            </div>
+                                        </div>
+                                        <form asp-action="Register" asp-controller="Admin" method="post" enctype="multipart/form-data">
+                                            <div asp-validation-summary="All" class="text-danger"></div>
+
+                                            <div class="row gy-3 overflow-hidden" id="firstForm">
+                                                <div class="col-md-6">
+                                                    <label for="FirstName" asp-for="FirstName" class="form-label">First Name</label>
+                                                    <input type="text" class="form-control" asp-for="FirstName" class="form-control" id="FirstName">
+                                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label for="Lastname" asp-for="Lastname" class="form-label">Last Name</label>
+                                                    <input type="text" asp-for="Lastname" class="form-control" id="Lastname">
+                                                    <span asp-validation-for="Lastname" class="text-danger"></span>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <label for="image" asp-for="ProfileImage" class="form-label">Image</label>
+                                                    <input type="file" asp-for="ProfileImage" class="form-control" id="image">
+                                                    <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <label for="phone" asp-for="PhoneNumber" class="form-label">Phone</label>
+                                                    <input type="number" asp-for="PhoneNumber" class="form-control" id="phone">
+                                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <label for="gender" asp-for="Gender" class="form-label">Gender</label>
+                                                    <select class="form-select" asp-for="Gender" aria-label="Default select example" id="gender">
+                                                        <option selected disabled>Choose From Here</option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="d-grid">
+                                                        <button class="btn  btn-lg" type="button" id="nextBtn">Next</button>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" style="width: 50%; background-color:#D10024;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row gy-3 overflow-hidden" id="secondForm" style="display: none;">
+                                                <div class="col-md-12">
+                                                    <label for="inputEmail4" asp-for="Email" class="form-label">Email</label>
+                                                    <input type="email" asp-for="Email" class="form-control" id="inputEmail4">
+                                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label for="inputPassword4" asp-for="Password" class="form-label">Password</label>
+                                                    <input type="password" asp-for="Password" class="form-control" id="inputPassword4">
+                                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label for="inputPasswordconform" asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
+                                                    <input type="password" asp-for="ConfirmPassword" class="form-control" id="inputPasswordconform">
+                                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label for="inputAddress2" asp-for="Address" class="form-label">Address</label>
+                                                    <input type="text" asp-for="Address" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                                </div>
+
+                                                <div class="row g-3 justify-content-center my-3">
+                                                    <div class="col">
+                                                        <button style="padding: 5px 23px;" class="btn  secondFormBtn me-1  btn-lg" type="button" id="BackBtn">Back</button>
+
+                                                    </div>
+                                                    <div class="col">
+                                                        <button style="padding: 5px 23px;" class="btn btn-outline-success secondFormBtn btn-lg" value="Create" id="SubmitBtn">Submit</button>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" style="width: 100%; background-color:#D10024;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Lastname" class="control-label"></label>
-                <input asp-for="Lastname" class="form-control" />
-                <span asp-validation-for="Lastname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProfileImage" class="control-label"></label>
-                <input type="file" asp-for="ProfileImage" class="form-control" />
-                <span asp-validation-for="ProfileImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label" asp-for="Gender"></label>
-                <select class="form-control" asp-for="Gender">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-                <span class="text-danger" asp-validation-for="Gender"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <br />
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+        </div>
+    </section>
+
+    <br />
 
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#nextBtn').click(function () {
+                $('#firstForm').fadeOut('slow', function () {
+                    $('#secondForm').fadeIn('slow');
+                });
+            });
+
+            $('#BackBtn').click(function () {
+                $('#secondForm').fadeOut('slow', function () {
+                    $('#firstForm').fadeIn('slow');
+                });
+            });
+
+            // document.getElementById('mainForm').addEventListener('submit', function (e) {
+            //     e.preventDefault();
+
+            //     var isValid = true;
+
+            //     var formInputs = this.querySelectorAll('input:visible, select:visible');
+            //     formInputs.forEach(function (input) {
+            //         if (input.hasAttribute('required') && input.value.trim() === '') {
+            //             isValid = false;
+            //             return;
+            //         }
+            //     });
+
+            //     if (!isValid) {
+            //         Swal.fire(
+            //             'Warning!',
+            //             'Please fill all the required fields correctly.',
+            //             'warning'
+            //         );
+            //     } else {
+            //         Swal.fire(
+            //             'Success!',
+            //             'Your registration is successful!',
+            //             'success'
+            //         ).then(function () {
+            //              e.target.submit();
+            //         });
+            //     }
+            // });
+        });
+    </script>
 </body>
 </html>
