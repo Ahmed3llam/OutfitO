@@ -77,14 +77,16 @@ namespace OutfitO.Controllers
 			var Userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			decimal TPrice = cartRepository.GetTotalPrice(Userid);
 			decimal TPromoPrice = 0;
+			PromoCode code;
 
-			if (promo != null)
+            if (promo != null)
 			{
-				var code = promoCodeRepository.GetPromoCode(promo);
+				 code = promoCodeRepository.GetPromoCode(promo);
 				if (code != null)
 				{
 					decimal PromoPrice = TPrice * code.Percentage / 100;
 					TPromoPrice = TPrice - PromoPrice;
+					HttpContext.Session.SetString("promoPercent", code.Percentage.ToString("0.00"));
 				}
 				else
 				{
@@ -94,7 +96,8 @@ namespace OutfitO.Controllers
 			else
 			{
 				TPromoPrice = TPrice;
-			}
+                HttpContext.Session.SetString("promoPercent", "");
+            }
             HttpContext.Session.SetString("TPromoPrice", TPromoPrice.ToString("0.00"));
 
             return RedirectToAction("Index", "CheckOut");
