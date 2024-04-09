@@ -98,6 +98,7 @@ namespace OutfitO.Controllers
 		public IActionResult Details(int id)
 		{
 			ViewData["ProductDetails"] = productRepository.GetProduct(id);
+			HttpContext.Session.SetInt32("productID", id);
 			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewData["productExists"]= orderItemsRepository.productExists(id, userId);
 

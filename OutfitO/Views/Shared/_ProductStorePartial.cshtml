@@ -23,9 +23,17 @@
                             <a href="/Product/Details/@item.Id" class="tooltip-container">
                                 <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
                             </a>
+                           @if(User.Identity.IsAuthenticated){
                             <a onclick="addToCart('@item.Id')" class="tooltip-container">
 								<button  class="add-to-cart-btn" style="border:none; background-color:transparent;"><i class="fa fa-shopping-cart"></i> <span class="tooltipp">add to Cart</span></button>
-                            </a>
+                                </a>
+                            }
+                            else
+                            {
+                                <a onclick="addToCart('notAuthenticated')" class="tooltip-container">
+                                    <button class="add-to-cart-btn" style="border:none; background-color:transparent;"><i class="fa fa-shopping-cart"></i> <span class="tooltipp">add to Cart</span></button>
+                                </a>
+                            }
 
                         </div>
                     </div>

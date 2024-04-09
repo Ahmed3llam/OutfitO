@@ -191,21 +191,26 @@
         });
     }
     function addToCart(id) {
-        $.ajax({
-            url: '/Cart/AddToCart/'+id,
-            success: function (result) {
-                $("#head").html("");
-                $("#head").html(result);
-                Swal.fire(
-                    'Success!',
-                    'Product Added Successfully!',
-                    'success'
-                );
-            },
-            error: function (xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
+        if (id != "notAuthenticated") {
+            $.ajax({
+                url: '/Cart/AddToCart/' + id,
+                success: function (result) {
+                    $("#head").html("");
+                    $("#head").html(result);
+                    Swal.fire(
+                        'Success!',
+                        'Product Added Successfully!',
+                        'success'
+                    );
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+        else {
+            window.location.href = "/User/login";
+        }
     }
 </script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
