@@ -55,6 +55,7 @@ namespace OutfitO.Controllers
             ViewData["TotalItems"] = total;
             return View("AdminProduct", products);
         }
+		[AllowAnonymous]
         public IActionResult Index(int page = 1)
         {
             int content = 9;

@@ -45,7 +45,7 @@
 						</div>
 					</div>
 				}
-				else if (userName == null && ViewBag.Title == "Home Page")
+				else if (userName == null && (ViewBag.Title == "Home Page" || ViewBag.Title == "Products"))
 				{
 					<a class="nav-link" asp-action="Login" asp-controller="User" role="button" style="color:white;display: inline;">
 						<i class="fa fa-user-o" style="color:#D10024;"></i> <span id="user" style="color:white;"> Login </span>
